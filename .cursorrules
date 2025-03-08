@@ -1,0 +1,16 @@
+Graphand is a serverless SaaS framework that provides a fully managed backend for building and deploying cloud applications quickly.
+It integrates tools such as databases, APIs, cloud functions, and storage in one scalable platform.
+Its aim is to streamline development by eliminating infrastructure hassles and ensuring secure, reliable deployments.
+
+This codebase is the admin panel for graphand users.
+It helps them manage their projects, subscriptions, organizations, collaborators, and more.
+
+It is built with Next.js and app router, Shadcn UI, and Tailwind CSS.
+Forms are handled with react-hook-form and zod.
+All the Graphand integration is made with the Graphand client (@graphand/client) and the Graphand core (@graphand/core).
+It also uses react-query for data fetching.
+
+If you need to install a new package, use pnpm instead of npm.
+You must never update components created by shadcn (src/components/ui).
+Before writing code that needs data, check the graphand docs to know how to use the client to get the data you need.
+Before creating any component, check the shadcn docs to know if a component already exists. (or in the components/ui folder to know if it already exists)
