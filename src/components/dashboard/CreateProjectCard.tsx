@@ -11,7 +11,7 @@ export function CreateProjectCard({ organizationId }: CreateProjectCardProps) {
 
   return (
     <div className="border-2 border-dashed border-muted-foreground/20 rounded-lg h-full flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center p-6 text-center">
+      <div className="flex flex-col items-center justify-center px-6 py-2 text-center">
         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
           <PlusIcon className="h-6 w-6 text-primary" />
         </div>
