@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import client from "@/lib/graphand-client";
 import {
   Card,
   CardContent,
@@ -19,10 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ModelInstance } from "@graphand/core";
-import Organization from "@/lib/models/Organization";
 import {
   Pagination,
   PaginationContent,
@@ -34,55 +29,28 @@ import {
 } from "@/components/ui/pagination";
 import { useLocaleStore } from "@/store/useLocaleStore";
 import { useTranslation } from "@/lib/translations";
+import { useOrganizations } from "@/hooks/use-organizations";
 
 export default function OrganizationPage() {
-  const [currentPage, setCurrentPage] = useState(1);
   const { locale } = useLocaleStore();
   const { t } = useTranslation(locale);
   const [isMounted, setIsMounted] = useState(false);
-  const pageSize = 10;
 
   // Ensure client-side rendering for zustand
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Fetch organizations using infinite query
   const {
-    data,
+    organizations,
     isLoading,
     isError,
     error,
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
-  } = useInfiniteQuery({
-    queryKey: ["organizations"],
-    queryFn: async ({ pageParam = 1 }) => {
-      const list = await client
-        .model("organizations")
-        .getList({ pageSize, page: pageParam });
-
-      // Safely extract count
-      const count = typeof list.count === "number" ? list.count : 0;
-
-      return {
-        items: list,
-        nextPage: list.length === pageSize ? pageParam + 1 : undefined,
-        prevPage: pageParam > 1 ? pageParam - 1 : undefined,
-        totalPages: Math.ceil(count / pageSize),
-        currentPage: pageParam,
-        totalCount: count,
-      };
-    },
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
-    getPreviousPageParam: (firstPage) => firstPage.prevPage,
-    enabled: isMounted, // Only run query when component is mounted
-  });
+    currentPage,
+    totalPages,
+    totalCount,
+    handlePageChange,
+  } = useOrganizations();
 
   // Show loading skeleton
   const showLoading = isLoading || !isMounted;
@@ -136,31 +104,6 @@ export default function OrganizationPage() {
       </div>
     );
   }
-
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    if (data) {
-      // Find the page in existing data or fetch it
-      const pageIndex = page - 1;
-      if (pageIndex >= 0 && pageIndex < data.pages.length) {
-        setCurrentPage(page);
-      } else if (page > currentPage) {
-        fetchNextPage();
-        setCurrentPage(page);
-      } else if (page < currentPage) {
-        fetchPreviousPage();
-        setCurrentPage(page);
-      }
-    }
-  };
-
-  // Get current page data
-  const currentPageData = data?.pages.find(
-    (pageData) => pageData.currentPage === currentPage
-  );
-  const organizations = currentPageData?.items || [];
-  const totalPages = currentPageData?.totalPages || 1;
-  const totalCount = currentPageData?.totalCount || 0;
 
   return (
     <div className="container py-10">
