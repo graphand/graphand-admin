@@ -22,3 +22,9 @@ Authentication System Details:
 - Client-side authentication state is stored in cookies using AuthStorage adapter
 - Server-side authentication is handled via createServerClient() utility
 - Auth helper functions are available in src/lib/auth.ts
+
+Translation System Details:
+
+- Translations are managed through dictionaries in the src/dictionaries folder with separate files for each language (en.ts, fr.ts)
+- The useTranslation hook from src/lib/translations.ts provides the t() function to translate content based on the current locale
+- Current locale is managed with the useLocaleStore (Zustand) which persists user language preference in local storage

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
 import {
@@ -32,10 +32,20 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useLocaleStore } from "@/store/useLocaleStore";
+import { useTranslation } from "@/lib/translations";
 
 export default function OrganizationPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const { locale } = useLocaleStore();
+  const { t } = useTranslation(locale);
+  const [isMounted, setIsMounted] = useState(false);
   const pageSize = 10;
+
+  // Ensure client-side rendering for zustand
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Fetch organizations using infinite query
   const {
@@ -71,13 +81,17 @@ export default function OrganizationPage() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
     getPreviousPageParam: (firstPage) => firstPage.prevPage,
+    enabled: isMounted, // Only run query when component is mounted
   });
 
+  // Show loading skeleton
+  const showLoading = isLoading || !isMounted;
+
   // Render loading state
-  if (isLoading) {
+  if (showLoading) {
     return (
       <div className="container py-10">
-        <h1 className="text-3xl font-bold mb-6">Organizations</h1>
+        <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
         <Card>
           <CardHeader>
             <CardTitle>
@@ -103,7 +117,7 @@ export default function OrganizationPage() {
   if (isError) {
     return (
       <div className="container py-10">
-        <h1 className="text-3xl font-bold mb-6">Organizations</h1>
+        <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
         <Card className="border-destructive">
           <CardHeader>
             <CardTitle className="text-destructive">Error</CardTitle>
@@ -150,11 +164,11 @@ export default function OrganizationPage() {
 
   return (
     <div className="container py-10">
-      <h1 className="text-3xl font-bold mb-6">Organizations</h1>
+      <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
       <Card>
         <CardHeader>
-          <CardTitle>Your Organizations</CardTitle>
-          <CardDescription>View and manage your organizations</CardDescription>
+          <CardTitle>{t("yourOrganizations")}</CardTitle>
+          <CardDescription>{t("viewAndManageOrganizations")}</CardDescription>
         </CardHeader>
         <CardContent>
           {organizations.length > 0 ? (
@@ -162,11 +176,11 @@ export default function OrganizationPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Slug</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead>Updated At</TableHead>
+                    <TableHead>{t("id")}</TableHead>
+                    <TableHead>{t("name")}</TableHead>
+                    <TableHead>{t("slug")}</TableHead>
+                    <TableHead>{t("createdAt")}</TableHead>
+                    <TableHead>{t("updatedAt")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -181,18 +195,20 @@ export default function OrganizationPage() {
                       <TableCell>{org.slug || "—"}</TableCell>
                       <TableCell>
                         {org._createdAt
-                          ? new Date(org._createdAt).toLocaleDateString()
+                          ? new Date(org._createdAt).toLocaleDateString(locale)
                           : "—"}
                       </TableCell>
                       <TableCell>
                         {org._updatedAt
-                          ? new Date(org._updatedAt).toLocaleDateString()
+                          ? new Date(org._updatedAt).toLocaleDateString(locale)
                           : "—"}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
-                <TableCaption>Total: {totalCount} organizations</TableCaption>
+                <TableCaption>
+                  {t("total")}: {totalCount} {t("organizationsCount")}
+                </TableCaption>
               </Table>
 
               <div className="mt-4">
@@ -314,7 +330,9 @@ export default function OrganizationPage() {
             </>
           ) : (
             <div className="text-center py-6">
-              <p className="text-muted-foreground">No organizations found</p>
+              <p className="text-muted-foreground">
+                {t("noOrganizationsFound")}
+              </p>
             </div>
           )}
         </CardContent>

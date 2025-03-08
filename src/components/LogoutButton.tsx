@@ -2,12 +2,21 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import client from "@/lib/graphand-client";
+import { useLocaleStore } from "@/store/useLocaleStore";
+import { useTranslation } from "@/lib/translations";
 
 export default function LogoutButton() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { locale } = useLocaleStore();
+  const { t } = useTranslation(locale);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -29,9 +38,13 @@ export default function LogoutButton() {
     }
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <Button onClick={handleLogout} disabled={isLoading} variant="default">
-      {isLoading ? "Signing out..." : "Sign out"}
+      {isLoading ? "Signing out..." : t("logout")}
     </Button>
   );
 }

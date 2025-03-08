@@ -24,10 +24,15 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ModelInstance } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
+import { LanguageSelector } from "./LanguageSelector";
+import { useLocaleStore } from "@/store/useLocaleStore";
+import { useTranslation } from "@/lib/translations";
 
 export function Navbar() {
   const { selectedOrganization, setSelectedOrganization } =
     useOrganizationStore();
+  const { locale } = useLocaleStore();
+  const { t } = useTranslation(locale);
   const [isMounted, setIsMounted] = useState(false);
 
   // Fetch organizations
@@ -64,12 +69,6 @@ export function Navbar() {
     return <NavbarSkeleton />;
   }
 
-  // Make sure we have a string value for the select
-  const currentOrgId =
-    selectedOrganization && selectedOrganization._id
-      ? selectedOrganization._id
-      : "none";
-
   return (
     <div className="border-b">
       <div className="container flex h-16 items-center justify-between">
@@ -78,49 +77,53 @@ export function Navbar() {
             <NavigationMenuItem>
               <Link href="/" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Dashboard
+                  {t("dashboard")}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/organizations" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Organizations
+                  {t("organizations")}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/profile" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Profile
+                  {t("profile")}
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="w-[220px]">
-          {isLoading ? (
-            <Skeleton className="h-10 w-full" />
-          ) : (
-            <Select
-              value={String(selectedOrganization?._id || "none")}
-              onValueChange={handleOrganizationChange}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select organization" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">No organization</SelectItem>
-                {organizations &&
-                  organizations.map((org) => (
-                    <SelectItem key={org._id} value={String(org._id)}>
-                      {org.name || org._id}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          )}
+        <div className="flex items-center gap-4">
+          <LanguageSelector />
+
+          <div className="w-[220px]">
+            {isLoading ? (
+              <Skeleton className="h-10 w-full" />
+            ) : (
+              <Select
+                value={String(selectedOrganization?._id || "none")}
+                onValueChange={handleOrganizationChange}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t("selectOrganization")} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">{t("noOrganization")}</SelectItem>
+                  {organizations &&
+                    organizations.map((org) => (
+                      <SelectItem key={org._id} value={String(org._id)}>
+                        {org.name || org._id}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -136,7 +139,10 @@ function NavbarSkeleton() {
           <Skeleton className="h-10 w-24" />
           <Skeleton className="h-10 w-24" />
         </div>
-        <Skeleton className="h-10 w-[220px]" />
+        <div className="flex gap-4">
+          <Skeleton className="h-10 w-[80px]" />
+          <Skeleton className="h-10 w-[220px]" />
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 export async function isAuthenticated() {
   try {
     const client = await createServerClient();
-    await client.init();
     const user = await client.me();
     return !!user;
   } catch (error) {

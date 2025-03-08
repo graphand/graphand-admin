@@ -1,0 +1,56 @@
+const dictionary = {
+  // Navigation
+  dashboard: "Dashboard",
+  organizations: "Organizations",
+  profile: "Profile",
+  selectOrganization: "Select organization",
+  noOrganization: "No organization",
+  manageOrganizations: "Manage Organizations",
+  viewProfile: "View Profile",
+
+  // Dashboard
+  welcomeDashboard: "Welcome to your Dashboard!",
+  loggedIn: "You are now logged in to your Graphand account.",
+
+  // Organizations page
+  yourOrganizations: "Your Organizations",
+  viewAndManageOrganizations: "View and manage your organizations",
+  noOrganizationsFound: "No organizations found",
+  total: "Total",
+  organizationsCount: "organizations",
+
+  // Table headers
+  id: "ID",
+  name: "Name",
+  slug: "Slug",
+  createdAt: "Created At",
+  updatedAt: "Updated At",
+
+  // Auth
+  logout: "Logout",
+  login: "Login",
+  register: "Register",
+  email: "Email",
+  password: "Password",
+
+  // Profile page
+  backToDashboard: "Back to Dashboard",
+  userInformation: "User Information",
+  personalInformation: "Your personal information and account details",
+  username: "Username",
+  noEmailProvided: "No email provided",
+  noUsernameProvided: "No username provided",
+  userId: "User ID",
+  unknown: "Unknown",
+  accountCreated: "Account Created",
+  accountSettings: "Account Settings",
+  manageAccountPreferences: "Manage your account preferences and settings",
+  accountSettingsDescription:
+    "You can manage your account settings, update your profile, and change your password through the Graphand platform.",
+  editProfile: "Edit Profile",
+};
+
+export type DictionaryKey = keyof typeof dictionary;
+export type DictionaryType = Record<DictionaryKey, string>;
+
+export default dictionary;
