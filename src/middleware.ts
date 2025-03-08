@@ -10,7 +10,6 @@ const isPublicRoute = (pathname: string) => {
 };
 
 export async function middleware(request: NextRequest) {
-  const authToken = request.cookies.get("auth_token");
   const { pathname } = request.nextUrl;
 
   const client = await createServerClient();

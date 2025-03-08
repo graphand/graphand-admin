@@ -2,23 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogoutButton } from "@/components";
+import LogoutButton from "@/components/LogoutButton";
 import { useEffect, useState } from "react";
-import { useLocaleStore } from "@/store/useLocaleStore";
-import { useTranslation } from "@/lib/translations";
 import { Skeleton } from "@/components/ui/skeleton";
 import client from "@/lib/graphand-client";
+import { useTranslation } from "@/lib/translation";
 
 export default function DashboardPage() {
-  const { locale } = useLocaleStore();
-  const { t } = useTranslation(locale);
-  const [isMounted, setIsMounted] = useState(false);
+  const { t } = useTranslation();
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsMounted(true);
-
     async function loadUser() {
       try {
         // Check auth and get user on client-side
@@ -34,7 +29,7 @@ export default function DashboardPage() {
     loadUser();
   }, []);
 
-  if (!isMounted || isLoading) {
+  if (isLoading) {
     return (
       <div className="container py-10">
         <Skeleton className="h-10 w-48 mb-6" />

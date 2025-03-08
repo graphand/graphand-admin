@@ -4,19 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import client from "@/lib/graphand-client";
-import { useLocaleStore } from "@/store/useLocaleStore";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/lib/translation";
 
 export default function LogoutButton() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { locale } = useLocaleStore();
-  const { t } = useTranslation(locale);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     try {
@@ -37,10 +30,6 @@ export default function LogoutButton() {
       setIsLoading(false);
     }
   };
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <Button onClick={handleLogout} disabled={isLoading} variant="default">

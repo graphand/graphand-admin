@@ -10,9 +10,10 @@ Forms are handled with react-hook-form and zod.
 All the Graphand integration is made with the Graphand client (@graphand/client) and the Graphand core (@graphand/core).
 It also uses react-query for data fetching.
 State management is done with zustand.
+To access the src folder, use the alias @.
 
 If you need to install a new package, use pnpm instead of npm.
-You must never update components created by shadcn (src/components/ui).
+You must never update components created by shadcn (@/components/ui).
 Before writing code that needs data, check the graphand docs to know how to use the client to get the data you need.
 Before creating any component, check the shadcn docs to know if a component already exists. (or in the components/ui folder to know if it already exists)
 
@@ -21,10 +22,10 @@ Authentication System Details:
 - Authentication is implemented using the Graphand auth module from @graphand/client-module-auth
 - Client-side authentication state is stored in cookies using AuthStorage adapter
 - Server-side authentication is handled via createServerClient() utility
-- Auth helper functions are available in src/lib/auth.ts
+- Auth helper functions are available in @/lib/auth.ts
 
-Translation System Details:
+Internationalization System Details:
 
-- Translations are managed through dictionaries in the src/dictionaries folder with separate files for each language (en.ts, fr.ts)
-- The useTranslation hook from src/lib/translations.ts provides the t() function to translate content based on the current locale
-- Current locale is managed with the useLocaleStore (Zustand) which persists user language preference in local storage
+- The project uses next-intl for internationalization with locale managed via the NEXT_LOCALE cookie
+- Translation files are stored as JSON in public/locales/{locale}.json (e.g., en.json, fr.json)
+- A custom useTranslation hook is available in @/lib/translation.ts to access translations in components

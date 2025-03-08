@@ -27,19 +27,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useLocaleStore } from "@/store/useLocaleStore";
-import { useTranslation } from "@/lib/translations";
 import { useOrganizations } from "@/hooks/use-organizations";
+import { useTranslation } from "@/lib/translation";
 
 export default function OrganizationPage() {
-  const { locale } = useLocaleStore();
-  const { t } = useTranslation(locale);
-  const [isMounted, setIsMounted] = useState(false);
-
-  // Ensure client-side rendering for zustand
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { t } = useTranslation();
 
   const {
     organizations,
@@ -52,14 +44,11 @@ export default function OrganizationPage() {
     handlePageChange,
   } = useOrganizations();
 
-  // Show loading skeleton
-  const showLoading = isLoading || !isMounted;
-
   // Render loading state
-  if (showLoading) {
+  if (isLoading) {
     return (
       <div className="container py-10">
-        <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
+        <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
         <Card>
           <CardHeader>
             <CardTitle>
@@ -85,7 +74,7 @@ export default function OrganizationPage() {
   if (isError) {
     return (
       <div className="container py-10">
-        <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
+        <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
         <Card className="border-destructive">
           <CardHeader>
             <CardTitle className="text-destructive">Error</CardTitle>
@@ -107,7 +96,7 @@ export default function OrganizationPage() {
 
   return (
     <div className="container py-10">
-      <h1 className="text-3xl font-bold mb-6">{t("organizations")}</h1>
+      <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
       <Card>
         <CardHeader>
           <CardTitle>{t("yourOrganizations")}</CardTitle>
@@ -138,12 +127,12 @@ export default function OrganizationPage() {
                       <TableCell>{org.slug || "—"}</TableCell>
                       <TableCell>
                         {org._createdAt
-                          ? new Date(org._createdAt).toLocaleDateString(locale)
+                          ? new Date(org._createdAt).toLocaleDateString()
                           : "—"}
                       </TableCell>
                       <TableCell>
                         {org._updatedAt
-                          ? new Date(org._updatedAt).toLocaleDateString(locale)
+                          ? new Date(org._updatedAt).toLocaleDateString()
                           : "—"}
                       </TableCell>
                     </TableRow>

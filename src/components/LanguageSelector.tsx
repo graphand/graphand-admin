@@ -7,30 +7,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLocaleStore, Locale } from "@/store/useLocaleStore";
-import { useState, useEffect } from "react";
-import { useTranslation } from "@/lib/translations";
+import { useRouter } from "next/navigation";
+import { useCookies } from "next-client-cookies";
+import { useLocale } from "next-intl";
+import { useEffect, useState } from "react";
 
 export function LanguageSelector() {
-  const { locale, setLocale } = useLocaleStore();
-  const [isMounted, setIsMounted] = useState(false);
-  const { t } = useTranslation(locale);
+  const router = useRouter();
+  const cookies = useCookies();
+  const locale = useLocale();
+  const [selectedLanguage, setSelectedLanguage] = useState(locale);
 
-  // Ensure hydration
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
+    if (selectedLanguage !== locale) {
+      handleLanguageChange(selectedLanguage);
+    }
+  }, [selectedLanguage]);
 
   const handleLanguageChange = (value: string) => {
-    setLocale(value as Locale);
+    // Store the selected language in a cookie
+    cookies.set("NEXT_LOCALE", value, { path: "/" });
+
+    router.refresh();
   };
 
   return (
-    <Select value={locale} onValueChange={handleLanguageChange}>
+    <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
       <SelectTrigger className="w-[80px]">
         <SelectValue placeholder="Language" />
       </SelectTrigger>
