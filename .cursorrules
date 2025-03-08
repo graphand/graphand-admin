@@ -9,8 +9,16 @@ It is built with Next.js and app router, Shadcn UI, and Tailwind CSS.
 Forms are handled with react-hook-form and zod.
 All the Graphand integration is made with the Graphand client (@graphand/client) and the Graphand core (@graphand/core).
 It also uses react-query for data fetching.
+State management is done with zustand.
 
 If you need to install a new package, use pnpm instead of npm.
 You must never update components created by shadcn (src/components/ui).
 Before writing code that needs data, check the graphand docs to know how to use the client to get the data you need.
 Before creating any component, check the shadcn docs to know if a component already exists. (or in the components/ui folder to know if it already exists)
+
+Authentication System Details:
+
+- Authentication is implemented using the Graphand auth module from @graphand/client-module-auth
+- Client-side authentication state is stored in cookies using AuthStorage adapter
+- Server-side authentication is handled via createServerClient() utility
+- Auth helper functions are available in src/lib/auth.ts

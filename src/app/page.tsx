@@ -27,6 +27,10 @@ export default async function DashboardPage() {
             <Link href="/profile">View Profile</Link>
           </Button>
 
+          <Button asChild variant="default">
+            <Link href="/organizations">Manage Organizations</Link>
+          </Button>
+
           <LogoutButton />
         </div>
       </div>
