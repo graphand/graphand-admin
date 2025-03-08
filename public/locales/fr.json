@@ -45,5 +45,18 @@
   "accountSettings": "Paramètres du compte",
   "manageAccountPreferences": "Gérez vos préférences et paramètres de compte",
   "accountSettingsDescription": "Vous pouvez gérer les paramètres de votre compte, mettre à jour votre profil et modifier votre mot de passe via la plateforme Graphand.",
-  "editProfile": "Modifier le profil"
+  "editProfile": "Modifier le profil",
+
+  "createProject": "Créer un projet",
+  "addNewProject": "Ajouter un nouveau projet à cette organisation",
+  "noProjectsFound": "Aucun projet trouvé dans cette organisation",
+  "noArchivedProjectsFound": "Aucun projet archivé trouvé dans cette organisation",
+  "errorLoadingProjects": "Erreur lors du chargement des projets",
+  "errorLoadingDashboard": "Erreur lors du chargement des données du tableau de bord",
+  "createOrganization": "Créer une organisation",
+  "viewProject": "Voir le projet",
+  "showActiveProjects": "Projets actifs",
+  "showArchivedProjects": "Projets archivés",
+  "archivedProjectsToggleLabel": "Afficher les projets archivés",
+  "archivedProjectBadge": "Archivé"
 }

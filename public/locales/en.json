@@ -45,5 +45,18 @@
   "accountSettings": "Account Settings",
   "manageAccountPreferences": "Manage your account preferences and settings",
   "accountSettingsDescription": "You can manage your account settings, update your profile, and change your password through the Graphand platform.",
-  "editProfile": "Edit Profile"
+  "editProfile": "Edit Profile",
+
+  "createProject": "Create Project",
+  "addNewProject": "Add a new project to this organization",
+  "noProjectsFound": "No projects found in this organization",
+  "noArchivedProjectsFound": "No archived projects found in this organization",
+  "errorLoadingProjects": "Error loading projects",
+  "errorLoadingDashboard": "Error loading dashboard data",
+  "createOrganization": "Create Organization",
+  "viewProject": "View Project",
+  "showActiveProjects": "Active Projects",
+  "showArchivedProjects": "Archived Projects",
+  "archivedProjectsToggleLabel": "Show archived projects",
+  "archivedProjectBadge": "Archived"
 }

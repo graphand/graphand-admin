@@ -47,7 +47,7 @@ export default function OrganizationPage() {
   // Render loading state
   if (isLoading) {
     return (
-      <div className="container py-10">
+      <div className="container mx-auto py-10">
         <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
         <Card>
           <CardHeader>
@@ -73,7 +73,7 @@ export default function OrganizationPage() {
   // Render error state
   if (isError) {
     return (
-      <div className="container py-10">
+      <div className="container mx-auto py-10">
         <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
         <Card className="border-destructive">
           <CardHeader>
@@ -95,7 +95,7 @@ export default function OrganizationPage() {
   }
 
   return (
-    <div className="container py-10">
+    <div className="container mx-auto py-10">
       <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
       <Card>
         <CardHeader>
