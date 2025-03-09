@@ -80,7 +80,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="container mx-auto flex h-screen items-center justify-center">
+    <div className="container mx-auto flex flex-1 items-center justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>

@@ -37,11 +37,23 @@ export function OrganizationSection({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  // Calculate total projects count
+  const totalProjects = data?.pages[0]?.totalCount || 0;
+
   return (
     <div className="mb-10">
       <div className="sticky top-0 bg-background py-4 z-10 border-b">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">{organization.name}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-semibold">{organization.name}</h2>
+            {!isLoading && (
+              <span className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full">
+                {totalProjects}{" "}
+                {totalProjects === 1 ? t("project") : t("projects")}
+              </span>
+            )}
+            {isLoading && <Skeleton className="h-5 w-16 rounded-full" />}
+          </div>
           <Button variant="outline" size="sm" asChild>
             <Link href={`/organizations/${organization._id}`}>
               <EyeIcon className="h-4 w-4 mr-2" />

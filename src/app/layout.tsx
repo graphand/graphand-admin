@@ -37,13 +37,13 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <CookiesProvider>
           <NextIntlClientProvider messages={messages}>
             <ReactQueryProvider>
               <Navbar />
-              <main>{children}</main>
+              <main className="flex-1 flex flex-col">{children}</main>
               <Toaster />
             </ReactQueryProvider>
           </NextIntlClientProvider>

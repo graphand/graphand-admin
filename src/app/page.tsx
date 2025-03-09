@@ -12,7 +12,7 @@ import {
 import { OrganizationSection } from "@/components/dashboard/OrganizationSection";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, EyeIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -93,9 +93,38 @@ export default function DashboardPage() {
     );
   }
 
+  // Calculate total organizations count from the first page data
+  const totalOrganizations = data?.pages[0]?.totalCount || 0;
+
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">{t("dashboard")}</h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">{t("dashboard")}</h1>
+          {totalOrganizations > 0 && (
+            <p className="text-muted-foreground mt-1">
+              {totalOrganizations}{" "}
+              {totalOrganizations === 1
+                ? t("organization")
+                : t("organizations")}
+            </p>
+          )}
+        </div>
+        <div className="flex gap-2 self-start md:self-auto">
+          <Button variant="outline" className="gap-2" asChild>
+            <Link href="/organizations">
+              <EyeIcon className="h-4 w-4" />
+              {t("viewAll")}
+            </Link>
+          </Button>
+          <Button variant="outline" className="gap-2" asChild>
+            <Link href="/organizations/create">
+              <PlusIcon className="h-4 w-4" />
+              {t("createOrganization")}
+            </Link>
+          </Button>
+        </div>
+      </div>
 
       {/* Organizations with their projects */}
       <div className="space-y-6">
@@ -128,15 +157,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Create new organization button */}
-        <div className="flex justify-center pt-6 pb-10 border-t mt-6">
-          <Button variant="outline" className="gap-2" asChild>
-            <Link href="/organizations/create">
-              <PlusIcon className="h-4 w-4" />
-              {t("createOrganization")}
-            </Link>
-          </Button>
-        </div>
+        {/* Create new organization button - moved to the header */}
       </div>
     </div>
   );

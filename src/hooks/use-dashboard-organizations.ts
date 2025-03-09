@@ -15,6 +15,11 @@ export function useDashboardOrganizations(pageSize: number = 10) {
     queryKey: ["dashboard-organizations"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await client.model("organizations").getList({
+        filter: {
+          $expr: {
+            $in: ["$$accountId", "$_accounts"],
+          },
+        },
         pageSize,
         page: pageParam,
         sort: { name: 1 }, // Sort by name ascending
