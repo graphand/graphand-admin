@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/navigation-menu";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "@/lib/translation";
+import { UserDropdown } from "./UserDropdown";
 
 export default function Navbar() {
   const { t } = useTranslation();
 
   return (
     <div className="border-b">
-      <div className="container mx-auto mx-auto flex h-16 items-center justify-between">
+      <div className="container mx-auto flex h-16 items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/" className="text-xl font-bold">
             Graphand Admin
@@ -24,23 +25,9 @@ export default function Navbar() {
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {t("dashboard")}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
                 <Link href="/organizations" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     {t("organizations")}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/profile" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {t("profile")}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -50,6 +37,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <LanguageSelector />
+          <UserDropdown />
         </div>
       </div>
     </div>

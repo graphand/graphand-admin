@@ -9,19 +9,32 @@ const isPublicRoute = (pathname: string) => {
   );
 };
 
+/**
+ * Get the current user for middleware context
+ * Note: We can't use the getMe function directly in middleware
+ * as it might rely on React features not available in Edge runtime
+ */
+async function getCurrentUserForMiddleware() {
+  try {
+    const client = await createServerClient();
+    return await client.me();
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const client = await createServerClient();
-  const me = await client.me();
+  const user = await getCurrentUserForMiddleware();
 
   // Check if user is trying to access a protected route without being logged in
   if (isPublicRoute(pathname)) {
-    if (me) {
+    if (user) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   } else {
-    if (!me) {
+    if (!user) {
       return NextResponse.redirect(new URL("/auth/login", request.url));
     }
   }

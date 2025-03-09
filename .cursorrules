@@ -1,31 +1,68 @@
-Graphand is a serverless SaaS framework that provides a fully managed backend for building and deploying cloud applications quickly.
-It integrates tools such as databases, APIs, cloud functions, and storage in one scalable platform.
-Its aim is to streamline development by eliminating infrastructure hassles and ensuring secure, reliable deployments.
+## Graphand Admin Panel - Development Prompt
 
-This codebase is the admin panel for graphand users.
-It helps them manage their projects, subscriptions, organizations, collaborators, and more.
+You are responsible for developing and maintaining the **Graphand admin panel**, designed for users of Graphand—a serverless SaaS framework that provides a fully managed backend. Graphand seamlessly integrates databases, APIs, cloud functions, and storage in one scalable, secure, and reliable platform, simplifying cloud application development by removing infrastructure complexities.
 
-It is built with Next.js and app router, Shadcn UI, and Tailwind CSS.
-Forms are handled with react-hook-form and zod.
-All the Graphand integration is made with the Graphand client (@graphand/client) and the Graphand core (@graphand/core).
-It also uses react-query for data fetching.
-State management is done with zustand.
-To access the src folder, use the alias @.
+### 📌 Application Overview
 
-If you need to install a new package, use pnpm instead of npm.
-You must never update components created by shadcn (@/components/ui).
-Before writing code that needs data, check the graphand docs to know how to use the client to get the data you need.
-Before creating any component, check the shadcn docs to know if a component already exists. (or in the components/ui folder to know if it already exists)
+The admin panel enables Graphand users to efficiently manage:
 
-Authentication System Details:
+- Projects
+- Subscriptions
+- Organizations
+- Collaborators
+- Additional administrative tasks
 
-- Authentication is implemented using the Graphand auth module from @graphand/client-module-auth
-- Client-side authentication state is stored in cookies using AuthStorage adapter
-- Server-side authentication is handled via createServerClient() utility
-- Auth helper functions are available in @/lib/auth.ts
+---
 
-Internationalization System Details:
+### 🚧 Tech Stack
 
-- The project uses next-intl for internationalization with locale managed via the NEXT_LOCALE cookie
-- Translation files are stored as JSON in public/locales/{locale}.json (e.g., en.json, fr.json)
-- A custom useTranslation hook is available in @/lib/translation.ts to access translations in components
+- **Framework:** Next.js with App Router
+- **UI Components:** Shadcn UI
+- **Styling:** Tailwind CSS
+- **Forms:** react-hook-form with Zod validation
+- **State Management:** Zustand
+- **Data Fetching:** react-query
+- **Graphand Integration:** `@graphand/client` and `@graphand/core`
+- **Path Alias:** `@` references the `src` folder
+- **Package Management:** Use `pnpm` exclusively (never use `npm`)
+
+---
+
+### ✅ Development Guidelines
+
+- **Never** modify Shadcn-generated components (`@/components/ui`) directly.
+- Before creating a new component, confirm if an existing component already fulfills your needs by checking:
+  - Shadcn UI documentation
+  - The `@/components/ui` directory
+- Always consult the Graphand documentation prior to implementing data fetching logic to ensure correct use of the client.
+
+---
+
+### 🔐 Authentication System
+
+- **Client Module:** Graphand Auth (`@graphand/client-module-auth`)
+- **Client-side Storage:** Authentication state managed via cookies with the `AuthStorage` adapter
+- **Server-side Authentication:** Utilize `createServerClient()` utility
+- **Auth Helpers:** Located at `@/lib/auth.ts`
+
+---
+
+### 🌐 Internationalization (i18n) System
+
+- **Library:** `next-intl`
+- **Locale Management:** Managed via the `NEXT_LOCALE` cookie
+- **Translation Files:** JSON located at `public/locales/{locale}.json` (e.g., `en.json`, `fr.json`)
+- **Custom Hook:** Use the `useTranslation` hook from `@/lib/translation.ts` for translations
+
+---
+
+### 🎨 Design System & UI Principles
+
+- **Design Philosophy:** Minimalist, clean aesthetic inspired by Notion 🎨
+- **Theme:** Default Shadcn UI theme with subtle customizations
+- **Emojis:** Strategically use emojis 🚀 to improve user experience and highlight important elements
+- **Whitespace & Typography:** Prioritize readability with ample whitespace and clean typography
+- **Consistency:** Maintain uniform spacing, color palettes, and styling across all components
+- **Usability:** Emphasize intuitive navigation and clear visual hierarchy ✨
+- **Responsive Design:** Optimize for all device sizes 📱
+- **Animations & Transitions:** Subtle animations and transitions to enhance user interaction without causing distractions

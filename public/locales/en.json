@@ -1,6 +1,7 @@
 {
   "dashboard": "Dashboard",
   "organizations": "Organizations",
+  "organization": "Organization",
   "profile": "Profile",
   "selectOrganization": "Select organization",
   "noOrganization": "No organization",
@@ -22,6 +23,7 @@
   "createdAt": "Created At",
   "updatedAt": "Updated At",
   "actions": "Actions",
+  "view": "View",
 
   "select": "Select",
   "selected": "Selected",
@@ -32,11 +34,18 @@
   "register": "Register",
   "email": "Email",
   "password": "Password",
+  "loading": "Loading...",
+  "not_logged_in": "Not logged in",
+  "signing_out": "Signing out...",
 
   "backToDashboard": "Back to Dashboard",
   "userInformation": "User Information",
   "personalInformation": "Your personal information and account details",
   "username": "Username",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "save": "Save",
+  "saving": "Saving...",
   "noEmailProvided": "No email provided",
   "noUsernameProvided": "No username provided",
   "userId": "User ID",
@@ -59,6 +68,14 @@
   "showArchivedProjects": "Archived Projects",
   "archivedProjectsToggleLabel": "Show archived projects",
   "archivedProjectBadge": "Archived",
+
+  "createNewProject": "Create a New Project",
+  "createProjectDescription": "Enter the details for your new project",
+  "projectNamePlaceholder": "My Project",
+  "projectNameDescription": "The name of your project as it will appear to users",
+  "projectSlugPlaceholder": "my-project",
+  "projectSlugDescription": "A unique identifier for your project (used in URLs)",
+  "organizationIdRequired": "Organization ID is required to create a project",
 
   "createNewOrganization": "Create a New Organization",
   "createOrganizationDescription": "Enter the details for your new organization",
@@ -85,6 +102,19 @@
   "security": "Security",
   "payment": "Payment",
   "legal": "Legal",
+
+  "viewOrganization": "View Organization",
+  "projects": "Projects",
+  "archivedProjects": "Archived Projects",
+  "members": "Members",
+  "settings": "Settings",
+  "errorLoadingOrganization": "Error loading organization data",
+  "organizationMembers": "Organization Members",
+  "manageOrganizationMembers": "Manage members and permissions for this organization",
+  "membersTabComingSoon": "Member management coming soon",
+  "organizationSettings": "Organization Settings",
+  "manageOrganizationSettings": "Manage settings for this organization",
+  "settingsTabComingSoon": "Settings configuration coming soon",
 
   "validation": {
     "validators": {

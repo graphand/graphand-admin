@@ -38,7 +38,7 @@ export function useDashboardProjects(
         pageSize,
         page: pageParam,
         filter,
-        sort: { name: 1 }, // Sort by name ascending
+        sort: { _createdAt: -1 },
       });
 
       // Extract items and count

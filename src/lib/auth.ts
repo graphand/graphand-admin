@@ -1,25 +1,18 @@
-import { createServerClient } from "./graphand-server";
 import { redirect } from "next/navigation";
+import { getMe } from "@/lib/get-me";
+
+/**
+ * Server-side function to get the current user
+ * Similar to the client-side useMe hook but for server components
+ */
+export async function getCurrentUser() {
+  return await getMe();
+}
 
 // Check if user is authenticated
 export async function isAuthenticated() {
-  try {
-    const client = await createServerClient();
-    const user = await client.me();
-    return !!user;
-  } catch (error) {
-    return false;
-  }
-}
-
-// Get the current user
-export async function getCurrentUser() {
-  try {
-    const client = await createServerClient();
-    return await client.me();
-  } catch (error) {
-    return null;
-  }
+  const user = await getCurrentUser();
+  return !!user;
 }
 
 // Redirect if not authenticated

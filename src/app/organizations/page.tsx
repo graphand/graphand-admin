@@ -135,19 +135,15 @@ export default function OrganizationPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("id")}</TableHead>
                     <TableHead>{t("name")}</TableHead>
                     <TableHead>{t("slug")}</TableHead>
                     <TableHead>{t("createdAt")}</TableHead>
-                    <TableHead>{t("updatedAt")}</TableHead>
+                    <TableHead>{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {organizations.map((org) => (
                     <TableRow key={org._id}>
-                      <TableCell className="font-mono text-xs">
-                        {org._id}
-                      </TableCell>
                       <TableCell className="font-medium">
                         {org.name || "—"}
                       </TableCell>
@@ -158,9 +154,11 @@ export default function OrganizationPage() {
                           : "—"}
                       </TableCell>
                       <TableCell>
-                        {org._updatedAt
-                          ? new Date(org._updatedAt).toLocaleDateString()
-                          : "—"}
+                        <Button asChild variant="outline" size="sm">
+                          <Link href={`/organizations/${org._id}`}>
+                            {t("view")}
+                          </Link>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
