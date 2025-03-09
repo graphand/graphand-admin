@@ -29,6 +29,9 @@ import {
 } from "@/components/ui/pagination";
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useTranslation } from "@/lib/translation";
+import { Button } from "@/components/ui/button";
+import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function OrganizationPage() {
   const { t } = useTranslation();
@@ -48,7 +51,15 @@ export default function OrganizationPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto py-10">
-        <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-3xl font-bold">{t("organizations")}</div>
+          <Button asChild variant="default">
+            <Link href="/organizations/create" className="gap-2">
+              <PlusIcon className="h-4 w-4" />
+              {t("createOrganization")}
+            </Link>
+          </Button>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle>
@@ -74,7 +85,15 @@ export default function OrganizationPage() {
   if (isError) {
     return (
       <div className="container mx-auto py-10">
-        <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-3xl font-bold">{t("organizations")}</div>
+          <Button asChild variant="default">
+            <Link href="/organizations/create" className="gap-2">
+              <PlusIcon className="h-4 w-4" />
+              {t("createOrganization")}
+            </Link>
+          </Button>
+        </div>
         <Card className="border-destructive">
           <CardHeader>
             <CardTitle className="text-destructive">Error</CardTitle>
@@ -96,7 +115,15 @@ export default function OrganizationPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="text-3xl font-bold mb-6">{t("organizations")}</div>
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-3xl font-bold">{t("organizations")}</div>
+        <Button asChild variant="default">
+          <Link href="/organizations/create" className="gap-2">
+            <PlusIcon className="h-4 w-4" />
+            {t("createOrganization")}
+          </Link>
+        </Button>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>{t("yourOrganizations")}</CardTitle>

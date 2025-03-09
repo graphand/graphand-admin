@@ -2,6 +2,7 @@ import { Client } from "@graphand/client";
 import Project from "./models/Project";
 import { AuthStorage, ModuleAuth } from "@graphand/client-module-auth";
 import Organization from "./models/Organization";
+import Terms from "./models/Terms";
 
 export const createClient = (storage: AuthStorage) => {
   return new Client(
@@ -17,7 +18,7 @@ export const createClient = (storage: AuthStorage) => {
         },
       ],
     ],
-    [Project, Organization]
+    [Project, Organization, Terms]
   );
 };
 

@@ -6,16 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -24,9 +14,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import client from "@/lib/graphand-client";
+import { ValidationError } from "@graphand/core";
+import GenericForm from "@/components/GenericForm";
 
 // Login form schema
 const formSchema = z.object({
@@ -39,10 +30,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Initialize form
@@ -61,7 +49,6 @@ export default function LoginPage() {
     if (isRedirecting) {
       // Set a safety timeout to reset loading state if navigation takes too long
       timeoutId = setTimeout(() => {
-        setIsLoading(false);
         setIsRedirecting(false);
       }, 5000); // 5 seconds timeout
     }
@@ -73,9 +60,6 @@ export default function LoginPage() {
 
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-    setError(null);
-
     try {
       // Call the Graphand auth module to login
       await client.get("auth").login({
@@ -89,11 +73,9 @@ export default function LoginPage() {
       setIsRedirecting(true);
       router.refresh(); // Refresh to update server components
       router.push(callbackUrl);
-      // Don't set isLoading to false here as we want to show loading until navigation completes
     } catch (err) {
-      console.error("Login error:", err);
-      setError("Invalid email or password. Please try again.");
-      setIsLoading(false); // Only set loading to false on error
+      // Error handling is now managed by the GenericForm component
+      throw err;
     }
   };
 
@@ -107,55 +89,29 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {error && (
-            <Alert variant="destructive" className="mb-4">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="your@email.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••••"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
-                    wait
-                  </>
-                ) : (
-                  "Login"
-                )}
-              </Button>
-            </form>
-          </Form>
+          <GenericForm
+            form={form}
+            onSubmit={onSubmit}
+            fields={[
+              {
+                name: "email",
+                label: "Email",
+                placeholder: "your@email.com",
+                component: <Input />,
+                mapServerErrors: ["credentials.email"],
+              },
+              {
+                name: "password",
+                label: "Password",
+                placeholder: "••••••••",
+                type: "password",
+                component: <Input />,
+                mapServerErrors: ["credentials.password"],
+              },
+            ]}
+            submitButtonText="Login"
+            loadingButtonText="Please wait"
+          />
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-center">

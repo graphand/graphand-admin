@@ -6,6 +6,7 @@ import {
   ModelDefinition,
   ValidatorTypes,
 } from "@graphand/core";
+import Terms from "./Terms";
 
 class Organization extends Model {
   static slug = "organizations" as const;
@@ -36,12 +37,12 @@ class Organization extends Model {
         type: FieldTypes.OBJECT,
         options: {
           fields: {
-            // terms: {
-            //   type: FieldTypes.RELATION,
-            //   options: {
-            //     ref: Terms.slug,
-            //   },
-            // },
+            terms: {
+              type: FieldTypes.RELATION,
+              options: {
+                ref: Terms.slug,
+              },
+            },
             account: {
               type: FieldTypes.RELATION,
               options: {

@@ -58,5 +58,38 @@
   "showActiveProjects": "Active Projects",
   "showArchivedProjects": "Archived Projects",
   "archivedProjectsToggleLabel": "Show archived projects",
-  "archivedProjectBadge": "Archived"
+  "archivedProjectBadge": "Archived",
+
+  "createNewOrganization": "Create a New Organization",
+  "createOrganizationDescription": "Enter the details for your new organization",
+  "organizationNamePlaceholder": "My Organization",
+  "organizationNameDescription": "The name of your organization as it will appear to users",
+  "organizationSlugPlaceholder": "my-organization",
+  "organizationSlugDescription": "A unique identifier for your organization (used in URLs)",
+  "cancel": "Cancel",
+  "creating": "Creating...",
+  "create": "Create",
+
+  "termsOfService": "Terms of Service",
+  "termsOfServiceDescription": "Please read our terms and conditions",
+  "acceptTermsAndConditions": "Terms and Conditions",
+  "iAccept": "I accept the",
+  "acceptTerms": "I Accept",
+  "close": "Close",
+  "tryAgain": "Try Again",
+  "noTermsFound": "No terms of service found",
+  "noContentAvailable": "No content available",
+  "introduction": "Introduction",
+  "service": "Terms of Service",
+  "privacy": "Privacy",
+  "security": "Security",
+  "payment": "Payment",
+  "legal": "Legal",
+
+  "validation": {
+    "validators": {
+      "invalid": "The {field} is invalid",
+      "required": "The {field} is required"
+    }
+  }
 }

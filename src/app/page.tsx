@@ -13,6 +13,7 @@ import { OrganizationSection } from "@/components/dashboard/OrganizationSection"
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -81,9 +82,11 @@ export default function DashboardPage() {
           <p className="text-muted-foreground mb-4">
             {t("noOrganizationsFound")}
           </p>
-          <Button variant="default">
-            <PlusIcon className="h-4 w-4 mr-2" />
-            {t("createOrganization")}
+          <Button variant="default" asChild>
+            <Link href="/organizations/create">
+              <PlusIcon className="h-4 w-4 mr-2" />
+              {t("createOrganization")}
+            </Link>
           </Button>
         </div>
       </div>
@@ -91,7 +94,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 mx-auto">
+    <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-6">{t("dashboard")}</h1>
 
       {/* Organizations with their projects */}
@@ -127,9 +130,11 @@ export default function DashboardPage() {
 
         {/* Create new organization button */}
         <div className="flex justify-center pt-6 pb-10 border-t mt-6">
-          <Button variant="outline" className="gap-2">
-            <PlusIcon className="h-4 w-4" />
-            {t("createOrganization")}
+          <Button variant="outline" className="gap-2" asChild>
+            <Link href="/organizations/create">
+              <PlusIcon className="h-4 w-4" />
+              {t("createOrganization")}
+            </Link>
           </Button>
         </div>
       </div>
