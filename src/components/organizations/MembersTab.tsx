@@ -82,16 +82,36 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
     email: string;
     transferOwnership: boolean;
   }) => {
+    // Ensure only owners can transfer ownership
+    if (transferOwnership && !isCurrentUserOwner) {
+      toast.error(t("onlyOwnerCanTransferOwnership"));
+      return;
+    }
+
     createInvitation(
       { email, transferOwnership },
       {
         onSuccess: () => {
-          toast.success(t("invitationSent", { email }));
+          if (transferOwnership) {
+            toast.success(t("transferOwnershipSuccessful", { email }));
+          } else {
+            toast.success(t("invitationSent", { email }));
+          }
         },
         onError: (error) => {
-          toast.error(
-            error instanceof Error ? error.message : t("errorSendingInvitation")
-          );
+          if (transferOwnership) {
+            toast.error(
+              error instanceof Error
+                ? error.message
+                : t("transferOwnershipError")
+            );
+          } else {
+            toast.error(
+              error instanceof Error
+                ? error.message
+                : t("errorSendingInvitation")
+            );
+          }
         },
       }
     );
@@ -239,6 +259,23 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
         )}
       </Card>
 
+      {/* Invite members section - only visible for organization owners or members */}
+      {!isLoading && (isCurrentUserOwner || isCurrentUserMember) && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>{t("inviteMembers")}</CardTitle>
+            <CardDescription>{t("inviteMembersDescription")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <InviteMembers
+              onInvite={handleInvite}
+              isPending={isPending}
+              isOwner={!!isCurrentUserOwner}
+            />
+          </CardContent>
+        </Card>
+      )}
+
       {/* Invitations */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
@@ -268,20 +305,10 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
             </TabsList>
 
             <TabsContent value="pending" className="space-y-6">
-              {/* Invite Form - only shown for pending tab */}
-              <div>
-                <h3 className="text-sm font-medium mb-2">
-                  {t("inviteNewMember")}
-                </h3>
-                <InviteMembers onInvite={handleInvite} isPending={isPending} />
-              </div>
-
-              <hr className="my-4 border-t border-border" />
-
               {/* Pending Invitations List */}
               <div>
                 <h3 className="text-sm font-medium mb-2">
-                  {t("currentInvitations")}
+                  {t("pendingInvitations")}
                 </h3>
                 <InvitationsList
                   invitations={invitations}
