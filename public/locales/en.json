@@ -7,6 +7,7 @@
   "noOrganization": "No organization",
   "manageOrganizations": "Manage Organizations",
   "viewProfile": "View Profile",
+  "join_organization": "Join Organization",
 
   "welcomeDashboard": "Welcome to your Dashboard!",
   "loggedIn": "You are now logged in to your Graphand account.",
@@ -150,6 +151,50 @@
   "noInvitationsAccepted": "No accepted invitations",
   "acceptedTime": "Accepted {time}",
   "accepted": "Accepted",
+
+  "removeMemberTitle": "Remove Member",
+  "removeMemberDescription": "Are you sure you want to remove {member} from this organization?",
+  "remove": "Remove",
+  "removing": "Removing...",
+  "memberRemoved": "Member removed from organization",
+  "errorRemovingMember": "Error removing member from organization",
+  "cannotRemoveOwner": "Cannot remove the owner of the organization",
+
+  "organizationMembership": "Organization Membership",
+  "yourMembershipInOrganization": "Your membership status in this organization",
+  "leaveOrganizationWarning": "If you leave this organization, you will lose access to all its projects and resources. You will need a new invitation to rejoin.",
+  "leaveOrganization": "Leave Organization",
+  "leaveOrganizationTitle": "Leave Organization?",
+  "leaveOrganizationDescription": "Are you sure you want to leave {organization}? You will lose access to all of its projects and resources.",
+  "leave": "Leave",
+  "leaving": "Leaving...",
+  "leftOrganization": "You have left the organization",
+  "errorLeavingOrganization": "Error leaving the organization",
+
+  "join_organization_description": "You've been invited to join an organization",
+  "accept_invitation": "Accept Invitation",
+  "joining": "Joining...",
+  "invalid_invitation": "Invalid Invitation",
+  "invalid_invitation_description": "This invitation link appears to be invalid or incomplete",
+  "missing_required_parameters": "Missing required parameters. Please make sure you have a valid invitation link.",
+  "back_to_organizations": "Back to Organizations",
+  "organization_fetch_error": "Error fetching organization details",
+  "join_organization_error": "An error occurred while joining the organization",
+  "join_organization_success": "Successfully joined the organization",
+
+  "advanced_options": "Advanced Options",
+  "token_edit_description": "This field is pre-filled with your invitation token. You typically don't need to modify it.",
+  "invitation_token": "Invitation token",
+
+  "paste_invitation_url_description": "Paste the invitation URL to join an organization",
+  "invitation_url_hint": "Enter the full invitation URL",
+  "invitation_url": "Invitation URL",
+  "url_required": "Please enter a valid invitation URL",
+  "invalid_invitation_url": "The invitation URL is missing required parameters",
+  "invalid_url_format": "Please enter a valid URL",
+  "have_organization_id_token": "Already have organization ID and token?",
+  "enter_manually": "Enter manually",
+  "already_have_account": "Already have an account?",
 
   "validation": {
     "validators": {

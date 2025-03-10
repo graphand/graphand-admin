@@ -20,9 +20,15 @@ export function useOrganizations(pageSize: number = 10) {
   } = useInfiniteQuery({
     queryKey: ["organizations"],
     queryFn: async ({ pageParam = 1 }) => {
-      const list = await client
-        .model("organizations")
-        .getList({ pageSize, page: pageParam });
+      const list = await client.model("organizations").getList({
+        filter: {
+          $expr: {
+            $in: ["$$accountId", "$_accounts"],
+          },
+        },
+        pageSize,
+        page: pageParam,
+      });
 
       // Safely extract count
       const count = typeof list.count === "number" ? list.count : 0;

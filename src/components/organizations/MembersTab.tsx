@@ -7,6 +7,8 @@ import {
   useOrganizationInvitations,
   InvitationStatus,
 } from "@/hooks/use-organization-invitations";
+import { useOrganizationMembers } from "@/hooks/use-organization-members";
+import { useMe } from "@/hooks/use-me";
 import { toast } from "sonner";
 import {
   Card,
@@ -14,9 +16,24 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardFooter,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { LogOut } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 interface MembersTabProps {
   organization: any;
@@ -25,9 +42,23 @@ interface MembersTabProps {
 
 export function MembersTab({ organization, isLoading }: MembersTabProps) {
   const { t } = useTranslation();
+  const router = useRouter();
   const organizationId = organization?.get("_id");
+  const organizationName = organization?.get("name");
+  const ownerId = organization?.get("owner", "json");
   const [invitationStatus, setInvitationStatus] =
     useState<InvitationStatus>("pending");
+  const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
+
+  // Get current user
+  const { user } = useMe();
+  // Check if the current user is the owner of the organization
+  const isCurrentUserOwner = user && ownerId === user.get("_id");
+  // Current user is a member but not the owner
+  const isCurrentUserMember =
+    user &&
+    !isCurrentUserOwner &&
+    organization?.get("_accounts", "json")?.includes(user.get("_id"));
 
   const {
     invitations,
@@ -39,6 +70,10 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
     resendInvitation,
     isPending,
   } = useOrganizationInvitations(organizationId, invitationStatus);
+
+  // Get organization members management functions
+  const { removeMember, isRemoving, leaveOrganization, isLeaving } =
+    useOrganizationMembers(organizationId);
 
   const handleInvite = ({
     email,
@@ -88,6 +123,44 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
     });
   };
 
+  // Handle removing a member from the organization
+  const handleRemoveMember = (accountId: string) => {
+    // Don't allow removal of the owner
+    if (accountId === ownerId) {
+      toast.error(t("cannotRemoveOwner"));
+      return;
+    }
+
+    removeMember(accountId, {
+      onSuccess: () => {
+        toast.success(t("memberRemoved"));
+      },
+      onError: (error: any) => {
+        toast.error(
+          error instanceof Error ? error.message : t("errorRemovingMember")
+        );
+      },
+    });
+  };
+
+  // Handle leaving the organization
+  const handleLeaveOrganization = () => {
+    leaveOrganization({
+      onSuccess: () => {
+        toast.success(t("leftOrganization"));
+        // Navigate back to the organizations list
+        router.push("/organizations");
+        router.refresh();
+      },
+      onError: (error: any) => {
+        toast.error(
+          error instanceof Error ? error.message : t("errorLeavingOrganization")
+        );
+        setIsLeaveDialogOpen(false);
+      },
+    });
+  };
+
   return (
     <div className="space-y-6">
       {/* Current Members */}
@@ -113,12 +186,57 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
             <MembersList
               accountIds={organization?.get("_accounts", "json")}
               isOwner={(accountId: string) => {
-                const ownerId = organization?.get("owner", "json");
                 return Boolean(ownerId && ownerId === accountId);
               }}
+              onRemoveMember={handleRemoveMember}
+              isCurrentUserOwner={Boolean(isCurrentUserOwner)}
+              isRemoving={isRemoving}
             />
           )}
         </CardContent>
+
+        {/* Leave Organization - Only shown for non-owner members */}
+        {isCurrentUserMember && (
+          <CardFooter className="pt-4 border-t flex justify-end">
+            <AlertDialog
+              open={isLeaveDialogOpen}
+              onOpenChange={setIsLeaveDialogOpen}
+            >
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-muted-foreground hover:text-destructive flex items-center gap-2"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  {t("leaveOrganization")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("leaveOrganizationTitle")}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("leaveOrganizationDescription", {
+                      organization: organizationName,
+                    })}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleLeaveOrganization}
+                    className="bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    disabled={isLeaving}
+                  >
+                    {isLeaving ? t("leaving") : t("leave")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </CardFooter>
+        )}
       </Card>
 
       {/* Invitations */}

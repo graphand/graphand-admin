@@ -71,15 +71,6 @@ export function InvitationsList({
     <div className="space-y-4">
       {invitations.map((invitation) => {
         const account = invitation.get("account", "json");
-        // Ensure account is treated as an object with potential username/email properties
-        const accountObj =
-          typeof account === "object" && account !== null ? account : {};
-        const accountName =
-          "username" in accountObj
-            ? String(accountObj.username)
-            : "email" in accountObj
-            ? String(accountObj.email)
-            : "--";
 
         return (
           <div
@@ -101,7 +92,7 @@ export function InvitationsList({
                   {invitation.email}
                   {status === "accepted" && account && (
                     <span className="ml-2 text-sm text-muted-foreground">
-                      ({accountName})
+                      ({account})
                     </span>
                   )}
                 </div>
