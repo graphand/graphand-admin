@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Organization } from "@/hooks/use-dashboard-organizations";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
-import { ProjectItem } from "./ProjectItem";
+import { ProjectItem, ProjectItemSkeleton } from "./ProjectItem";
 import { CreateProjectCard } from "./CreateProjectCard";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, ArchiveIcon, EyeIcon } from "lucide-react";
@@ -12,6 +12,29 @@ import Link from "next/link";
 
 interface OrganizationSectionProps {
   organization: Organization;
+}
+
+export function OrganizationSectionSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="sticky top-0 py-4 z-10 border-b">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-semibold">
+              <Skeleton className="h-6 w-32" />
+            </h2>
+            <Skeleton className="h-6 w-20 rounded-full" />
+          </div>
+          <Skeleton className="h-8 w-40 rounded-md" />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <ProjectItemSkeleton key={index} />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function OrganizationSection({
@@ -41,18 +64,19 @@ export function OrganizationSection({
   const totalProjects = data?.pages[0]?.totalCount || 0;
 
   return (
-    <div className="mb-10">
-      <div className="sticky top-0 bg-background py-4 z-10 border-b">
+    <div>
+      <div className="sticky top-0 py-4 z-10 border-b">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">{organization.name}</h2>
-            {!isLoading && (
+            {isLoading ? (
+              <Skeleton className="h-6 w-20 rounded-full" />
+            ) : (
               <span className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full">
                 {totalProjects}{" "}
                 {totalProjects === 1 ? t("project") : t("projects")}
               </span>
             )}
-            {isLoading && <Skeleton className="h-5 w-16 rounded-full" />}
           </div>
           <Button variant="outline" size="sm" asChild>
             <Link href={`/organizations/${organization._id}`}>
@@ -89,8 +113,8 @@ export function OrganizationSection({
         {/* Loading state for active projects */}
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <Skeleton key={index} className="h-52 w-full rounded-md" />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <ProjectItemSkeleton key={index} />
             ))}
           </div>
         )}
