@@ -16,8 +16,8 @@ interface OrganizationSectionProps {
 
 export function OrganizationSectionSkeleton() {
   return (
-    <div className="space-y-4">
-      <div className="sticky top-0 py-4 z-10 border-b">
+    <div>
+      <div className="sticky top-0 py-4 z-10 border-b bg-background">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">
@@ -65,7 +65,7 @@ export function OrganizationSection({
 
   return (
     <div>
-      <div className="sticky top-0 py-4 z-10 border-b">
+      <div className="sticky top-0 py-4 z-10 border-b bg-background">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">{organization.name}</h2>

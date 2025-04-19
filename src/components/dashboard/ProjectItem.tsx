@@ -9,7 +9,12 @@ import {
 } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { FolderIcon, ExternalLinkIcon, ArchiveIcon } from "lucide-react";
+import {
+  FolderIcon,
+  ExternalLinkIcon,
+  ArchiveIcon,
+  EyeIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTranslation } from "@/lib/translation";
@@ -49,8 +54,9 @@ export function ProjectItemSkeleton() {
       </div>
       <div
         data-slot="card-footer"
-        className="items-center p-2 bg-muted/20 flex justify-end border-t"
+        className="items-center p-2 bg-muted/20 flex justify-end border-t gap-2"
       >
+        <Skeleton className="h-8 w-28 rounded-md" />
         <Skeleton className="h-8 w-28 rounded-md" />
       </div>
     </div>
@@ -104,11 +110,17 @@ export function ProjectItem({ project, isArchived = false }: ProjectItemProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-2 bg-muted/20 flex justify-end border-t">
+      <CardFooter className="p-2 bg-muted/20 flex justify-end border-t gap-2">
         <Button variant="ghost" size="sm" className="text-xs" asChild>
           <Link href={`/projects/${project._id}`}>
-            <ExternalLinkIcon className="h-3 w-3 mr-1" />
+            <EyeIcon className="h-3 w-3 mr-1" />
             {t("viewProject")}
+          </Link>
+        </Button>
+        <Button variant="ghost" size="sm" className="text-xs" asChild>
+          <Link href="#">
+            <ExternalLinkIcon className="h-3 w-3 mr-1" />
+            {t("openProject")}
           </Link>
         </Button>
       </CardFooter>

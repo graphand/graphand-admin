@@ -65,6 +65,7 @@
   "errorLoadingDashboard": "Erreur lors du chargement des données du tableau de bord",
   "createOrganization": "Créer une Organisation",
   "viewProject": "Voir le Projet",
+  "openProject": "Ouvrir le Projet",
   "showActiveProjects": "Projets Actifs",
   "showArchivedProjects": "Projets Archivés",
   "archivedProjectsToggleLabel": "Afficher les projets archivés",

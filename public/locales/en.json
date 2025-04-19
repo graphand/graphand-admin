@@ -66,6 +66,7 @@
   "errorLoadingDashboard": "Error loading dashboard data",
   "createOrganization": "Create Organization",
   "viewProject": "View Project",
+  "openProject": "Open Project",
   "showActiveProjects": "Active Projects",
   "showArchivedProjects": "Archived Projects",
   "archivedProjectsToggleLabel": "Show archived projects",
