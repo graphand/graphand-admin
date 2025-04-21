@@ -4,7 +4,10 @@ import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import Link from "next/link";
 import { PlusIcon } from "lucide-react";
-import { ProjectItem } from "@/components/dashboard/ProjectItem";
+import {
+  ProjectItem,
+  ProjectItemSkeleton,
+} from "@/components/dashboard/ProjectItem";
 import { CreateProjectCard } from "@/components/dashboard/CreateProjectCard";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
@@ -44,7 +47,7 @@ export function ProjectsTab({ organizationId }: ProjectsTabProps) {
       {isLoadingActive && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton key={index} className="h-52 w-full rounded-md" />
+            <ProjectItemSkeleton key={index} />
           ))}
         </div>
       )}

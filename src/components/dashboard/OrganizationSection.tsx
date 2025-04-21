@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Organization } from "@/hooks/use-dashboard-organizations";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { ProjectItem, ProjectItemSkeleton } from "./ProjectItem";
 import { CreateProjectCard } from "./CreateProjectCard";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, ArchiveIcon, EyeIcon } from "lucide-react";
+import { PlusIcon, EyeIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/lib/translation";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/lib/translation";
 import client from "@/lib/graphand-client";
@@ -18,7 +18,6 @@ import { SettingsTab } from "@/components/organizations/SettingsTab";
 export default function OrganizationDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState("projects");
 
   // Effect to read the hash from URL when component mounts
@@ -49,46 +48,27 @@ export default function OrganizationDetailPage() {
   } = useQuery({
     queryKey: ["organization", id],
     queryFn: async () => {
-      const org = await client.model("organizations").get(id as string);
-      return org;
+      return await client.model("organizations").get(id as string);
     },
   });
 
-  // Show loading state
-  if (isLoadingOrganization) {
-    return (
-      <div className="container mx-auto py-10">
-        <div className="flex flex-col gap-4">
-          <Skeleton className="h-10 w-1/3" />
-          <Skeleton className="h-12 w-full" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <Skeleton key={index} className="h-52 w-full rounded-md" />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Show error state
   if (isErrorOrganization) {
-    return (
-      <div className="container mx-auto py-10">
-        <div className="text-center">
-          <p className="text-destructive">
-            {organizationError instanceof Error
-              ? organizationError.message
-              : t("errorLoadingOrganization")}
-          </p>
-        </div>
-      </div>
-    );
+    if (organizationError) {
+      console.log(organizationError);
+    }
+
+    return null;
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">{organization?.name}</h1>
+    <div className="container mx-auto py-10 relative">
+      {isLoadingOrganization ? (
+        <Skeleton className="h-8 w-30 mb-6" />
+      ) : (
+        <h1 className="text-3xl font-bold mb-6 h-8 flex items-center">
+          {organization?.name}
+        </h1>
+      )}
 
       <Tabs
         value={activeTab}
