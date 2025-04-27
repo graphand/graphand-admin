@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-    const nextUrl = new URL(request.nextUrl.toString(), host);
+    const nextUrl = new URL(request.nextUrl.pathname, host);
     return NextResponse.redirect(
       new URL(
         "/auth/login?callbackUrl=" + encodeURIComponent(nextUrl.toString()),
