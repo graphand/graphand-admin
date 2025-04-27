@@ -21,6 +21,8 @@ const isAuthRoute = (pathname: string) => {
 async function getCurrentUserForMiddleware() {
   try {
     const client = await createServerClient();
+    const token = client.options.accessToken;
+    console.log("token", token);
     return await client.me();
   } catch {
     return null;
@@ -36,8 +38,6 @@ export async function middleware(request: NextRequest) {
   const baseUrl = proto + "://" + host;
 
   const user = await getCurrentUserForMiddleware();
-
-  console.log("user", user?._id);
 
   // Check if user is trying to access a protected route without being logged in
   if (isAuthRoute(pathname) && user) {
