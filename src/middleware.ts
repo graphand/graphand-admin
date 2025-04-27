@@ -21,6 +21,7 @@ const isAuthRoute = (pathname: string) => {
 async function getCurrentUserForMiddleware() {
   try {
     const client = await createServerClient();
+    await client.init();
     const token = client.options.accessToken;
     console.log("token", token);
     return await client.me();
