@@ -34,6 +34,19 @@ export async function middleware(request: NextRequest) {
   const user = await getCurrentUserForMiddleware();
 
   try {
+    const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+    const redirectUrl = new URL(
+      "/auth/login?callbackUrl=" + callbackUrl,
+      referer
+    );
+    console.log(redirectUrl?.toString());
+  } catch (error) {
+    console.log(error);
+    const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+    console.log("/auth/login?callbackUrl=" + callbackUrl, referer);
+  }
+
+  try {
     // Check if user is trying to access a protected route without being logged in
     if (isAuthRoute(pathname) && user) {
       const redirectUrl = new URL("/", referer);
