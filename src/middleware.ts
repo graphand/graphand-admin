@@ -28,6 +28,8 @@ async function getCurrentUserForMiddleware() {
 }
 
 export async function middleware(request: NextRequest) {
+  const headers = Object.fromEntries(request.headers.entries());
+  console.log(headers);
   const referer = request.headers.get("referer") as string;
   const { pathname } = request.nextUrl;
 
