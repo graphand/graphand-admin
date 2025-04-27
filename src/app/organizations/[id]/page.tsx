@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/lib/translation";
 import client from "@/lib/graphand-client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +13,7 @@ import { ProjectsTab } from "@/components/organizations/projects-tab";
 import { ArchivedProjectsTab } from "@/components/organizations/archived-projects-tab";
 import { MembersTab } from "@/components/organizations/members-tab";
 import { SettingsTab } from "@/components/organizations/settings-tab";
+import { useInstance } from "@/hooks/use-instance";
 
 export default function OrganizationsDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -45,12 +45,7 @@ export default function OrganizationsDetailPage() {
     isLoading: isLoadingOrganization,
     isError: isErrorOrganization,
     error: organizationError,
-  } = useQuery({
-    queryKey: ["organization", id],
-    queryFn: async () => {
-      return await client.model("organizations").get(id as string);
-    },
-  });
+  } = useInstance(client.model("organizations"), id);
 
   if (isErrorOrganization) {
     if (organizationError) {

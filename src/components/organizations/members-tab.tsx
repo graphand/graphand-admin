@@ -170,7 +170,6 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
         toast.success(t("leftOrganization"));
         // Navigate back to the organizations list
         router.push("/organizations");
-        router.refresh();
       },
       onError: (error: Error) => {
         toast.error(

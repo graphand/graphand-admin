@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
 import { Filter, Sort } from "@graphand/core";
+import Project from "@/lib/models/Project";
 
 export type Project = {
   _id: string;
@@ -19,7 +20,7 @@ export function useDashboardProjects(
   pageSize: number = 10
 ) {
   return useInfiniteQuery({
-    queryKey: ["dashboard-projects", organizationId, showArchived],
+    queryKey: [Project.slug, organizationId, showArchived],
     queryFn: async ({ pageParam = 1 }) => {
       // Create filter based on showArchived flag
       const filter: Filter = {

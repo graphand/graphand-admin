@@ -24,7 +24,8 @@ import { useTranslation } from "@/lib/translation";
 import client from "@/lib/graphand-client";
 import { controllerModelDelete } from "@graphand/core";
 import Project from "@/lib/models/Project";
-import { useProject } from "@/hooks/use-project";
+import { useInstance } from "@/hooks/use-instance";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface SettingsTabProps {
   projectId: string;
@@ -37,9 +38,10 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
   const [confirmProjectName, setConfirmProjectName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   // Fetch project details
-  const { data: project } = useProject(projectId);
+  const { data: project } = useInstance(client.model("projects"), projectId);
 
   const projectName = project?.name || "";
 
@@ -58,6 +60,10 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
           model: Project.slug,
           id: projectId,
         },
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: [Project.slug],
       });
 
       // Close dialog and redirect to projects list

@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import Project from "@/lib/models/Project";
 
 // Project creation schema
 const formSchema = z.object({
@@ -48,6 +50,7 @@ export default function CreateProjectPage() {
   const { t } = useTranslation();
   const { organizations, isLoading: isLoadingOrganizations } =
     useOrganizations();
+  const queryClient = useQueryClient();
 
   // Use state to manage the selected organization
   const [selectedOrg, setSelectedOrg] = useState(organizationIdParam || "");
@@ -84,6 +87,10 @@ export default function CreateProjectPage() {
         name: values.name,
         slug: values.slug,
         organization: values.organization,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: [Project.slug],
       });
 
       router.push(`/projects/${project._id}`);

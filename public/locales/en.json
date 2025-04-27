@@ -231,6 +231,24 @@
   "projectSettings": "Project Settings",
   "projectSettingsPlaceholder": "Configure your project settings",
 
+  "projectOverview": "Project Overview",
+  "projectOverviewPlaceholder": "View key information about your project",
+
+  "projectUsage": "Project Usage",
+  "projectUsagePlaceholder": "Monitor your project's resource usage and quotas",
+
+  "projectSecurity": "Project Security",
+  "projectSecurityPlaceholder": "Manage security settings for your project",
+
+  "projectSubscription": "Project Subscription",
+  "projectSubscriptionPlaceholder": "View and manage your project subscription details",
+
+  "projectJobs": "Project Jobs",
+  "projectJobsPlaceholder": "Monitor and manage jobs running in your project",
+
+  "projectSnapshots": "Project Snapshots",
+  "projectSnapshotsPlaceholder": "View and restore project snapshots",
+
   "dangerZone": "Danger Zone",
   "dangerZoneDescription": "Actions in this area can have irreversible consequences",
   "deleteProjectWarning": "Deleting a project is permanent and cannot be undone. All data will be lost.",

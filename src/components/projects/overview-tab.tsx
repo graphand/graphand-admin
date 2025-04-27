@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/lib/translation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useProject } from "@/hooks/use-project";
+import { useInstance } from "@/hooks/use-instance";
+import client from "@/lib/graphand-client";
 
 interface OverviewTabProps {
   projectId: string;
@@ -9,7 +10,10 @@ interface OverviewTabProps {
 
 export function OverviewTab({ projectId }: OverviewTabProps) {
   const { t } = useTranslation();
-  const { data: project, isLoading } = useProject(projectId);
+  const { data: project, isLoading } = useInstance(
+    client.model("projects"),
+    projectId
+  );
   console.log(project);
 
   return (

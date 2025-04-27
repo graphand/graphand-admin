@@ -237,6 +237,24 @@
   "projectSettings": "Paramètres du projet",
   "projectSettingsPlaceholder": "Configurez les paramètres de votre projet",
 
+  "projectOverview": "Aperçu du projet",
+  "projectOverviewPlaceholder": "Consultez les informations clés de votre projet",
+
+  "projectUsage": "Utilisation du projet",
+  "projectUsagePlaceholder": "Surveillez l'utilisation des ressources et les quotas de votre projet",
+
+  "projectSecurity": "Sécurité du projet",
+  "projectSecurityPlaceholder": "Gérez les paramètres de sécurité de votre projet",
+
+  "projectSubscription": "Abonnement du projet",
+  "projectSubscriptionPlaceholder": "Consultez et gérez les détails d'abonnement de votre projet",
+
+  "projectJobs": "Tâches du projet",
+  "projectJobsPlaceholder": "Surveillez et gérez les tâches en cours d'exécution dans votre projet",
+
+  "projectSnapshots": "Instantanés du projet",
+  "projectSnapshotsPlaceholder": "Consultez et restaurez les instantanés du projet",
+
   "dangerZone": "Zone dangereuse",
   "dangerZoneDescription": "Les actions dans cette zone peuvent avoir des conséquences irréversibles",
   "deleteProjectWarning": "La suppression d'un projet est permanente et ne peut pas être annulée. Toutes les données seront perdues.",

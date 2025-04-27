@@ -28,7 +28,8 @@ import { SecurityTab } from "@/components/projects/security-tab";
 import { SettingsTab } from "@/components/projects/settings-tab";
 import { ModelInstance } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
-import { useProject } from "@/hooks/use-project";
+import { useInstance } from "@/hooks/use-instance";
+import client from "@/lib/graphand-client";
 
 export default function ProjectsDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,7 +69,7 @@ export default function ProjectsDetailPage() {
     isLoading: isLoadingProject,
     isError: isErrorProject,
     error: projectError,
-  } = useProject(id);
+  } = useInstance(client.model("projects"), id);
 
   // Check if project is archived based on slug
   const isArchived = project?.slug?.startsWith("_archive");

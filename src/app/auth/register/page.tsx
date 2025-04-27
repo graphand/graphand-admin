@@ -53,7 +53,6 @@ export default function RegisterPage() {
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
-      router.refresh(); // Refresh to update server components
       router.push(callbackUrl);
     } catch (err) {
       // Error handling is now managed by the GenericForm component

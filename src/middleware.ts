@@ -19,36 +19,37 @@ const isAuthRoute = (pathname: string) => {
  * as it might rely on React features not available in Edge runtime
  */
 async function getCurrentUserForMiddleware() {
-  try {
-    const client = await createServerClient();
-    return await client.me();
-  } catch {
-    return null;
-  }
+  const client = await createServerClient();
+  await client.init();
+  return await client.me();
 }
 
 export async function middleware(request: NextRequest) {
-  const { url, nextUrl } = request;
-
-  console.log(url, nextUrl);
-
   const { pathname } = request.nextUrl;
+  const { headers } = request;
+
+  const proto = headers.get("x-forwarded-proto");
+  const host = headers.get("x-forwarded-host");
+  const baseUrl = proto + "://" + host;
 
   const user = await getCurrentUserForMiddleware();
 
   // Check if user is trying to access a protected route without being logged in
   if (isAuthRoute(pathname) && user) {
-    return NextResponse.redirect(new URL("/", request.url));
+    const redirectUrl = new URL("/", baseUrl);
+    return NextResponse.redirect(redirectUrl);
   }
 
   if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-    return NextResponse.redirect(
-      new URL(
-        "/auth/login?callbackUrl=" +
-          encodeURIComponent(request.nextUrl.toString()),
-        request.url
-      )
-    );
+    let redirectUrl: URL;
+    if (request.nextUrl.pathname !== "/") {
+      redirectUrl = new URL("/auth/login", baseUrl);
+    } else {
+      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+      redirectUrl = new URL("/auth/login?callbackUrl=" + callbackUrl, baseUrl);
+    }
+
+    return NextResponse.redirect(redirectUrl);
   }
 
   return NextResponse.next();

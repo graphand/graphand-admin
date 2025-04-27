@@ -1,6 +1,7 @@
 import { Client } from "@graphand/client";
 import Project from "./models/Project";
 import { AuthStorage, ModuleAuth } from "@graphand/client-module-auth";
+import { ModuleRealtime } from "@graphand/client-module-realtime";
 import Organization from "./models/Organization";
 import Terms from "./models/Terms";
 import Account from "./models/Account";
@@ -12,7 +13,15 @@ export const createClient = (storage: AuthStorage) => {
       endpoint: "api.graphand.dev",
       project: null,
     },
-    [[ModuleAuth, { storage }]],
+    [
+      [ModuleAuth, { storage }],
+      [
+        ModuleRealtime,
+        {
+          autoConnect: typeof window !== "undefined",
+        },
+      ],
+    ],
     [Project, Organization, Terms, Account, OrganizationInvitation]
   );
 };

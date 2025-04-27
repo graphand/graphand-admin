@@ -40,7 +40,6 @@ export function UserDropdown() {
 
       // Redirect to login page
       router.push("/auth/login");
-      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -60,7 +59,7 @@ export function UserDropdown() {
           <DropdownMenuLabel>{t("loading")}</DropdownMenuLabel>
         ) : user ? (
           <>
-            <DropdownMenuLabel className="text-right">
+            <DropdownMenuLabel className="text-right min-w-40">
               {user.getFullname()}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

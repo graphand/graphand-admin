@@ -51,15 +51,11 @@ export default function ProfilePage() {
       $set: {
         firstname: values.firstname,
         lastname: values.lastname,
-        _email: values.email,
       },
     });
 
     // Refresh the user data
     await refetch();
-
-    // Redirect to profile page
-    router.refresh();
   };
 
   if (isLoading) {
