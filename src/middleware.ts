@@ -36,16 +36,17 @@ export async function middleware(request: NextRequest) {
   try {
     // Check if user is trying to access a protected route without being logged in
     if (isAuthRoute(pathname) && user) {
-      const callbackUrl = new URL("/", referer);
-      return NextResponse.redirect(callbackUrl);
+      const redirectUrl = new URL("/", referer);
+      return NextResponse.redirect(redirectUrl);
     }
 
     if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-      const callbackUrl = new URL(
-        encodeURIComponent(request.nextUrl.pathname),
+      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+      const redirectUrl = new URL(
+        "/auth/login?callbackUrl=" + callbackUrl,
         referer
       );
-      return NextResponse.redirect("/auth/login?callbackUrl=" + callbackUrl);
+      return NextResponse.redirect(redirectUrl);
     }
   } catch (error) {
     console.log(error);
