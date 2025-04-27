@@ -34,19 +34,20 @@ export async function middleware(request: NextRequest) {
 
   const user = await getCurrentUserForMiddleware();
 
-  // Check if user is trying to access a protected route without being logged in
-  if (isAuthRoute(pathname) && user) {
-    return NextResponse.redirect(new URL("/", host));
-  }
+  try {
+    // Check if user is trying to access a protected route without being logged in
+    if (isAuthRoute(pathname) && user) {
+      return NextResponse.redirect(new URL("/", host));
+    }
 
-  if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-    const nextUrl = new URL(request.nextUrl.pathname, host);
-    return NextResponse.redirect(
-      new URL(
-        "/auth/login?callbackUrl=" + encodeURIComponent(nextUrl.toString()),
-        host
-      )
-    );
+    if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
+      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+      return NextResponse.redirect(
+        new URL("/auth/login?callbackUrl=" + callbackUrl, host)
+      );
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   return NextResponse.next();
