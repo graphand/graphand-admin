@@ -9,7 +9,7 @@ import OrganizationInvitation from "./models/OrganizationInvitation";
 export const createClient = (storage: AuthStorage) => {
   return new Client(
     {
-      endpoint: "api2.graphand.dev",
+      endpoint: "api.graphand.dev",
       project: null,
     },
     [[ModuleAuth, { storage }]],

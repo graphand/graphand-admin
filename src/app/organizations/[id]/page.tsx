@@ -106,10 +106,12 @@ export default function OrganizationsDetailPage() {
 
         {/* Members Tab */}
         <TabsContent value="members">
-          <MembersTab
-            organization={organization}
-            isLoading={isLoadingOrganization}
-          />
+          {organization && (
+            <MembersTab
+              organization={organization}
+              isLoading={isLoadingOrganization}
+            />
+          )}
         </TabsContent>
 
         {/* Settings Tab */}
