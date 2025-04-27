@@ -169,7 +169,7 @@ export default function ProjectsDetailPage() {
 
         {/* Overview Tab */}
         <TabsContent value="overview">
-          <OverviewTab project={project} isLoading={isLoadingProject} />
+          <OverviewTab projectId={id as string} />
         </TabsContent>
 
         {/* Usage Tab */}
