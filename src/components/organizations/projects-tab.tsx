@@ -1,9 +1,8 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import Link from "next/link";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Loader2 } from "lucide-react";
 import {
   ProjectItem,
   ProjectItemSkeleton,
@@ -97,10 +96,8 @@ export function ProjectsTab({ organizationId }: ProjectsTabProps) {
           className="h-20 flex items-center justify-center mt-4"
         >
           {isFetchingNextActivePage && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} className="h-52 rounded-md" />
-              ))}
+            <div className="flex justify-center w-full">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           )}
         </div>

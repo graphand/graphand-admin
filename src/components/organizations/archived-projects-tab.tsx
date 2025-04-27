@@ -1,4 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import {
@@ -7,6 +6,7 @@ import {
 } from "@/components/dashboard/project-item";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
+import { Loader2 } from "lucide-react";
 
 interface ArchivedProjectsTabProps {
   organizationId: string;
@@ -88,10 +88,8 @@ export function ArchivedProjectsTab({
           className="h-20 flex items-center justify-center mt-4"
         >
           {isFetchingNextArchivedPage && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <Skeleton key={index} className="h-52 rounded-md" />
-              ))}
+            <div className="flex justify-center w-full">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           )}
         </div>
