@@ -4,12 +4,17 @@ import { createClient } from "./graphand";
 
 export const createServerClient = async () => {
   const storage: AuthStorage = {
-    getItem: async (key: string) => (await cookies()).get(key)?.value || null,
+    getItem: async (key: string) => {
+      const cookieStore = await cookies();
+      return cookieStore.get(key)?.value || null;
+    },
     setItem: async (key: string, value: string) => {
-      (await cookies()).set(key, value);
+      const cookieStore = await cookies();
+      cookieStore.set(key, value);
     },
     removeItem: async (key: string) => {
-      (await cookies()).delete(key);
+      const cookieStore = await cookies();
+      cookieStore.delete(key);
     },
   };
 

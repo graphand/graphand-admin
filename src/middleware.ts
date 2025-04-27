@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/graphand-server";
+import { cookies } from "next/headers";
 
 const isPublicRoute = (pathname: string) => {
   return (
@@ -35,6 +36,10 @@ export async function middleware(request: NextRequest) {
   const host = headers.get("x-forwarded-host");
   const baseUrl = proto + "://" + host;
 
+  const cookieStore = await cookies();
+  const allCookies = cookieStore.getAll();
+  console.log(allCookies);
+
   const user = await getCurrentUserForMiddleware();
 
   // Check if user is trying to access a protected route without being logged in
@@ -44,11 +49,14 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-    const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
-    const redirectUrl = new URL(
-      "/auth/login?callbackUrl=" + callbackUrl,
-      baseUrl
-    );
+    let redirectUrl: URL;
+    if (request.nextUrl.pathname !== "/") {
+      redirectUrl = new URL("/auth/login", baseUrl);
+    } else {
+      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
+      redirectUrl = new URL("/auth/login?callbackUrl=" + callbackUrl, baseUrl);
+    }
+
     return NextResponse.redirect(redirectUrl);
   }
 
