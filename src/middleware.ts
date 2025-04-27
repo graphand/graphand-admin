@@ -26,6 +26,14 @@ async function getCurrentUserForMiddleware() {
     console.log("token", token);
     return await client.me();
   } catch (e) {
+    // @ts-expect-error iouoiio
+    if ("res" in e) {
+      // @ts-expect-error iouoiio
+      console.log(e.res?.status);
+      // @ts-expect-error iouoiio
+      console.log(e.message);
+    }
+
     console.error(e);
     return null;
   }

@@ -37,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-[100dvh] flex flex-col`}
       >
         <CookiesProvider>
           <NextIntlClientProvider messages={messages}>
