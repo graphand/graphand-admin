@@ -20,7 +20,7 @@ import {
   Loader2,
 } from "lucide-react";
 import client from "@/lib/graphand-client";
-import RegisterForm, { RegisterFormValues } from "@/components/RegisterForm";
+import RegisterForm, { RegisterFormValues } from "@/components/register-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translation";

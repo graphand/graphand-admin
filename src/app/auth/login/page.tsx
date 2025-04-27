@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import client from "@/lib/graphand-client";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/components/generic-form";
 import { useEmailStore } from "@/store/email-store";
 
 // Login form schema

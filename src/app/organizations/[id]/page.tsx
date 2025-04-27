@@ -6,14 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/lib/translation";
 import client from "@/lib/graphand-client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
 import { UserIcon, SettingsIcon, ArchiveIcon, FolderIcon } from "lucide-react";
+import { PageTitle } from "@/components/page-title";
 
 // Import tab components
-import { ProjectsTab } from "@/components/organizations/ProjectsTab";
-import { ArchivedProjectsTab } from "@/components/organizations/ArchivedProjectsTab";
-import { MembersTab } from "@/components/organizations/MembersTab";
-import { SettingsTab } from "@/components/organizations/SettingsTab";
+import { ProjectsTab } from "@/components/organizations/projects-tab";
+import { ArchivedProjectsTab } from "@/components/organizations/archived-projects-tab";
+import { MembersTab } from "@/components/organizations/members-tab";
+import { SettingsTab } from "@/components/organizations/settings-tab";
 
 export default function OrganizationsDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -62,13 +62,7 @@ export default function OrganizationsDetailPage() {
 
   return (
     <div className="container mx-auto py-10 relative">
-      {isLoadingOrganization ? (
-        <Skeleton className="h-8 w-30 mb-6" />
-      ) : (
-        <h1 className="text-3xl font-bold mb-6 h-8 flex items-center">
-          {organization?.name}
-        </h1>
-      )}
+      <PageTitle title={organization?.name} isLoading={isLoadingOrganization} />
 
       <Tabs
         value={activeTab}

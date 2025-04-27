@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import {
   ProjectItem,
   ProjectItemSkeleton,
-} from "@/components/dashboard/ProjectItem";
+} from "@/components/dashboard/project-item";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
 

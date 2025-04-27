@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
-import GenericForm, { FormFieldConfig } from "@/components/GenericForm";
+import GenericForm, { FormFieldConfig } from "@/components/generic-form";
 
 // Registration form schema
 export const registerFormSchema = z.object({

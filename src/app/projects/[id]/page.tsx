@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/lib/translation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { PageTitle } from "@/components/page-title";
 import {
   LayoutDashboardIcon,
   BarChartIcon,
@@ -16,18 +15,17 @@ import {
   DatabaseIcon,
   ShieldIcon,
   SettingsIcon,
-  ChevronLeftIcon,
   ArchiveIcon,
 } from "lucide-react";
 
 // Import tab components
-import { OverviewTab } from "@/components/projects/OverviewTab";
-import { UsageTab } from "@/components/projects/UsageTab";
-import { SubscriptionTab } from "@/components/projects/SubscriptionTab";
-import { JobsTab } from "@/components/projects/JobsTab";
-import { SnapshotsTab } from "@/components/projects/SnapshotsTab";
-import { SecurityTab } from "@/components/projects/SecurityTab";
-import { SettingsTab } from "@/components/projects/SettingsTab";
+import { OverviewTab } from "@/components/projects/overview-tab";
+import { UsageTab } from "@/components/projects/usage-tab";
+import { SubscriptionTab } from "@/components/projects/subscription-tab";
+import { JobsTab } from "@/components/projects/jobs-tab";
+import { SnapshotsTab } from "@/components/projects/snapshots-tab";
+import { SecurityTab } from "@/components/projects/security-tab";
+import { SettingsTab } from "@/components/projects/settings-tab";
 import { ModelInstance } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
 import { useProject } from "@/hooks/use-project";
@@ -94,42 +92,25 @@ export default function ProjectsDetailPage() {
     return null;
   }
 
+  const projectBadges = isArchived ? (
+    <Badge variant="outline" className="bg-muted/50 flex items-center gap-1">
+      <ArchiveIcon className="h-3 w-3" />
+      {t("archivedProjectBadge")}
+    </Badge>
+  ) : null;
+
   return (
     <div className="container mx-auto py-10 relative">
-      <div className="mb-6">
-        {isLoadingProject || isLoadingOrganization ? (
-          <div className="space-y-2">
-            <Skeleton className="h-5 w-40" />
-            <Skeleton className="h-8 w-60" />
-          </div>
-        ) : (
-          <>
-            {organization && (
-              <div className="flex items-center text-sm text-muted-foreground mb-1">
-                <Link
-                  href={`/organizations/${project?.organization?._id}`}
-                  className="hover:text-primary flex items-center"
-                >
-                  <ChevronLeftIcon className="h-4 w-4 mr-1" />
-                  {organization.name}
-                </Link>
-              </div>
-            )}
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              {project?.name}
-              {isArchived && (
-                <Badge
-                  variant="outline"
-                  className="bg-muted/50 flex items-center gap-1"
-                >
-                  <ArchiveIcon className="h-3 w-3" />
-                  {t("archivedProjectBadge")}
-                </Badge>
-              )}
-            </h1>
-          </>
-        )}
-      </div>
+      <PageTitle
+        title={project?.name}
+        isLoading={isLoadingProject || isLoadingOrganization}
+        badges={projectBadges}
+        className="-mt-6"
+        backLink={{
+          href: `/organizations/${project?.organization?._id}`,
+          label: organization?.name || "",
+        }}
+      />
 
       <Tabs
         value={activeTab}

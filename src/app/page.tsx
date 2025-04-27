@@ -10,12 +10,12 @@ import {
 import {
   OrganizationSection,
   OrganizationSectionSkeleton,
-} from "@/components/dashboard/OrganizationSection";
+} from "@/components/dashboard/organization-section";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, EyeIcon } from "lucide-react";
 import Link from "next/link";
-import EmailVerificationAlert from "@/components/EmailVerificationAlert";
+import EmailVerificationAlert from "@/components/email-verification-alert";
 
 export default function DashboardPage() {
   const { t } = useTranslation();

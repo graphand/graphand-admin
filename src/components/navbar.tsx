@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { LanguageSelector } from "./LanguageSelector";
-import { UserDropdown } from "./UserDropdown";
+import { LanguageSelector } from "./language-selector";
+import { UserDropdown } from "./user-dropdown";
 
 export default function Navbar() {
   return (

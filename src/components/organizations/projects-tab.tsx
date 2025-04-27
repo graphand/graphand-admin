@@ -7,8 +7,8 @@ import { PlusIcon } from "lucide-react";
 import {
   ProjectItem,
   ProjectItemSkeleton,
-} from "@/components/dashboard/ProjectItem";
-import { CreateProjectCard } from "@/components/dashboard/CreateProjectCard";
+} from "@/components/dashboard/project-item";
+import { CreateProjectCard } from "@/components/dashboard/create-project-card";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
 

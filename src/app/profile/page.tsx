@@ -14,10 +14,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "@/lib/translation";
 import { useMe } from "@/hooks/use-me";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/components/generic-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
-import EmailVerificationAlert from "@/components/EmailVerificationAlert";
+import EmailVerificationAlert from "@/components/email-verification-alert";
 
 // Profile form schema
 const formSchema = z.object({

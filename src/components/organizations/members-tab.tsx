@@ -1,8 +1,8 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "@/lib/translation";
-import { MembersList } from "@/components/organizations/MembersList";
-import { InvitationsList } from "@/components/organizations/InvitationsList";
-import { InviteMembers } from "@/components/organizations/InviteMembers";
+import { MembersList } from "@/components/organizations/members-list";
+import { InvitationsList } from "@/components/organizations/invitations-list";
+import { InviteMembers } from "@/components/organizations/invite-members";
 import {
   useOrganizationInvitations,
   InvitationStatus,

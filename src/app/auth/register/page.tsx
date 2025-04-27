@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import client from "@/lib/graphand-client";
-import RegisterForm, { RegisterFormValues } from "@/components/RegisterForm";
+import RegisterForm, { RegisterFormValues } from "@/components/register-form";
 
 export default function RegisterPage() {
   const router = useRouter();

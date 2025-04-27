@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Organization } from "@/hooks/use-dashboard-organizations";
 import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
-import { ProjectItem, ProjectItemSkeleton } from "./ProjectItem";
-import { CreateProjectCard } from "./CreateProjectCard";
+import { ProjectItem, ProjectItemSkeleton } from "./project-item";
+import { CreateProjectCard } from "./create-project-card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, EyeIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";

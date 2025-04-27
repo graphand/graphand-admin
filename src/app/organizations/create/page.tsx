@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/card";
 import client from "@/lib/graphand-client";
 import { useTranslation } from "@/lib/translation";
-import { TermsModal } from "@/components/TermsModal";
+import { TermsModal } from "@/components/terms-modal";
 import { useLatestTerms } from "@/hooks/use-latest-terms";
-import GenericForm from "@/components/GenericForm";
+import GenericForm from "@/components/generic-form";
 
 // Organization creation schema
 const formSchema = z.object({
