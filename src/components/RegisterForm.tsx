@@ -33,9 +33,9 @@ export interface RegisterFormProps {
   beforeFields?: React.ReactNode;
   afterFields?: React.ReactNode;
   // Allow for extending the schema with additional fields
-  extendedSchema?: z.ZodObject<any>;
+  extendedSchema?: typeof registerFormSchema;
   // Allow for additional field configurations
-  additionalFields?: FormFieldConfig<any>[];
+  additionalFields?: FormFieldConfig<RegisterFormValues>[];
 }
 
 export default function RegisterForm({
@@ -62,9 +62,9 @@ export default function RegisterForm({
   // Initialize form
   const schema = extendedSchema || registerFormSchema;
 
-  const form = useForm<any>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: defaultValues as any,
+    defaultValues,
   });
 
   // Create fields configuration
@@ -103,7 +103,7 @@ export default function RegisterForm({
   // Combine standard fields with any additional fields
   const fields = [...standardFields, ...additionalFields];
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: RegisterFormValues) => {
     try {
       await onSubmit(values);
     } catch (err) {

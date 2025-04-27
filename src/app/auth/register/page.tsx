@@ -48,7 +48,7 @@ export default function RegisterPage() {
         account: {
           firstname: values.firstname,
           lastname: values.lastname,
-        } as any,
+        },
       });
 
       // Keep loading state true during redirection

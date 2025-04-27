@@ -7,6 +7,7 @@ interface JobsTabProps {
 
 export function JobsTab({ projectId }: JobsTabProps) {
   const { t } = useTranslation();
+  console.log(projectId);
 
   return (
     <div className="space-y-6">

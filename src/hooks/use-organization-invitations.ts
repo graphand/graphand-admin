@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
+import { Filter } from "@graphand/core";
 
 export type InvitationStatus = "pending" | "accepted";
 
@@ -23,7 +24,7 @@ export function useOrganizationInvitations(
       }
 
       try {
-        const filter: any = {
+        const filter: Filter = {
           organization: organizationId,
         };
 

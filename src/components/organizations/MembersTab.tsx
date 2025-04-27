@@ -34,9 +34,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
+import { ModelInstance } from "@graphand/core";
+import Organization from "@/lib/models/Organization";
 
 interface MembersTabProps {
-  organization: any;
+  organization: ModelInstance<typeof Organization>;
   isLoading: boolean;
 }
 
@@ -58,13 +60,11 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
   const isCurrentUserMember =
     user &&
     !isCurrentUserOwner &&
-    organization?.get("_accounts", "json")?.includes(user.get("_id"));
+    organization?.get("_accounts", "json")?.includes(user._id);
 
   const {
     invitations,
     isLoading: isLoadingInvitations,
-    isError,
-    error,
     createInvitation,
     deleteInvitation,
     resendInvitation,
@@ -155,7 +155,7 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
       onSuccess: () => {
         toast.success(t("memberRemoved"));
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast.error(
           error instanceof Error ? error.message : t("errorRemovingMember")
         );
@@ -172,7 +172,7 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
         router.push("/organizations");
         router.refresh();
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         toast.error(
           error instanceof Error ? error.message : t("errorLeavingOrganization")
         );
@@ -204,7 +204,7 @@ export function MembersTab({ organization, isLoading }: MembersTabProps) {
             </div>
           ) : (
             <MembersList
-              accountIds={organization?.get("_accounts", "json")}
+              accountIds={organization?.get("_accounts", "json") || []}
               isOwner={(accountId: string) => {
                 return Boolean(ownerId && ownerId === accountId);
               }}

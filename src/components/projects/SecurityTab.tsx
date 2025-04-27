@@ -7,6 +7,7 @@ interface SecurityTabProps {
 
 export function SecurityTab({ projectId }: SecurityTabProps) {
   const { t } = useTranslation();
+  console.log(projectId);
 
   return (
     <div className="space-y-6">

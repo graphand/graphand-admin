@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  MutateOptions,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
 import { useCallback } from "react";
 import { useMe } from "@/hooks/use-me";
@@ -134,7 +138,7 @@ export function useOrganizationMembers(organizationId?: string) {
 
   // Function to remove a member
   const removeMember = useCallback(
-    (accountId: string, options?: any) => {
+    (accountId: string, options?: MutateOptions<Response, Error, string>) => {
       return removeMemberMutation.mutate(accountId, options);
     },
     [removeMemberMutation]
@@ -142,7 +146,7 @@ export function useOrganizationMembers(organizationId?: string) {
 
   // Function to leave an organization
   const leaveOrganization = useCallback(
-    (options?: any) => {
+    (options?: MutateOptions<Response, Error, void>) => {
       return leaveOrganizationMutation.mutate(undefined, options);
     },
     [leaveOrganizationMutation]

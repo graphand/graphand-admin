@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { ControllerRenderProps, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
@@ -36,6 +36,8 @@ const formSchema = z.object({
     message: "You must accept the terms and conditions",
   }),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 export default function OrganizationsCreatePage() {
   const router = useRouter();
@@ -107,13 +109,16 @@ export default function OrganizationsCreatePage() {
   };
 
   // Custom render for terms and conditions field
-  const renderTermsField = (field: any) => (
+  const renderTermsField = (field: ControllerRenderProps<FormValues>) => (
     <div
       className={`flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 ${
         form.formState.errors.acceptTerms ? "border-destructive" : ""
       }`}
     >
-      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+      <Checkbox
+        checked={Boolean(field.value)}
+        onCheckedChange={field.onChange}
+      />
       <div className="space-y-1 leading-none">
         <label>{t("acceptTermsAndConditions")}</label>
         <p className="text-sm text-muted-foreground">
@@ -157,6 +162,7 @@ export default function OrganizationsCreatePage() {
                 customRender: (field, config) => (
                   <Input
                     {...field}
+                    value={field.value ? String(field.value) : ""}
                     placeholder={config.placeholder}
                     onChange={handleNameChange}
                   />

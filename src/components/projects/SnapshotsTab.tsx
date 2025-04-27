@@ -7,6 +7,7 @@ interface SnapshotsTabProps {
 
 export function SnapshotsTab({ projectId }: SnapshotsTabProps) {
   const { t } = useTranslation();
+  console.log(projectId);
 
   return (
     <div className="space-y-6">

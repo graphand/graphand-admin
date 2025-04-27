@@ -1,14 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "@/lib/translation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProject } from "@/hooks/use-project";
 
 interface OverviewTabProps {
-  project: any;
-  isLoading: boolean;
+  projectId: string;
 }
 
-export function OverviewTab({ project, isLoading }: OverviewTabProps) {
+export function OverviewTab({ projectId }: OverviewTabProps) {
   const { t } = useTranslation();
+  const { data: project, isLoading } = useProject(projectId);
+  console.log(project);
 
   return (
     <div className="space-y-6">

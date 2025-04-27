@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import client from "@/lib/graphand-client";
 import { useQuery } from "@tanstack/react-query";
+import client from "@/lib/graphand-client";
 
 /**
  * Hook pour récupérer les dernières conditions d'utilisation

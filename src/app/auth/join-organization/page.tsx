@@ -33,7 +33,6 @@ export default function JoinOrganizationPage() {
     searchParams.get("organizationId") || searchParams.get("organization") || ""
   );
   const [token, setToken] = useState(searchParams.get("token") || "");
-  const [isRedirecting, setIsRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showTokenField, setShowTokenField] = useState(false);
   const [tokenValue, setTokenValue] = useState(token || "");
@@ -193,7 +192,6 @@ export default function JoinOrganizationPage() {
       );
 
       // Keep loading state true during redirection
-      setIsRedirecting(true);
       router.push("/auth/login?message=organization-joined");
     } catch (err) {
       console.error("Join organization error:", err);
