@@ -28,48 +28,28 @@ async function getCurrentUserForMiddleware() {
 }
 
 export async function middleware(request: NextRequest) {
-  const referer = request.headers.get("referer") as string;
   const { pathname } = request.nextUrl;
+  const { headers } = request;
 
-  console.log({ referer });
-
-  if (!referer) {
-    const headers = Object.fromEntries(request.headers.entries());
-    console.log(headers);
-  }
+  const proto = headers.get("x-forwarded-proto");
+  const host = headers.get("x-forwarded-host");
+  const baseUrl = proto + "://" + host;
 
   const user = await getCurrentUserForMiddleware();
 
-  try {
+  // Check if user is trying to access a protected route without being logged in
+  if (isAuthRoute(pathname) && user) {
+    const redirectUrl = new URL("/", baseUrl);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
     const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
     const redirectUrl = new URL(
       "/auth/login?callbackUrl=" + callbackUrl,
-      referer
+      baseUrl
     );
-    console.log(redirectUrl?.toString());
-  } catch (error) {
-    console.log(error);
-    const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
-    console.log("/auth/login?callbackUrl=" + callbackUrl, referer);
-  }
-
-  try {
-    // Check if user is trying to access a protected route without being logged in
-    if (isAuthRoute(pathname) && user) {
-      const redirectUrl = new URL("/", referer);
-      return NextResponse.redirect(redirectUrl);
-    }
-
-    if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
-      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
-      const redirectUrl = new URL(
-        "/auth/login?callbackUrl=" + callbackUrl,
-        referer
-      );
-      return NextResponse.redirect(redirectUrl);
-    }
-  } catch (error) {
-    console.log(error);
+    return NextResponse.redirect(redirectUrl);
   }
 
   return NextResponse.next();
