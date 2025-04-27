@@ -28,6 +28,10 @@ async function getCurrentUserForMiddleware() {
 }
 
 export async function middleware(request: NextRequest) {
+  const { url, nextUrl } = request;
+
+  console.log(url, nextUrl);
+
   const { pathname } = request.nextUrl;
 
   const user = await getCurrentUserForMiddleware();

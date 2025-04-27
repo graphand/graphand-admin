@@ -60,17 +60,19 @@ export function UserDropdown() {
           <DropdownMenuLabel>{t("loading")}</DropdownMenuLabel>
         ) : user ? (
           <>
-            <DropdownMenuLabel>{user.getFullname()}</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-right">
+              {user.getFullname()}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/profile" className="w-full cursor-pointer">
+              <Link href="/profile" className="cursor-pointer justify-end">
                 {t("profile")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
                 href="/organizations/join"
-                className="w-full cursor-pointer"
+                className="cursor-pointer justify-end"
               >
                 {t("join_organization")}
               </Link>
@@ -78,7 +80,7 @@ export function UserDropdown() {
             <DropdownMenuItem
               onClick={handleLogout}
               disabled={isLogoutLoading}
-              className="cursor-pointer"
+              className="cursor-pointer justify-end"
             >
               {isLogoutLoading ? t("signing_out") : t("logout")}
             </DropdownMenuItem>
