@@ -1,21 +1,20 @@
 import {
-  FieldTypes,
   modelDecorator,
-  ModelDefinition,
   Account as CoreAccount,
   ModelInstance,
+  defineModelConf,
+  PropertyTypes,
 } from "@graphand/core";
 
 class Account extends CoreAccount {
-  static slug = "accounts" as const;
-  static definition = {
-    ...CoreAccount.definition,
-    fields: {
-      ...CoreAccount.definition.fields,
-      firstname: { type: FieldTypes.TEXT },
-      lastname: { type: FieldTypes.TEXT },
+  static configuration = defineModelConf({
+    ...CoreAccount.configuration,
+    properties: {
+      ...CoreAccount.configuration.properties,
+      firstname: { type: PropertyTypes.STRING },
+      lastname: { type: PropertyTypes.STRING },
     },
-  } satisfies ModelDefinition;
+  });
 
   getFullname(this: ModelInstance<typeof Account>) {
     return `${this.firstname} ${this.lastname}`;

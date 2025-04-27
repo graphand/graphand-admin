@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import client from "@/lib/graphand-client";
-import { ValidationError } from "@graphand/core";
 import GenericForm from "@/components/GenericForm";
+import { useEmailStore } from "@/store/email-store";
 
 // Login form schema
 const formSchema = z.object({
@@ -32,6 +32,7 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const setEmail = useEmailStore((state) => state.setEmail);
 
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,6 +69,9 @@ export default function LoginPage() {
           password: values.password,
         },
       });
+
+      // Save email to the store
+      setEmail(values.email);
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
@@ -115,7 +119,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-center">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"
               className="font-semibold hover:underline"

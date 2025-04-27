@@ -3,10 +3,14 @@ import { createServerClient } from "@/lib/graphand-server";
 
 const isPublicRoute = (pathname: string) => {
   return (
-    pathname.startsWith("/auth") ||
+    pathname.startsWith("/public") ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api")
   );
+};
+
+const isAuthRoute = (pathname: string) => {
+  return pathname.startsWith("/auth");
 };
 
 /**
@@ -18,7 +22,7 @@ async function getCurrentUserForMiddleware() {
   try {
     const client = await createServerClient();
     return await client.me();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -29,20 +33,18 @@ export async function middleware(request: NextRequest) {
   const user = await getCurrentUserForMiddleware();
 
   // Check if user is trying to access a protected route without being logged in
-  if (isPublicRoute(pathname)) {
-    if (user) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-  } else {
-    if (!user) {
-      return NextResponse.redirect(
-        new URL(
-          "/auth/login?callbackUrl=" +
-            encodeURIComponent(request.nextUrl.toString()),
-          request.url
-        )
-      );
-    }
+  if (isAuthRoute(pathname) && user) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
+    return NextResponse.redirect(
+      new URL(
+        "/auth/login?callbackUrl=" +
+          encodeURIComponent(request.nextUrl.toString()),
+        request.url
+      )
+    );
   }
 
   return NextResponse.next();

@@ -80,15 +80,13 @@ export default function CreateProjectPage() {
       }
 
       // Create project using Graphand client
-      await client.model("projects").create({
+      const project = await client.model("projects").create({
         name: values.name,
         slug: values.slug,
         organization: values.organization,
       });
 
-      // Redirect to dashboard on success
-      router.push("/");
-      router.refresh();
+      router.push(`/projects/${project._id}`);
     } catch (err) {
       // Error handling is managed by the GenericForm component
       throw err;
@@ -137,7 +135,7 @@ export default function CreateProjectPage() {
                 label: t("organization"),
                 description: t("selectOrganization"),
                 component: <Select />,
-                customRender: (field, config) => (
+                customRender: (field) => (
                   <Select
                     onValueChange={(value) => {
                       setSelectedOrg(value);

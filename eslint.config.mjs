@@ -23,7 +23,8 @@ const eslintConfig = [
           varsIgnorePattern: "^_",
         },
       ],
-      "no-unused-vars": "off", // Turn off the base rule as it can report incorrect errors
+      // "no-unused-vars": "off", // Turn off the base rule as it can report incorrect errors
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];

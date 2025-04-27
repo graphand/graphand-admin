@@ -9,25 +9,18 @@ import OrganizationInvitation from "./models/OrganizationInvitation";
 export const createClient = (storage: AuthStorage) => {
   return new Client(
     {
-      endpoint: "api.graphand.dev",
+      endpoint: "api2.graphand.dev",
       project: null,
     },
-    [
-      [
-        ModuleAuth,
-        {
-          storage,
-        },
-      ],
-    ],
+    [[ModuleAuth, { storage }]],
     [Project, Organization, Terms, Account, OrganizationInvitation]
   );
 };
 
 const BrowserStorage: AuthStorage = {
-  getItem: (key: string) => null,
-  setItem: (key: string, value: string) => {},
-  removeItem: (key: string) => {},
+  getItem: (key: string) => localStorage.getItem(key),
+  setItem: (key: string, value: string) => localStorage.setItem(key, value),
+  removeItem: (key: string) => localStorage.removeItem(key),
 };
 
 const client = createClient(BrowserStorage);

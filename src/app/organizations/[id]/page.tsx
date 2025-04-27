@@ -15,7 +15,7 @@ import { ArchivedProjectsTab } from "@/components/organizations/ArchivedProjects
 import { MembersTab } from "@/components/organizations/MembersTab";
 import { SettingsTab } from "@/components/organizations/SettingsTab";
 
-export default function OrganizationDetailPage() {
+export default function OrganizationsDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("projects");

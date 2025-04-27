@@ -16,12 +16,14 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useMe } from "@/hooks/use-me";
+import { useEmailStore } from "@/store/email-store";
 
 export function UserDropdown() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user, isLoading } = useMe();
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+  const clearEmail = useEmailStore((state) => state.clearEmail);
 
   const handleLogout = async () => {
     try {
@@ -32,6 +34,9 @@ export function UserDropdown() {
 
       // Also call the server-side logout endpoint
       await fetch("/auth/logout", { method: "POST" });
+
+      // Clear user email from the store
+      clearEmail();
 
       // Redirect to login page
       router.push("/auth/login");

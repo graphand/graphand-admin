@@ -1,60 +1,50 @@
 import {
-  Account,
-  FieldTypes,
   Model,
   modelDecorator,
-  ModelDefinition,
-  ValidatorTypes,
+  PropertyTypes,
+  Account,
+  defineModelConf,
 } from "@graphand/core";
-import Terms from "./Terms";
+import Terms from "@/lib/models/Terms";
 
 class Organization extends Model {
-  static slug = "organizations" as const;
-  static loadDatamodel = false as const;
-  static definition = {
-    keyField: "slug",
-    fields: {
-      name: { type: FieldTypes.TEXT },
-      slug: { type: FieldTypes.TEXT },
+  static __name = "Organization";
+  static isSystem = true;
+
+  static configuration = defineModelConf({
+    slug: "organizations",
+    keyProperty: "slug",
+    noBulk: true,
+    properties: {
+      name: { type: PropertyTypes.STRING },
+      slug: { type: PropertyTypes.STRING },
       owner: {
-        type: FieldTypes.RELATION,
-        options: {
-          ref: Account.slug,
-        },
+        type: PropertyTypes.RELATION,
+        ref: Account.configuration.slug,
       },
       _accounts: {
-        type: FieldTypes.ARRAY,
-        options: {
-          items: {
-            type: FieldTypes.RELATION,
-            options: {
-              ref: Account.slug,
-            },
-          },
+        type: PropertyTypes.ARRAY,
+        items: {
+          type: PropertyTypes.RELATION,
+          ref: Account.configuration.slug,
         },
       },
       _consent: {
-        type: FieldTypes.OBJECT,
-        options: {
-          fields: {
-            terms: {
-              type: FieldTypes.RELATION,
-              options: {
-                ref: Terms.slug,
-              },
-            },
-            account: {
-              type: FieldTypes.RELATION,
-              options: {
-                ref: Account.slug,
-              },
-            },
+        type: PropertyTypes.OBJECT,
+        properties: {
+          terms: {
+            type: PropertyTypes.RELATION,
+            ref: Terms.configuration.slug,
+          },
+          account: {
+            type: PropertyTypes.RELATION,
+            ref: Account.configuration.slug,
           },
         },
       },
     },
-    validators: [{ type: ValidatorTypes.REQUIRED, options: { field: "name" } }],
-  } satisfies ModelDefinition;
+    required: ["name"],
+  });
 }
 
 export default modelDecorator()(Organization);

@@ -1,42 +1,37 @@
 import {
-  FieldTypes,
-  Job,
   Model,
   modelDecorator,
-  ModelDefinition,
-  ValidatorTypes,
+  PropertyTypes,
+  Job,
+  defineModelConf,
 } from "@graphand/core";
-import Organization from "./Organization";
+import Organization from "@/lib/models/Organization";
 
 class Project extends Model {
-  static slug = "projects" as const;
-  static loadDatamodel = false as const;
-  static definition = {
-    keyField: "slug",
-    fields: {
-      name: { type: FieldTypes.TEXT },
-      slug: { type: FieldTypes.TEXT },
+  static __name = "Project";
+  static isSystem = true;
+
+  static configuration = defineModelConf({
+    slug: "projects",
+    keyProperty: "slug",
+    noBulk: true,
+    properties: {
+      name: { type: PropertyTypes.STRING },
+      slug: { type: PropertyTypes.STRING },
       organization: {
-        type: FieldTypes.RELATION,
-        options: {
-          ref: Organization.slug,
-        },
+        type: PropertyTypes.RELATION,
+        ref: Organization.configuration.slug,
       },
       version: {
-        type: FieldTypes.TEXT,
+        type: PropertyTypes.STRING,
       },
       _job: {
-        type: FieldTypes.RELATION,
-        options: {
-          ref: Job.slug,
-        },
+        type: PropertyTypes.RELATION,
+        ref: Job.configuration.slug,
       },
     },
-    validators: [
-      { type: ValidatorTypes.REQUIRED, options: { field: "name" } },
-      { type: ValidatorTypes.REQUIRED, options: { field: "organization" } },
-    ],
-  } satisfies ModelDefinition;
+    required: ["name", "organization"],
+  });
 }
 
 export default modelDecorator()(Project);

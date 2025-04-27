@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -39,7 +37,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function CreateOrganizationPage() {
+export default function OrganizationsCreatePage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { termsId } = useLatestTerms();
@@ -60,7 +58,7 @@ export default function CreateOrganizationPage() {
       }
 
       // Create organization using Graphand client
-      await client.model("organizations").create(
+      const organization = await client.model("organizations").create(
         {
           name: values.name,
           slug: values.slug,
@@ -72,9 +70,7 @@ export default function CreateOrganizationPage() {
         }
       );
 
-      // Redirect to organizations list on success
-      router.push("/organizations");
-      router.refresh();
+      router.push(`/organizations/${organization._id}`);
     } catch (err) {
       // Error handling is now managed by the GenericForm component
       throw err;

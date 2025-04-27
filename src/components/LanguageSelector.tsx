@@ -33,7 +33,7 @@ export function LanguageSelector() {
 
   return (
     <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-      <SelectTrigger className="w-[80px]">
+      <SelectTrigger className="w-24">
         <SelectValue placeholder="Language" />
       </SelectTrigger>
       <SelectContent>

@@ -1,37 +1,45 @@
 import {
   Account,
-  FieldTypes,
+  PropertyTypes,
   Model,
-  ModelDefinition,
+  Patterns,
+  ValidatorTypes,
   modelDecorator,
+  defineModelConf,
 } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
 
 class OrganizationInvitation extends Model {
-  static slug = "organizationInvitations" as const;
-  static loadDatamodel = false as const;
-  static definition = {
-    fields: {
+  static __name = "OrganizationInvitation";
+
+  static configuration = defineModelConf({
+    slug: "organizationInvitations",
+    noBulk: true,
+    properties: {
       email: {
-        type: FieldTypes.TEXT,
+        type: PropertyTypes.STRING,
       },
       organization: {
-        type: FieldTypes.RELATION,
-        options: {
-          ref: Organization.slug,
-        },
+        type: PropertyTypes.RELATION,
+        ref: Organization.configuration.slug,
       },
       transferOwnership: {
-        type: FieldTypes.BOOLEAN,
+        type: PropertyTypes.BOOLEAN,
       },
       account: {
-        type: FieldTypes.RELATION,
-        options: {
-          ref: Account.slug,
-        },
+        type: PropertyTypes.RELATION,
+        ref: Account.configuration.slug,
       },
     },
-  } satisfies ModelDefinition;
+    required: ["email", "organization"],
+    validators: [
+      {
+        type: ValidatorTypes.REGEX,
+        property: "email",
+        pattern: Patterns.EMAIL,
+      },
+    ],
+  });
 }
 
 export default modelDecorator()(OrganizationInvitation);

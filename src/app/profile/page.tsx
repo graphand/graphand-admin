@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,18 +12,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/lib/translation";
 import { useMe } from "@/hooks/use-me";
 import GenericForm from "@/components/GenericForm";
-import client from "@/lib/graphand-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
+import EmailVerificationAlert from "@/components/EmailVerificationAlert";
 
 // Profile form schema
 const formSchema = z.object({
   firstname: z.string().min(1, { message: "First name is required" }),
   lastname: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
 });
 
 export default function ProfilePage() {
@@ -37,10 +36,12 @@ export default function ProfilePage() {
     defaultValues: {
       firstname: (user?.get("firstname") as string) || "",
       lastname: (user?.get("lastname") as string) || "",
+      email: (user?.get("_email") as string) || "",
     },
     values: {
       firstname: (user?.get("firstname") as string) || "",
       lastname: (user?.get("lastname") as string) || "",
+      email: (user?.get("_email") as string) || "",
     },
   });
 
@@ -50,6 +51,7 @@ export default function ProfilePage() {
       $set: {
         firstname: values.firstname,
         lastname: values.lastname,
+        _email: values.email,
       },
     });
 
@@ -85,6 +87,8 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto py-10">
+      <EmailVerificationAlert />
+
       <div className="mb-10 flex items-center space-x-4">
         <Avatar className="h-20 w-20">
           <AvatarImage src={(user.get("avatarUrl") as string) || ""} />
@@ -120,6 +124,12 @@ export default function ProfilePage() {
                   label: t("lastName") || "Last Name",
                   component: <Input />,
                   mapServerErrors: ["lastname"],
+                },
+                {
+                  name: "email",
+                  label: t("email") || "Email",
+                  component: <Input />,
+                  mapServerErrors: ["_email"],
                 },
               ]}
               submitButtonText={t("save") || "Save"}

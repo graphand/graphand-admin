@@ -13,9 +13,9 @@ import {
 } from "@/components/dashboard/OrganizationSection";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, EyeIcon, FolderIcon } from "lucide-react";
+import { PlusIcon, EyeIcon } from "lucide-react";
 import Link from "next/link";
-import { ProjectItemSkeleton } from "@/components/dashboard/ProjectItem";
+import EmailVerificationAlert from "@/components/EmailVerificationAlert";
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -94,6 +94,8 @@ export default function DashboardPage() {
   if (data?.pages[0]?.items?.length === 0) {
     return (
       <div className="container mx-auto py-10">
+        <EmailVerificationAlert />
+
         <h1 className="text-3xl font-bold mb-6">{t("dashboard")}</h1>
         <div className="text-center py-10">
           <p className="text-muted-foreground mb-4">
@@ -115,6 +117,8 @@ export default function DashboardPage() {
 
   return (
     <div className="container mx-auto py-10 relative">
+      <EmailVerificationAlert />
+
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-6">
         <div>
           <h1 className="text-3xl font-bold">{t("dashboard")}</h1>
@@ -145,7 +149,7 @@ export default function DashboardPage() {
 
       {/* Organizations with their projects */}
       <div className="space-y-6">
-        {data?.pages.map((page, pageIndex) =>
+        {data?.pages.map((page) =>
           page.items.map((organization) => (
             <OrganizationSection
               key={organization._id}

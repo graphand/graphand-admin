@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -30,11 +29,34 @@ import {
 import { useOrganizations } from "@/hooks/use-organizations";
 import { useTranslation } from "@/lib/translation";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useDashboardProjects } from "@/hooks/use-dashboard-projects";
+
+// Custom hook to fetch projects for an organization
+function useOrganizationProjects(organizationId: string) {
+  const { data, isLoading } = useDashboardProjects(organizationId, false);
+
+  const projects = data?.pages.flatMap((page) => page.items) || [];
+  const totalCount = data?.pages[0]?.totalCount || 0;
+
+  return {
+    projects,
+    totalCount,
+    isLoading,
+  };
+}
 
 export default function OrganizationPage() {
   const { t } = useTranslation();
+  const [expandedOrg, setExpandedOrg] = useState<string | null>(null);
 
   const {
     organizations,
@@ -137,6 +159,7 @@ export default function OrganizationPage() {
                   <TableRow>
                     <TableHead>{t("name")}</TableHead>
                     <TableHead>{t("slug")}</TableHead>
+                    <TableHead>{t("projects")}</TableHead>
                     <TableHead>{t("createdAt")}</TableHead>
                     <TableHead>{t("actions")}</TableHead>
                   </TableRow>
@@ -148,6 +171,17 @@ export default function OrganizationPage() {
                         {org.name || "—"}
                       </TableCell>
                       <TableCell>{org.slug || "—"}</TableCell>
+                      <TableCell>
+                        <ProjectsCell
+                          organizationId={org._id}
+                          expanded={expandedOrg === org._id}
+                          onToggle={() =>
+                            setExpandedOrg(
+                              expandedOrg === org._id ? null : org._id
+                            )
+                          }
+                        />
+                      </TableCell>
                       <TableCell>
                         {org._createdAt
                           ? new Date(org._createdAt).toLocaleDateString()
@@ -294,6 +328,76 @@ export default function OrganizationPage() {
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+// ProjectsCell component that shows the project count and a dropdown with the list of projects
+function ProjectsCell({
+  organizationId,
+  expanded,
+  onToggle,
+}: {
+  organizationId: string;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const { t } = useTranslation();
+  const { projects, totalCount, isLoading } =
+    useOrganizationProjects(organizationId);
+
+  if (isLoading) {
+    return <Skeleton className="h-5 w-36" />;
+  }
+
+  // Format the display text (first project name + "and X others")
+  const displayText =
+    projects.length > 0
+      ? projects.length > 1
+        ? `${projects[0].name} ${t("and")} ${totalCount - 1} ${t("others")}`
+        : projects[0].name
+      : t("noProjects");
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="inline-flex items-center justify-center rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
+        {totalCount}
+      </span>
+      <DropdownMenu open={expanded} onOpenChange={onToggle}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="font-normal h-auto p-1 text-left"
+          >
+            <span className="flex items-center gap-1 truncate max-w-[200px]">
+              {displayText}
+              <ChevronDownIcon className="h-4 w-4 flex-shrink-0" />
+            </span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="start"
+          className="w-56 max-h-80 overflow-auto"
+        >
+          {projects.length > 0 ? (
+            projects.map((project) => (
+              <DropdownMenuItem key={project._id} asChild>
+                <Link
+                  href={`/projects/${project._id}`}
+                  className="cursor-pointer"
+                >
+                  {project.name}
+                </Link>
+              </DropdownMenuItem>
+            ))
+          ) : (
+            <div className="px-2 py-1.5 text-sm text-muted-foreground">
+              {t("noProjectsFound")}
+            </div>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

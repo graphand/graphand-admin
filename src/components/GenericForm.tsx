@@ -4,6 +4,7 @@ import {
   FieldValues,
   SubmitHandler,
   Path,
+  ControllerRenderProps,
 } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,8 +20,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import {
   ValidationError,
-  ValidationFieldError,
   ValidationValidatorError,
+  ValidationPropertyError,
 } from "@graphand/core";
 import { ZodSchema } from "zod";
 import { useTranslation } from "@/lib/translation";
@@ -33,7 +34,7 @@ export interface FormFieldConfig<T extends FieldValues> {
   type?: string;
   component: React.ReactElement;
   customRender?: (
-    field: any,
+    field: ControllerRenderProps<T>,
     fieldConfig: FormFieldConfig<T>
   ) => React.ReactNode;
   mapServerErrors?: string[]; // Paths to map server errors to this field
@@ -79,7 +80,7 @@ export default function GenericForm<T extends FieldValues>({
 
       if (err instanceof ValidationError) {
         // Set field-specific errors using the ValidationError information
-        const fieldPaths = err.fieldsPaths;
+        const fieldPaths = err.propertiesPaths;
         let hasHandledFields = false;
 
         // Map errors to specific fields
@@ -89,12 +90,12 @@ export default function GenericForm<T extends FieldValues>({
               if (err.onPath(errorPath).length) {
                 let type = "";
                 const error = err.onPath(errorPath)[0];
-                if (error instanceof ValidationFieldError) {
+                if (error instanceof ValidationPropertyError) {
                   type = "invalid";
                 } else if (error instanceof ValidationValidatorError) {
                   type = error.validator.type.toLowerCase();
                 }
-                form.setError(field.name as any, {
+                form.setError(field.name, {
                   type: "server",
                   message: t(`validation.validators.${type}`, {
                     field: field.label.toLowerCase(),
@@ -119,7 +120,10 @@ export default function GenericForm<T extends FieldValues>({
     }
   };
 
-  const renderFormField = (fieldConfig: FormFieldConfig<T>, formField: any) => {
+  const renderFormField = (
+    fieldConfig: FormFieldConfig<T>,
+    formField: ControllerRenderProps<T>
+  ) => {
     if (fieldConfig.customRender) {
       return fieldConfig.customRender(formField, fieldConfig);
     }

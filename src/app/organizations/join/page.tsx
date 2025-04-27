@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -27,7 +27,7 @@ import client from "@/lib/graphand-client";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export default function JoinOrganizationPage() {
+export default function OrganizationsJoinPage() {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();

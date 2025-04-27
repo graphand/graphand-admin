@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
 import { ModelInstance } from "@graphand/core";
+import { useLogged } from "./use-logged";
 
 /**
  * Hook to fetch and manage the current authenticated user data
@@ -9,15 +9,16 @@ import { ModelInstance } from "@graphand/core";
  * @returns The current user data and loading state
  */
 export function useMe() {
-  const accountModel = client.model("accounts");
+  const _AccountModel = client.model("accounts");
+  const logged = useLogged();
 
   const {
     data: user,
     isLoading,
     error,
     refetch,
-  } = useQuery<ModelInstance<typeof accountModel> | null>({
-    queryKey: ["currentUser"],
+  } = useQuery<ModelInstance<typeof _AccountModel> | null>({
+    queryKey: ["currentUser", logged],
     queryFn: async () => {
       try {
         return await client.me();
