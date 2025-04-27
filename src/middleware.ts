@@ -25,7 +25,8 @@ async function getCurrentUserForMiddleware() {
     const token = client.options.accessToken;
     console.log("token", token);
     return await client.me();
-  } catch {
+  } catch (e) {
+    console.error(e);
     return null;
   }
 }
