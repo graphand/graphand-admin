@@ -31,7 +31,8 @@ export async function middleware(request: NextRequest) {
   const host = request.headers.get("host") as string;
   const { pathname } = request.nextUrl;
 
-  console.log({ host });
+  const headers = Object.fromEntries(request.headers.entries());
+  console.log(headers);
 
   const user = await getCurrentUserForMiddleware();
 
