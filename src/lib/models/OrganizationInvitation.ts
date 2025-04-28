@@ -15,6 +15,7 @@ class OrganizationInvitation extends Model {
   static configuration = defineModelConf({
     slug: "organizationInvitations",
     noBulk: true,
+    loadDatamodel: false,
     properties: {
       email: {
         type: PropertyTypes.STRING,

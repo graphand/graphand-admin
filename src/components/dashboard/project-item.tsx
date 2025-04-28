@@ -1,4 +1,3 @@
-import { Project } from "@/hooks/use-dashboard-projects";
 import {
   Card,
   CardContent,
@@ -19,9 +18,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useTranslation } from "@/lib/translation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { JobHelper } from "../job-helper";
+import { ModelInstance } from "@graphand/core";
+import Project from "@/lib/models/Project";
 
 interface ProjectItemProps {
-  project: Project;
+  project: ModelInstance<typeof Project>;
   isArchived?: boolean;
 }
 
@@ -48,8 +50,9 @@ export function ProjectItemSkeleton() {
         </div>
       </div>
       <div data-slot="card-content" className="p-4 pt-0 flex-grow">
-        <div className="flex flex-col gap-2 mt-2">
+        <div className="flex flex-row items-center gap-2 mt-2">
           <Skeleton className="h-4 w-32" />
+          <JobHelper minimized className="border-none" />
         </div>
       </div>
       <div
@@ -99,7 +102,7 @@ export function ProjectItem({ project, isArchived = false }: ProjectItemProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0 flex-grow">
-        <div className="flex flex-col gap-2 mt-2">
+        <div className="flex flex-row items-center gap-2 mt-2">
           {project._createdAt && (
             <div className="text-xs text-muted-foreground">
               Created{" "}
@@ -108,6 +111,11 @@ export function ProjectItem({ project, isArchived = false }: ProjectItemProps) {
               })}
             </div>
           )}
+          <JobHelper
+            jobId={project._job?._id}
+            className="justify-start border-none"
+            minimized
+          />
         </div>
       </CardContent>
       <CardFooter className="p-2 bg-muted/20 flex justify-end border-t gap-2">

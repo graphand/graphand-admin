@@ -15,6 +15,7 @@ class Organization extends Model {
     slug: "organizations",
     keyProperty: "slug",
     noBulk: true,
+    loadDatamodel: false,
     properties: {
       name: { type: PropertyTypes.STRING },
       slug: { type: PropertyTypes.STRING },

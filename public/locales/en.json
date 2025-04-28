@@ -249,6 +249,14 @@
   "projectSnapshots": "Project Snapshots",
   "projectSnapshotsPlaceholder": "View and restore project snapshots",
 
+  "dataModels": "Data Models",
+  "dataModelsDescription": "Manage your project's data models and schemas",
+  "noModelsFound": "No data models found in this project",
+  "keyProperty": "Key Property",
+  "fields": "Fields",
+  "type": "Type",
+  "createModel": "Create Model",
+
   "dangerZone": "Danger Zone",
   "dangerZoneDescription": "Actions in this area can have irreversible consequences",
   "deleteProjectWarning": "Deleting a project is permanent and cannot be undone. All data will be lost.",
@@ -265,5 +273,23 @@
       "invalid": "The {field} is invalid",
       "required": "The {field} is required"
     }
+  },
+
+  "jobs": {
+    "jobId": "Job ID",
+    "result": "Result",
+    "status": "Status",
+    "details": "Details",
+    "startedAt": "Started At",
+    "createdAt": "Created At",
+    "completedAt": "Completed At",
+    "notStarted": "Not Started",
+    "duration": "Duration"
+  },
+
+  "jobTypes": {
+    "initProject": "Project Initialization",
+    "upgradeProject": "Project Upgrade",
+    "removeProject": "Project Removal"
   }
 }

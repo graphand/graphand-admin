@@ -11,6 +11,7 @@ class Terms extends Model {
 
   static configuration = defineModelConf({
     slug: "terms",
+    loadDatamodel: false,
     properties: {
       introduction: { type: PropertyTypes.STRING },
       service: { type: PropertyTypes.STRING }, // Terms of Service and Acceptable Use Policy

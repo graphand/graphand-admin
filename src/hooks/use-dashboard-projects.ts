@@ -3,21 +3,10 @@ import client from "@/lib/graphand-client";
 import { Filter, Sort } from "@graphand/core";
 import Project from "@/lib/models/Project";
 
-export type Project = {
-  _id: string;
-  name: string;
-  slug: string;
-  organization: string; // Organization ID
-  version?: string;
-  _createdAt?: string;
-  _updatedAt?: string;
-  // Add other fields as needed
-};
-
 export function useDashboardProjects(
   organizationId: string,
   showArchived: boolean = false,
-  pageSize: number = 10
+  pageSize: number = 6
 ) {
   return useInfiniteQuery({
     queryKey: [Project.slug, organizationId, showArchived],

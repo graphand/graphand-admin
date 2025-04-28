@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
  */
 export function useInstance<T extends typeof Model>(
   model: T,
-  filter: Filter,
+  filter: Filter | null | undefined,
   opts: {
     skipSubscribe?: boolean;
   } = {}
@@ -25,7 +25,10 @@ export function useInstance<T extends typeof Model>(
 
   return useQuery<ModelInstance<T> | null>({
     queryKey: [model.slug, JSON.stringify(filter)],
+    enabled: !!filter,
     queryFn: async () => {
+      if (!filter) return null;
+
       const instance = await model.get(filter);
 
       if (!opts.skipSubscribe) {

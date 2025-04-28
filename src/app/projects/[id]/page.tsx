@@ -16,6 +16,7 @@ import {
   ShieldIcon,
   SettingsIcon,
   ArchiveIcon,
+  BoxIcon,
 } from "lucide-react";
 
 // Import tab components
@@ -26,10 +27,12 @@ import { JobsTab } from "@/components/projects/jobs-tab";
 import { SnapshotsTab } from "@/components/projects/snapshots-tab";
 import { SecurityTab } from "@/components/projects/security-tab";
 import { SettingsTab } from "@/components/projects/settings-tab";
+import { DataModelsTab } from "@/components/projects/datamodels-tab";
 import { ModelInstance } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
 import { useInstance } from "@/hooks/use-instance";
 import client from "@/lib/graphand-client";
+import { JobHelper } from "@/components/job-helper";
 
 export default function ProjectsDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -49,6 +52,7 @@ export default function ProjectsDetailPage() {
         "jobs",
         "snapshots",
         "security",
+        "datamodels",
         "settings",
       ].includes(hash)
     ) {
@@ -93,11 +97,22 @@ export default function ProjectsDetailPage() {
     return null;
   }
 
-  const projectBadges = isArchived ? (
-    <Badge variant="outline" className="bg-muted/50 flex items-center gap-1">
-      <ArchiveIcon className="h-3 w-3" />
-      {t("archivedProjectBadge")}
-    </Badge>
+  const projectBadges = (
+    <>
+      {isArchived && (
+        <Badge
+          variant="outline"
+          className="bg-muted/50 flex items-center gap-1"
+        >
+          <ArchiveIcon className="h-3 w-3" />
+          {t("archivedProjectBadge")}
+        </Badge>
+      )}
+    </>
+  );
+
+  const rightElement = project?._job?._id ? (
+    <JobHelper jobId={project._job._id} />
   ) : null;
 
   return (
@@ -106,6 +121,7 @@ export default function ProjectsDetailPage() {
         title={project?.name}
         isLoading={isLoadingProject || isLoadingOrganization}
         badges={projectBadges}
+        rightElement={rightElement}
         className="-mt-6"
         backLink={{
           href: `/organizations/${project?.organization?._id}`,
@@ -138,6 +154,10 @@ export default function ProjectsDetailPage() {
           <TabsTrigger value="snapshots">
             <DatabaseIcon className="h-4 w-4" />
             {t("snapshots")}
+          </TabsTrigger>
+          <TabsTrigger value="datamodels">
+            <BoxIcon className="h-4 w-4" />
+            {t("dataModels")}
           </TabsTrigger>
           <TabsTrigger value="security">
             <ShieldIcon className="h-4 w-4" />
@@ -172,6 +192,11 @@ export default function ProjectsDetailPage() {
         {/* Snapshots Tab */}
         <TabsContent value="snapshots">
           <SnapshotsTab projectId={id as string} />
+        </TabsContent>
+
+        {/* Data Models Tab */}
+        <TabsContent value="datamodels">
+          <DataModelsTab projectId={id as string} />
         </TabsContent>
 
         {/* Security Tab */}

@@ -15,6 +15,7 @@ class Project extends Model {
     slug: "projects",
     keyProperty: "slug",
     noBulk: true,
+    loadDatamodel: false,
     properties: {
       name: { type: PropertyTypes.STRING },
       slug: { type: PropertyTypes.STRING },

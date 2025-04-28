@@ -12,6 +12,8 @@ export const createClient = (storage: AuthStorage) => {
     {
       endpoint: "api.graphand.dev",
       project: null,
+      // disableCache: true,
+      // disableStore: true,
     },
     [
       [ModuleAuth, { storage }],

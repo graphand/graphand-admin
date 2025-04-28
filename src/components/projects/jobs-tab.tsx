@@ -1,7 +1,6 @@
 import { useTranslation } from "@/lib/translation";
 import client from "@/lib/graphand-client";
 import { ModelInstance } from "@graphand/core";
-import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import {
   createSortableHeader,
@@ -9,6 +8,8 @@ import {
 } from "@/components/common/generic-table";
 import { useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
+import { JobStatusPill } from "@/components/jobs/job-status-pill";
+import { JobTypePill } from "@/components/jobs/job-type-pill";
 
 interface JobsTabProps {
   projectId: string;
@@ -25,7 +26,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
         header: createSortableHeader("_type", t("type")),
         cell: ({ row }) => {
           const type = row.getValue("_type") as string;
-          return <Badge variant="outline">{type}</Badge>;
+          return <JobTypePill type={type} />;
         },
       },
       {
@@ -33,16 +34,12 @@ export function JobsTab({ projectId }: JobsTabProps) {
         header: createSortableHeader("_status", t("status")),
         cell: ({ row }) => {
           const status = row.getValue("_status") as string;
-          const variant =
-            status === "completed"
-              ? "default"
-              : status === "failed"
-              ? "destructive"
-              : status === "running"
-              ? "secondary"
-              : "outline";
+          const startedAt = row.getValue("_startedAt") as
+            | Date
+            | null
+            | undefined;
 
-          return <Badge variant={variant}>{status}</Badge>;
+          return <JobStatusPill status={status} startedAt={startedAt} />;
         },
       },
       {
@@ -58,6 +55,14 @@ export function JobsTab({ projectId }: JobsTabProps) {
         header: createSortableHeader("_updatedAt", t("updatedAt")),
         cell: ({ row }) => {
           const date = row.getValue("_updatedAt") as string;
+          return format(new Date(date), "PPp");
+        },
+      },
+      {
+        accessorKey: "_startedAt",
+        header: createSortableHeader("_startedAt", t("startedAt")),
+        cell: ({ row }) => {
+          const date = row.getValue("_startedAt") as string;
           return format(new Date(date), "PPp");
         },
       },
@@ -78,8 +83,8 @@ export function JobsTab({ projectId }: JobsTabProps) {
       columns={columns}
       filter={jobsFilter}
       defaultSort={[{ id: "_createdAt", desc: true }]}
-      enableSorting={true}
-      enableSubscription={true}
+      enableSorting
+      enableSubscription
       emptyStateMessage={t("noJobsFound")}
     />
   );

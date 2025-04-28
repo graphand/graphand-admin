@@ -43,7 +43,7 @@ export function GenericTable<T extends typeof Model>({
   filter = {},
   defaultSort = [{ id: "_createdAt", desc: true }],
   columns,
-  pageSize = 10,
+  pageSize = 5,
   enableSorting = true,
   enableSubscription = true,
   emptyStateMessage,
@@ -81,41 +81,36 @@ export function GenericTable<T extends typeof Model>({
     subscriptionsRef.current = [];
   }, []);
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading,
-    isFetchingNextPage,
-    refetch,
-  } = useInfiniteQuery({
-    queryKey: [model.slug, filter, serverSort],
-    queryFn: async ({ pageParam = 0 }) => {
-      const list = await model.getList({
-        filter,
-        sort: serverSort,
-        pageSize,
-        page: pageParam + 1,
-      });
-
-      // Add this page's subscription to our array if enabled
-      if (enableSubscription) {
-        const unsubscribe = list.subscribe(() => {
-          // Force a re-render when any page's data is updated
-          setUpdateTrigger((prev) => prev + 1);
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: [model.slug, filter, serverSort],
+      queryFn: async ({ pageParam = 0 }) => {
+        const list = await model.getList({
+          filter,
+          sort: serverSort,
+          pageSize,
+          page: pageParam + 1,
         });
 
-        subscriptionsRef.current.push(unsubscribe);
-      }
+        // Add this page's subscription to our array if enabled
+        if (enableSubscription) {
+          const unsubscribe = list.subscribe((e) => {
+            console.log("update trigger", e);
+            // Force a re-render when any page's data is updated
+            setUpdateTrigger((prev) => prev + 1);
+          });
 
-      return list;
-    },
-    getNextPageParam: (lastPage, pages) => {
-      const totalFetched = pages.length * pageSize;
-      return totalFetched < lastPage.count ? lastPage.query.page : undefined;
-    },
-    initialPageParam: 0,
-  });
+          subscriptionsRef.current.push(unsubscribe);
+        }
+
+        return list;
+      },
+      getNextPageParam: (lastPage, pages) => {
+        const totalFetched = pages.length * pageSize;
+        return totalFetched < lastPage.count ? lastPage.query.page : undefined;
+      },
+      initialPageParam: 0,
+    });
 
   // Cleanup subscriptions on component unmount
   useEffect(() => {
@@ -125,14 +120,6 @@ export function GenericTable<T extends typeof Model>({
       }
     };
   }, [cleanupSubscriptions, enableSubscription]);
-
-  // When sorting changes, reset the data, cleanup subscriptions, and fetch with new sort
-  useEffect(() => {
-    if (data && enableSubscription) {
-      cleanupSubscriptions();
-      refetch();
-    }
-  }, [serverSort, refetch, data, cleanupSubscriptions, enableSubscription]);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
