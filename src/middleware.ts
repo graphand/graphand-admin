@@ -28,19 +28,19 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { headers } = request;
 
-  const proto = headers.get("x-forwarded-proto");
-  const host = headers.get("x-forwarded-host");
+  const proto = headers.get("x-forwarded-proto") || "http";
+  const host = headers.get("x-forwarded-host") || request.headers.get("host");
   const baseUrl = proto + "://" + host;
 
   const user = await getCurrentUserForMiddleware();
 
   // Check if user is trying to access a protected route without being logged in
-  if (isAuthRoute(pathname) && user) {
+  if (user && isAuthRoute(pathname)) {
     const redirectUrl = new URL("/", baseUrl);
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (!isAuthRoute(pathname) && !isPublicRoute(pathname) && !user) {
+  if (!user && !isAuthRoute(pathname) && !isPublicRoute(pathname)) {
     let redirectUrl: URL;
     if (request.nextUrl.pathname !== "/") {
       redirectUrl = new URL("/auth/login", baseUrl);
