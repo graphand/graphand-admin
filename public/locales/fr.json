@@ -287,9 +287,17 @@
     "duration": "Duration"
   },
 
+  "jobStatus": {
+    "queued": "En attente",
+    "running": "En cours",
+    "completed": "Terminé",
+    "failed": "Échoué",
+    "unknown": "Inconnu"
+  },
+
   "jobTypes": {
-    "initProject": "Project Initialization",
-    "upgradeProject": "Project Upgrade",
-    "removeProject": "Project Removal"
+    "initProject": "Initialisation du projet",
+    "upgradeProject": "Mise à jour du projet",
+    "removeProject": "Suppression du projet"
   }
 }

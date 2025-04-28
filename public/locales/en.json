@@ -287,6 +287,14 @@
     "duration": "Duration"
   },
 
+  "jobStatus": {
+    "queued": "Queued",
+    "running": "Running",
+    "completed": "Completed",
+    "failed": "Failed",
+    "unknown": "Unknown"
+  },
+
   "jobTypes": {
     "initProject": "Project Initialization",
     "upgradeProject": "Project Upgrade",

@@ -52,7 +52,8 @@ export function ProjectItemSkeleton() {
       <div data-slot="card-content" className="p-4 pt-0 flex-grow">
         <div className="flex flex-row items-center gap-2 mt-2">
           <Skeleton className="h-4 w-32" />
-          <JobHelper minimized className="border-none" />
+          <div className="h-1 w-1 bg-muted-foreground/50 rounded-full" />
+          <JobHelper minimized className="border-none p-0" />
         </div>
       </div>
       <div
@@ -104,16 +105,18 @@ export function ProjectItem({ project, isArchived = false }: ProjectItemProps) {
       <CardContent className="p-4 pt-0 flex-grow">
         <div className="flex flex-row items-center gap-2 mt-2">
           {project._createdAt && (
-            <div className="text-xs text-muted-foreground">
-              Created{" "}
-              {formatDistanceToNow(new Date(project._createdAt), {
-                addSuffix: true,
-              })}
-            </div>
+            <>
+              <div className="text-xs text-muted-foreground pr-0.5">
+                {formatDistanceToNow(new Date(project._createdAt), {
+                  addSuffix: true,
+                })}
+              </div>
+              <div className="h-1 w-1 bg-muted-foreground/50 rounded-full" />
+            </>
           )}
           <JobHelper
             jobId={project._job?._id}
-            className="justify-start border-none"
+            className="justify-start border-none p-0"
             minimized
           />
         </div>

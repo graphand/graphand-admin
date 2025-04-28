@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { JobDurationTimer } from "./job-duration-timer";
+import { useTranslation } from "@/lib/translation";
 
 interface JobStatusPillProps {
   status: JobStatus | string | null | undefined;
@@ -24,6 +25,8 @@ export function JobStatusPill({
   startedAt,
   minimized,
 }: JobStatusPillProps) {
+  const { t } = useTranslation();
+
   // Define badge variant based on status
   const getVariant = (status: JobStatus | string | null | undefined) => {
     if (!status) return "outline";
@@ -46,23 +49,36 @@ export function JobStatusPill({
   };
 
   // Get status icon based on job status
-  const getStatusIcon = (status: JobStatus | string | null | undefined) => {
+  const getStatusIcon = (
+    status: JobStatus | string | null | undefined,
+    className?: string
+  ) => {
     if (!status) return null;
 
     switch (status) {
       case JobStatus.COMPLETED:
       case "completed":
-        return <CheckCircle2Icon className="h-4 w-4" />;
+        return (
+          <CheckCircle2Icon
+            className={cn("h-4 w-4 text-green-600", className)}
+          />
+        );
       case JobStatus.FAILED:
       case "failed":
-        return <XCircleIcon className="h-4 w-4" />;
+        return (
+          <XCircleIcon className={cn("h-4 w-4 text-red-600", className)} />
+        );
       case JobStatus.ACTIVE:
       case "active":
       case "running":
-        return <Loader2Icon className="h-4 w-4 animate-spin" />;
+        return (
+          <Loader2Icon
+            className={cn("h-4 w-4 animate-spin text-black", className)}
+          />
+        );
       case JobStatus.QUEUED:
       case "queued":
-        return <TimerIcon className="h-4 w-4" />;
+        return <TimerIcon className={cn("h-4 w-4 text-black", className)} />;
       default:
         return null;
     }
@@ -90,8 +106,8 @@ export function JobStatusPill({
       variant={getVariant(status)}
       className={cn("text-xs flex items-center", className)}
     >
-      {getStatusIcon(status)}
-      {!minimized && (status || "unknown")}
+      {getStatusIcon(status, "text-white")}
+      {!minimized && t(`jobStatus.${status || "unknown"}`)}
       {isActive && startedAt && (
         <JobDurationTimer
           startTime={startedAt}
