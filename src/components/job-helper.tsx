@@ -114,7 +114,7 @@ export function JobHelper({ jobId, className, minimized }: JobHelperProps) {
       <DropdownMenuContent
         align="start"
         style={{ width: `${dropdownWidth}px` }}
-        className="p-0 min-w-64"
+        className="p-0 min-w-60"
       >
         <div className="p-3 space-y-1 bg-muted/50 border-b">
           <div className="flex items-center gap-2">

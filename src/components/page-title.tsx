@@ -29,14 +29,12 @@ export function PageTitleSkeleton({
           <Skeleton className="h-5 w-40" />
         </div>
       )}
-      <div className="flex items-center gap-3 h-10">
-        <Skeleton className="h-9 w-60" />
-        {badges && <Skeleton className="h-5 w-20" />}
-        {rightElement && (
-          <div className="ml-auto">
-            <Skeleton className="h-5 w-20" />
-          </div>
-        )}
+      <div className="flex items-center justify-between h-10">
+        <h1 className="text-3xl font-bold flex items-center gap-3">
+          <Skeleton className="h-9 w-60" />
+          {badges && <Skeleton className="h-5 w-20" />}
+        </h1>
+        {rightElement && <div className="ml-auto">{rightElement}</div>}
       </div>
     </div>
   );

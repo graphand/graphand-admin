@@ -73,7 +73,10 @@ export default function ProjectsDetailPage() {
     isLoading: isLoadingProject,
     isError: isErrorProject,
     error: projectError,
-  } = useInstance(client.model("projects"), id);
+  } = useInstance(client.model("projects"), {
+    filter: id,
+    populate: ["_job"],
+  });
 
   // Check if project is archived based on slug
   const isArchived = project?.slug?.startsWith("_archive");
@@ -111,9 +114,7 @@ export default function ProjectsDetailPage() {
     </>
   );
 
-  const rightElement = project?._job?._id ? (
-    <JobHelper jobId={project._job._id} />
-  ) : null;
+  const rightElement = <JobHelper jobId={project?._job?._id} />;
 
   return (
     <div className="container mx-auto py-10 relative">

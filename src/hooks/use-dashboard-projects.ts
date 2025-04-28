@@ -35,6 +35,7 @@ export function useDashboardProjects(
         page: pageParam,
         filter,
         sort,
+        populate: ["_job"],
       });
 
       // Extract items and count
