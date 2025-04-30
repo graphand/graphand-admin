@@ -289,7 +289,7 @@
 
   "jobStatus": {
     "queued": "En attente",
-    "running": "En cours",
+    "active": "En cours",
     "completed": "Terminé",
     "failed": "Échoué",
     "unknown": "Inconnu"

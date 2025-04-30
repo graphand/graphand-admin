@@ -3,15 +3,23 @@ import { cookies } from "next/headers";
 import { createClient } from "./graphand";
 
 export const createServerClient = async () => {
+  const cookieStore = await cookies();
+  const project = cookieStore.get("NEXT_GRAPHAND_PROJECT");
+  const base = project?.value || "global";
+
   const storage: AuthStorage = {
-    getItem: async (key: string) => (await cookies()).get(key)?.value || null,
+    getItem: async (key: string) => {
+      return (
+        cookieStore.get(encodeURIComponent(`${base}:${key}`))?.value || null
+      );
+    },
     setItem: async (key: string, value: string) => {
-      (await cookies()).set(key, value);
+      cookieStore.set(encodeURIComponent(`${base}:${key}`), value);
     },
     removeItem: async (key: string) => {
-      (await cookies()).delete(key);
+      cookieStore.delete(encodeURIComponent(`${base}:${key}`));
     },
   };
 
-  return createClient(storage);
+  return createClient(storage, project?.value);
 };

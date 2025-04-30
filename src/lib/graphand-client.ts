@@ -2,25 +2,27 @@
 
 import { AuthStorage } from "@graphand/client-module-auth";
 import { createClient } from "./graphand";
+import Cookies from "js-cookie";
+
+const project = Cookies.get("NEXT_GRAPHAND_PROJECT");
+const base = project || "global";
 
 // Create a client-side storage adapter that works with cookies
 const clientStorage: AuthStorage = {
   getItem: async (key: string) => {
-    return (
-      document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(`${key}=`))
-        ?.split("=")[1] || null
-    );
+    return Cookies.get(encodeURIComponent(`${base}:${key}`)) || null;
   },
   setItem: async (key: string, value: string) => {
-    document.cookie = `${key}=${value}; path=/; SameSite=Lax`;
+    Cookies.set(encodeURIComponent(`${base}:${key}`), value, {
+      sameSite: "lax",
+    });
   },
   removeItem: async (key: string) => {
-    document.cookie = `${key}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+    Cookies.remove(encodeURIComponent(`${base}:${key}`));
   },
 };
 
 // Export the client instance
-const client = createClient(clientStorage);
+const client = createClient(clientStorage, project);
+
 export default client;

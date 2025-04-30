@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/graphand-server";
+import { cookies } from "next/headers";
 
 const isPublicRoute = (pathname: string) => {
-  return (
-    pathname.startsWith("/public") ||
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api")
-  );
+  return pathname.startsWith("/public");
 };
 
 const isAuthRoute = (pathname: string) => {
   return pathname.startsWith("/auth");
+};
+
+const getCookieProject = async () => {
+  const cookieStore = await cookies();
+  const project = cookieStore.get("NEXT_GRAPHAND_PROJECT");
+  return project?.value;
 };
 
 /**
@@ -32,24 +35,57 @@ export async function middleware(request: NextRequest) {
   const host = headers.get("x-forwarded-host") || request.headers.get("host");
   const baseUrl = proto + "://" + host;
 
-  const user = await getCurrentUserForMiddleware();
+  // Normalize path by removing scope if already present
+  const segments = pathname.split("/");
+  let cleanPath: string;
 
-  // Check if user is trying to access a protected route without being logged in
-  if (user && isAuthRoute(pathname)) {
-    const redirectUrl = new URL("/", baseUrl);
-    return NextResponse.redirect(redirectUrl);
+  if (segments[1].startsWith("$")) {
+    cleanPath = "/" + segments.slice(2).join("/");
+  } else {
+    cleanPath = pathname;
   }
 
-  if (!user && !isAuthRoute(pathname) && !isPublicRoute(pathname)) {
-    let redirectUrl: URL;
-    if (request.nextUrl.pathname !== "/") {
-      redirectUrl = new URL("/auth/login", baseUrl);
-    } else {
-      const callbackUrl = encodeURIComponent(request.nextUrl.pathname);
-      redirectUrl = new URL("/auth/login?callbackUrl=" + callbackUrl, baseUrl);
+  if (!isPublicRoute(cleanPath)) {
+    // Check auth status
+    const user = await getCurrentUserForMiddleware();
+
+    // Handle auth redirects
+    if (user && isAuthRoute(cleanPath)) {
+      const redirectUrl = new URL("/", baseUrl);
+      return NextResponse.redirect(redirectUrl);
     }
 
-    return NextResponse.redirect(redirectUrl);
+    if (!user && !isAuthRoute(cleanPath)) {
+      let redirectUrl: URL;
+      if (cleanPath !== "/") {
+        redirectUrl = new URL("/auth/login", baseUrl);
+      } else {
+        const callbackUrl = encodeURIComponent(cleanPath);
+        redirectUrl = new URL(
+          "/auth/login?callbackUrl=" + callbackUrl,
+          baseUrl
+        );
+      }
+
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
+  // After auth check, determine and apply the correct scope
+  const project = await getCookieProject();
+  const scope = project ? "$project" : "$global";
+
+  // Only rewrite if not already on the correct scope path
+  if (segments[1].startsWith("$")) {
+    const url = new URL(cleanPath, baseUrl);
+    // Preserve the search params
+    url.search = request.nextUrl.search;
+    return NextResponse.redirect(url);
+  } else if (segments[1] !== scope) {
+    const url = new URL(`/${scope}${cleanPath}`, baseUrl);
+    // Preserve the search params
+    url.search = request.nextUrl.search;
+    return NextResponse.rewrite(url);
   }
 
   return NextResponse.next();
