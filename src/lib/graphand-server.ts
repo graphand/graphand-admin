@@ -7,17 +7,19 @@ export const createServerClient = async () => {
   const project = cookieStore.get("NEXT_GRAPHAND_PROJECT");
   const base = project?.value || "global";
 
+  const encodeCookieKey = (key: string) => {
+    return `${base}:${key}`.replace(/:/g, "_");
+  };
+
   const storage: AuthStorage = {
     getItem: async (key: string) => {
-      return (
-        cookieStore.get(encodeURIComponent(`${base}:${key}`))?.value || null
-      );
+      return cookieStore.get(encodeCookieKey(key))?.value || null;
     },
     setItem: async (key: string, value: string) => {
-      cookieStore.set(encodeURIComponent(`${base}:${key}`), value);
+      cookieStore.set(encodeCookieKey(key), value);
     },
     removeItem: async (key: string) => {
-      cookieStore.delete(encodeURIComponent(`${base}:${key}`));
+      cookieStore.delete(encodeCookieKey(key));
     },
   };
 

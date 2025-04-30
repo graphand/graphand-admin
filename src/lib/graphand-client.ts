@@ -7,18 +7,22 @@ import Cookies from "js-cookie";
 const project = Cookies.get("NEXT_GRAPHAND_PROJECT");
 const base = project || "global";
 
+const encodeCookieKey = (key: string) => {
+  return `${base}:${key}`.replace(/:/g, "_");
+};
+
 // Create a client-side storage adapter that works with cookies
 const clientStorage: AuthStorage = {
   getItem: async (key: string) => {
-    return Cookies.get(encodeURIComponent(`${base}:${key}`)) || null;
+    return Cookies.get(encodeCookieKey(key)) || null;
   },
   setItem: async (key: string, value: string) => {
-    Cookies.set(encodeURIComponent(`${base}:${key}`), value, {
+    Cookies.set(encodeCookieKey(key), value, {
       sameSite: "lax",
     });
   },
   removeItem: async (key: string) => {
-    Cookies.remove(encodeURIComponent(`${base}:${key}`));
+    Cookies.remove(encodeCookieKey(key));
   },
 };
 
