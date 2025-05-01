@@ -57,30 +57,30 @@ export function JobStatusPill({
 
     switch (status) {
       case JobStatus.COMPLETED:
-      case "completed":
-        return (
-          <CheckCircle2Icon
-            className={cn("h-4 w-4 text-green-600", className)}
-          />
-        );
+        return <CheckCircle2Icon className={cn("h-4 w-4", className)} />;
       case JobStatus.FAILED:
-      case "failed":
-        return (
-          <XCircleIcon className={cn("h-4 w-4 text-red-600", className)} />
-        );
+        return <XCircleIcon className={cn("h-4 w-4", className)} />;
       case JobStatus.ACTIVE:
-      case "active":
-      case "running":
         return (
-          <Loader2Icon
-            className={cn("h-4 w-4 animate-spin text-black", className)}
-          />
+          <Loader2Icon className={cn("h-4 w-4 animate-spin", className)} />
         );
       case JobStatus.QUEUED:
-      case "queued":
-        return <TimerIcon className={cn("h-4 w-4 text-black", className)} />;
+        return <TimerIcon className={cn("h-4 w-4", className)} />;
       default:
         return null;
+    }
+  };
+
+  const getMinimizedIconClassName = (
+    status: JobStatus | string | null | undefined
+  ) => {
+    switch (status) {
+      case JobStatus.COMPLETED:
+        return "text-green-600";
+      case JobStatus.FAILED:
+        return "text-red-600";
+      default:
+        return "text-black";
     }
   };
 
@@ -89,7 +89,7 @@ export function JobStatusPill({
   if (minimized) {
     return (
       <div className="flex items-center text-sm h-5 min-w-5 justify-center">
-        {getStatusIcon(status)}
+        {getStatusIcon(status, getMinimizedIconClassName(status))}
         {isActive && startedAt && (
           <JobDurationTimer
             startTime={startedAt}
@@ -106,7 +106,7 @@ export function JobStatusPill({
       variant={getVariant(status)}
       className={cn("text-xs flex items-center", className)}
     >
-      {getStatusIcon(status, "text-white")}
+      {getStatusIcon(status)}
       {!minimized && t(`jobStatus.${status || "unknown"}`)}
       {isActive && startedAt && (
         <JobDurationTimer

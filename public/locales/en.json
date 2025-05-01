@@ -298,6 +298,18 @@
   "jobTypes": {
     "initProject": "Project Initialization",
     "upgradeProject": "Project Upgrade",
-    "removeProject": "Project Removal"
-  }
+    "removeProject": "Project Removal",
+    "restartProject": "Project Restart"
+  },
+
+  "columns": "Columns",
+  "toggleColumns": "Toggle columns visibility",
+  "reorderColumns": "Reorder columns",
+  "customizeColumns": "Customize columns",
+  "dragAndToggleColumnsHint": "Drag to reorder, click the eye icon to show/hide",
+  "dragColumnsToReorder": "Drag columns to reorder them",
+  "primaryColumn": "Primary column",
+  "resetColumns": "Reset to Default",
+  "apply": "Apply",
+  "cancel": "Cancel"
 }

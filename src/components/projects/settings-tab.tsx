@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AlertTriangle, Trash } from "lucide-react";
+import { AlertTriangle, Trash, RefreshCw } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,8 +35,10 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isRestartDialogOpen, setIsRestartDialogOpen] = useState(false);
   const [confirmProjectName, setConfirmProjectName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isRestarting, setIsRestarting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
@@ -81,6 +83,40 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
     }
   };
 
+  const handleRestartProject = async () => {
+    try {
+      setIsRestarting(true);
+
+      const res = await client.execute(
+        {
+          path: "/projects/:id/restart",
+          methods: ["post"],
+          secured: true,
+        },
+        {
+          params: {
+            id: projectId,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: [Project.slug],
+      });
+
+      // Close dialog after simulating restart action
+      setIsRestartDialogOpen(false);
+    } catch (error) {
+      console.error("Failed to restart project:", error);
+    } finally {
+      setIsRestarting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Card>
@@ -89,6 +125,27 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
         </CardHeader>
         <CardContent>
           <p>{t("projectSettingsPlaceholder")}</p>
+        </CardContent>
+      </Card>
+
+      {/* Project Actions */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("projectActions") || "Project Actions"}</CardTitle>
+          <CardDescription>
+            {t("projectActionsDescription") ||
+              "Actions you can perform on this project"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            variant="outline"
+            onClick={() => setIsRestartDialogOpen(true)}
+            className="flex items-center gap-2"
+          >
+            <RefreshCw size={16} />
+            {t("restartProject") || "Restart Project"}
+          </Button>
         </CardContent>
       </Card>
 
@@ -115,6 +172,36 @@ export function SettingsTab({ projectId }: SettingsTabProps) {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Restart Project Confirmation Dialog */}
+      <AlertDialog
+        open={isRestartDialogOpen}
+        onOpenChange={setIsRestartDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("restartProjectConfirmation") || "Restart Project"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("restartProjectConfirmationDescription") ||
+                "Are you sure you want to restart this project? This may cause temporary service disruption."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleRestartProject}
+              disabled={isRestarting}
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              {isRestarting
+                ? t("restarting") || "Restarting..."
+                : t("restartProject") || "Restart Project"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Delete Project Confirmation Dialog */}
       <AlertDialog

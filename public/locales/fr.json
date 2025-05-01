@@ -91,7 +91,7 @@
   "organizationNameDescription": "The name of your organization as it will appear to users",
   "organizationSlugPlaceholder": "my-organization",
   "organizationSlugDescription": "A unique identifier for your organization (used in URLs)",
-  "cancel": "Cancel",
+  "cancel": "Annuler",
   "creating": "Creating...",
   "create": "Create",
 
@@ -298,6 +298,17 @@
   "jobTypes": {
     "initProject": "Initialisation du projet",
     "upgradeProject": "Mise à jour du projet",
-    "removeProject": "Suppression du projet"
-  }
+    "removeProject": "Suppression du projet",
+    "restartProject": "Redémarrage du projet"
+  },
+
+  "columns": "Colonnes",
+  "toggleColumns": "Afficher/masquer les colonnes",
+  "reorderColumns": "Réorganiser les colonnes",
+  "customizeColumns": "Personnaliser les colonnes",
+  "dragAndToggleColumnsHint": "Glisser pour réorganiser, cliquer sur l'icône d'œil pour afficher/masquer",
+  "dragColumnsToReorder": "Glisser-déposer pour réorganiser",
+  "primaryColumn": "Colonne principale",
+  "resetColumns": "Réinitialiser",
+  "apply": "Appliquer"
 }

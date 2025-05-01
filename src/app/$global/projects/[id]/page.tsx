@@ -114,6 +114,7 @@ export default function ProjectsDetailPage() {
     </>
   );
 
+  console.log(project?._job?._id);
   const rightElement = <JobHelper jobId={project?._job?._id} />;
 
   return (

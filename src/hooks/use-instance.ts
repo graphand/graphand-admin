@@ -16,6 +16,7 @@ export function useInstance<T extends typeof Model>(
 ) {
   const subscriptionsRef = useRef<(() => void) | null>(null);
   const [, setUpdateTrigger] = useState(0);
+  const updatedAtRef = useRef<string | null>(null);
 
   useEffect(() => {
     return () => {
@@ -42,6 +43,23 @@ export function useInstance<T extends typeof Model>(
       }
 
       return instance;
+    },
+    structuralSharing: (oldData, newData) => {
+      const oldUpdatedAt = updatedAtRef.current;
+      const newUpdatedAt = (newData as ModelInstance)?._updatedAt;
+
+      const hasChanged = oldUpdatedAt !== newUpdatedAt?.toString();
+
+      if (hasChanged) {
+        updatedAtRef.current = newUpdatedAt?.toString() || null;
+        // Force refresh if the ref is the same (data have changed)
+        if (oldData === newData) {
+          setUpdateTrigger((prev) => prev + 1);
+        }
+        return newData;
+      }
+
+      return oldData;
     },
   });
 }

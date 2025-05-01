@@ -22,6 +22,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
   const columns: ColumnDef<ModelInstance<typeof model>>[] = useMemo(
     () => [
       {
+        id: "_type",
         accessorKey: "_type",
         header: createSortableHeader("_type", t("type")),
         cell: ({ row }) => {
@@ -30,6 +31,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
         },
       },
       {
+        id: "_status",
         accessorKey: "_status",
         header: createSortableHeader("_status", t("status")),
         cell: ({ row }) => {
@@ -43,6 +45,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
         },
       },
       {
+        id: "_createdAt",
         accessorKey: "_createdAt",
         header: createSortableHeader("_createdAt", t("createdAt")),
         cell: ({ row }) => {
@@ -51,6 +54,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
         },
       },
       {
+        id: "_updatedAt",
         accessorKey: "_updatedAt",
         header: createSortableHeader("_updatedAt", t("updatedAt")),
         cell: ({ row }) => {
@@ -59,6 +63,7 @@ export function JobsTab({ projectId }: JobsTabProps) {
         },
       },
       {
+        id: "_startedAt",
         accessorKey: "_startedAt",
         header: createSortableHeader("_startedAt", t("startedAt")),
         cell: ({ row }) => {
@@ -79,12 +84,22 @@ export function JobsTab({ projectId }: JobsTabProps) {
   return (
     <GenericTable
       model={model}
+      enableColumnCustomization
       title={t("projectJobs")}
+      primaryColumn="_type"
       columns={columns}
       filter={jobsFilter}
       defaultSort={[{ id: "_createdAt", desc: true }]}
       enableSorting
       enableSubscription
+      defaultColumns={[
+        { id: "_type", visible: true },
+        { id: "_status", visible: true },
+        { id: "_startedAt", visible: true },
+        { id: "_createdAt", visible: true },
+        { id: "_updatedAt", visible: true },
+      ]}
+      tableId="global-projects-jobs"
       emptyStateMessage={t("noJobsFound")}
     />
   );
