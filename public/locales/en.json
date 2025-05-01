@@ -1,6 +1,13 @@
 {
   "dashboard": "Dashboard",
-  "organizations": "Organizations",
+  "organizations": {
+    "navigation": {
+      "projects": "Projects",
+      "archivedProjects": "Archived Projects",
+      "members": "Members",
+      "settings": "Settings"
+    }
+  },
   "organization": "Organization",
   "profile": "Profile",
   "selectOrganization": "Select organization",
@@ -8,6 +15,18 @@
   "manageOrganizations": "Manage Organizations",
   "viewProfile": "View Profile",
   "join_organization": "Join Organization",
+
+  "projects": {
+    "navigation": {
+      "overview": "Overview",
+      "usage": "Usage",
+      "subscription": "Subscription",
+      "jobs": "Jobs",
+      "snapshots": "Snapshots",
+      "security": "Security",
+      "settings": "Settings"
+    }
+  },
 
   "welcomeDashboard": "Welcome to your Dashboard!",
   "loggedIn": "You are now logged in to your Graphand account.",
@@ -17,6 +36,21 @@
   "noOrganizationsFound": "No organizations found",
   "total": "Total",
   "organizationsCount": "organizations",
+
+  "models": {
+    "jobs": {
+      "properties": {
+        "_id": "ID",
+        "_status": "Status",
+        "_type": "Type",
+        "_createdAt": "Created At",
+        "_updatedAt": "Updated At",
+        "_startedAt": "Started At",
+        "_completedAt": "Completed At",
+        "_result": "Result"
+      }
+    }
+  },
 
   "id": "ID",
   "name": "Name",
@@ -75,7 +109,6 @@
   "archivedProjectsToggleLabel": "Show archived projects",
   "archivedProjectBadge": "Archived",
   "project": "Project",
-  "projects": "Projects",
 
   "createNewProject": "Create a New Project",
   "createProjectDescription": "Enter the details for your new project",
@@ -249,8 +282,6 @@
   "projectSnapshots": "Project Snapshots",
   "projectSnapshotsPlaceholder": "View and restore project snapshots",
 
-  "dataModels": "Data Models",
-  "dataModelsDescription": "Manage your project's data models and schemas",
   "noModelsFound": "No data models found in this project",
   "keyProperty": "Key Property",
   "fields": "Fields",
@@ -311,5 +342,11 @@
   "primaryColumn": "Primary column",
   "resetColumns": "Reset to Default",
   "apply": "Apply",
-  "cancel": "Cancel"
+  "noJobsFound": "No jobs found",
+
+  "projectActions": "Project Actions",
+  "projectActionsDescription": "Actions you can perform on this project",
+  "restartProjectConfirmation": "Restart Project?",
+  "restartProjectConfirmationDescription": "Are you sure you want to restart this project? This may cause temporary service disruption.",
+  "restarting": "Restarting..."
 }

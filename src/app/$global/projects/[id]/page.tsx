@@ -16,7 +16,6 @@ import {
   ShieldIcon,
   SettingsIcon,
   ArchiveIcon,
-  BoxIcon,
 } from "lucide-react";
 
 // Import tab components
@@ -27,7 +26,6 @@ import { JobsTab } from "@/components/projects/jobs-tab";
 import { SnapshotsTab } from "@/components/projects/snapshots-tab";
 import { SecurityTab } from "@/components/projects/security-tab";
 import { SettingsTab } from "@/components/projects/settings-tab";
-import { DataModelsTab } from "@/components/projects/datamodels-tab";
 import { ModelInstance } from "@graphand/core";
 import Organization from "@/lib/models/Organization";
 import { useInstance } from "@/hooks/use-instance";
@@ -52,7 +50,6 @@ export default function ProjectsDetailPage() {
         "jobs",
         "snapshots",
         "security",
-        "datamodels",
         "settings",
       ].includes(hash)
     ) {
@@ -114,7 +111,6 @@ export default function ProjectsDetailPage() {
     </>
   );
 
-  console.log(project?._job?._id);
   const rightElement = <JobHelper jobId={project?._job?._id} />;
 
   return (
@@ -139,35 +135,31 @@ export default function ProjectsDetailPage() {
         <TabsList className="mb-6 gap-1">
           <TabsTrigger value="overview">
             <LayoutDashboardIcon className="h-4 w-4" />
-            {t("overview")}
+            {t("projects.navigation.overview")}
           </TabsTrigger>
           <TabsTrigger value="usage">
             <BarChartIcon className="h-4 w-4" />
-            {t("usage")}
+            {t("projects.navigation.usage")}
           </TabsTrigger>
           <TabsTrigger value="subscription">
             <CreditCardIcon className="h-4 w-4" />
-            {t("subscription")}
+            {t("projects.navigation.subscription")}
           </TabsTrigger>
           <TabsTrigger value="jobs">
             <ClockIcon className="h-4 w-4" />
-            {t("jobs")}
+            {t("projects.navigation.jobs")}
           </TabsTrigger>
           <TabsTrigger value="snapshots">
             <DatabaseIcon className="h-4 w-4" />
-            {t("snapshots")}
-          </TabsTrigger>
-          <TabsTrigger value="datamodels">
-            <BoxIcon className="h-4 w-4" />
-            {t("dataModels")}
+            {t("projects.navigation.snapshots")}
           </TabsTrigger>
           <TabsTrigger value="security">
             <ShieldIcon className="h-4 w-4" />
-            {t("security")}
+            {t("projects.navigation.security")}
           </TabsTrigger>
           <TabsTrigger value="settings">
             <SettingsIcon className="h-4 w-4" />
-            {t("settings")}
+            {t("projects.navigation.settings")}
           </TabsTrigger>
         </TabsList>
 
@@ -194,11 +186,6 @@ export default function ProjectsDetailPage() {
         {/* Snapshots Tab */}
         <TabsContent value="snapshots">
           <SnapshotsTab projectId={id as string} />
-        </TabsContent>
-
-        {/* Data Models Tab */}
-        <TabsContent value="datamodels">
-          <DataModelsTab projectId={id as string} />
         </TabsContent>
 
         {/* Security Tab */}

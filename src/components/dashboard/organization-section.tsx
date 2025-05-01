@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Organization } from "@/hooks/use-dashboard-organizations";
-import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
+import { useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { ProjectItem, ProjectItemSkeleton } from "./project-item";
 import { CreateProjectCard } from "./create-project-card";
 import { Button } from "@/components/ui/button";
@@ -74,7 +74,9 @@ export function OrganizationSection({
             ) : (
               <span className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full">
                 {totalProjects}{" "}
-                {totalProjects === 1 ? t("project") : t("projects")}
+                {totalProjects === 1
+                  ? t("labels.project")
+                  : t("labels.projects")}
               </span>
             )}
           </div>
@@ -127,7 +129,7 @@ export function OrganizationSection({
               page.items.map((project) => (
                 <ProjectItem
                   key={project._id}
-                  project={project as unknown as Project}
+                  project={project}
                   isArchived={false}
                 />
               ))

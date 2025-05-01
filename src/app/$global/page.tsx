@@ -126,8 +126,8 @@ export default function DashboardPage() {
             <p className="text-muted-foreground mt-1">
               {totalOrganizations}{" "}
               {totalOrganizations === 1
-                ? t("organization")
-                : t("organizations")}
+                ? t("labels.organization")
+                : t("labels.organizations")}
             </p>
           )}
         </div>

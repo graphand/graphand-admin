@@ -139,7 +139,7 @@ export function JobHelper({ jobId, className, minimized }: JobHelperProps) {
               {job._createdAt && (
                 <div className="flex justify-between gap-x-2">
                   <span className="text-muted-foreground truncate text-xs">
-                    {t("jobs.createdAt")}:
+                    {t("models.jobs.properties._createdAt")}:
                   </span>
                   <span className="text-right w-0 grow-1">
                     {formatDistanceToNow(new Date(job._createdAt), {
@@ -151,7 +151,7 @@ export function JobHelper({ jobId, className, minimized }: JobHelperProps) {
               {job._startedAt && (
                 <div className="flex justify-between gap-x-2">
                   <span className="text-muted-foreground truncate text-xs">
-                    {t("jobs.startedAt")}:
+                    {t("models.jobs.properties._startedAt")}:
                   </span>
                   <span className="text-right w-0 grow-1">
                     {formatDistanceToNow(new Date(job._startedAt), {
@@ -163,7 +163,7 @@ export function JobHelper({ jobId, className, minimized }: JobHelperProps) {
               {job._completedAt && (
                 <div className="flex justify-between gap-x-2">
                   <span className="text-muted-foreground truncate text-xs">
-                    {t("jobs.completedAt")}:
+                    {t("models.jobs.properties._completedAt")}:
                   </span>
                   <span className="text-right w-0 grow-1">
                     {formatDistanceToNow(new Date(job._completedAt), {

@@ -36,6 +36,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import { createSortableHeader } from "./generic-table";
 
 interface SortableColumnItemProps {
   id: string;
@@ -137,7 +138,7 @@ export function ColumnCustomizationMenu({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [columnItems, setColumnItems] = useState<
-    { id: string; label: string }[]
+    { id: string; label: React.ReactNode }[]
   >([]);
 
   // Create a map for quick lookup of column objects by ID
@@ -153,20 +154,30 @@ export function ColumnCustomizationMenu({
   useEffect(() => {
     // Create items in the current order with proper labels
     const orderedItems = currentColumnOrder.map((id) => {
-      // Format the label from column ID
+      const column = columnsMap.get(id);
+      let label: React.ReactNode = id;
+      if (column?.columnDef.header) {
+        if (typeof column.columnDef.header === "string") {
+          label = column.columnDef.header;
+        } else {
+          const HeaderComponent = column.columnDef.header as ReturnType<
+            typeof createSortableHeader
+          >;
+          label = React.createElement(HeaderComponent, {
+            column,
+            hideControls: true,
+          });
+        }
+      }
+
       return {
         id,
-        label:
-          id.charAt(0).toUpperCase() +
-          id
-            .slice(1)
-            .replace(/([A-Z])/g, " $1")
-            .trim(),
+        label,
       };
     });
 
     setColumnItems(orderedItems);
-  }, [currentColumnOrder, columns]);
+  }, [currentColumnOrder]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -197,15 +208,11 @@ export function ColumnCustomizationMenu({
     }
   };
 
-  const getColumnById = (id: string) => {
-    return columnsMap.get(id);
-  };
-
   const handleToggleVisibility = (id: string, isVisible: boolean) => {
     // Don't allow toggling locked columns
     if (lockedColumnIds.includes(id)) return;
 
-    const column = getColumnById(id);
+    const column = columnsMap.get(id);
     if (column) {
       column.toggleVisibility(isVisible);
     }
@@ -246,14 +253,14 @@ export function ColumnCustomizationMenu({
               strategy={verticalListSortingStrategy}
             >
               {columnItems.map((item) => {
-                const column = getColumnById(item.id);
+                const column = columnsMap.get(item.id);
                 const isLocked = lockedColumnIds.includes(item.id);
 
                 return (
                   <SortableColumnItem
                     key={item.id}
                     id={item.id}
-                    label={item.label}
+                    label={item.label as string}
                     checked={(isLocked || column?.getIsVisible()) ?? true}
                     onCheckedChange={(checked) =>
                       handleToggleVisibility(item.id, checked)

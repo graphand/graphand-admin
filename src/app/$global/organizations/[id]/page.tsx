@@ -67,19 +67,19 @@ export default function OrganizationsDetailPage() {
         <TabsList className="mb-6 gap-1">
           <TabsTrigger value="projects">
             <FolderIcon className="h-4 w-4" />
-            {t("projects")}
+            {t("organizations.navigation.projects")}
           </TabsTrigger>
           <TabsTrigger value="archived-projects">
             <ArchiveIcon className="h-4 w-4" />
-            {t("archivedProjects")}
+            {t("organizations.navigation.archivedProjects")}
           </TabsTrigger>
           <TabsTrigger value="members">
             <UserIcon className="h-4 w-4" />
-            {t("members")}
+            {t("organizations.navigation.members")}
           </TabsTrigger>
           <TabsTrigger value="settings">
             <SettingsIcon className="h-4 w-4" />
-            {t("settings")}
+            {t("organizations.navigation.settings")}
           </TabsTrigger>
         </TabsList>
 

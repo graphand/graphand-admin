@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { ColumnConfig } from "@/components/common/generic-table";
+import { ColumnConfig } from "@/lib/hooks/useColumnManagement";
 
 interface ColumnsState {
   // Store the column configurations by tableId (model name)

@@ -74,7 +74,7 @@ export default function OrganizationPage() {
     return (
       <div className="container mx-auto py-10">
         <div className="flex justify-between items-center mb-6">
-          <div className="text-3xl font-bold">{t("organizations")}</div>
+          <div className="text-3xl font-bold">{t("organizations.title")}</div>
           <Button asChild variant="default">
             <Link href="/organizations/create" className="gap-2">
               <PlusIcon className="h-4 w-4" />
@@ -108,7 +108,7 @@ export default function OrganizationPage() {
     return (
       <div className="container mx-auto py-10">
         <div className="flex justify-between items-center mb-6">
-          <div className="text-3xl font-bold">{t("organizations")}</div>
+          <div className="text-3xl font-bold">{t("organizations.title")}</div>
           <Button asChild variant="default">
             <Link href="/organizations/create" className="gap-2">
               <PlusIcon className="h-4 w-4" />
@@ -138,7 +138,7 @@ export default function OrganizationPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6">
-        <div className="text-3xl font-bold">{t("organizations")}</div>
+        <div className="text-3xl font-bold">{t("organizations.title")}</div>
         <Button asChild variant="default">
           <Link href="/organizations/create" className="gap-2">
             <PlusIcon className="h-4 w-4" />
@@ -152,7 +152,7 @@ export default function OrganizationPage() {
           <CardDescription>{t("viewAndManageOrganizations")}</CardDescription>
         </CardHeader>
         <CardContent>
-          {organizations.length > 0 ? (
+          {organizations.length ? (
             <>
               <Table>
                 <TableHeader>
