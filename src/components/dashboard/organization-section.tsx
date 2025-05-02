@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Organization } from "@/hooks/use-dashboard-organizations";
 import { useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { ProjectItem, ProjectItemSkeleton } from "./project-item";
 import { CreateProjectCard } from "./create-project-card";
@@ -9,20 +8,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/lib/translation";
 import Link from "next/link";
+import { ModelInstance } from "@graphand/core";
+import Organization from "@/lib/models/Organization";
+import { useRouter } from "next/navigation";
 
 interface OrganizationSectionProps {
-  organization: Organization;
+  organization: ModelInstance<typeof Organization>;
 }
 
 export function OrganizationSectionSkeleton() {
   return (
     <div>
-      <div className="sticky top-0 py-4 z-10 border-b bg-background">
+      <div className="sticky top-0 py-4 z-10 border-b bg-background px-1 -mx-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">
               <Skeleton className="h-6 w-32" />
             </h2>
+            <Skeleton className="h-6 w-20 rounded-full" />
             <Skeleton className="h-6 w-20 rounded-full" />
           </div>
           <Skeleton className="h-8 w-40 rounded-md" />
@@ -42,6 +45,7 @@ export function OrganizationSection({
 }: OrganizationSectionProps) {
   const { t } = useTranslation();
   const { ref, inView } = useInView();
+  const router = useRouter();
 
   // Query for active projects only
   const {
@@ -62,21 +66,41 @@ export function OrganizationSection({
 
   // Calculate total projects count
   const totalProjects = data?.pages[0]?.totalCount || 0;
+  const totalMembers = organization._accounts?.cached?.count || 0;
 
   return (
     <div>
-      <div className="sticky top-0 py-4 z-10 border-b bg-background">
+      <div className="sticky top-0 py-4 z-10 border-b bg-background px-1 -mx-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">{organization.name}</h2>
             {isLoading ? (
               <Skeleton className="h-6 w-20 rounded-full" />
             ) : (
-              <span className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full">
+              <span
+                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer"
+                onClick={() => {
+                  router.push(`/organizations/${organization._id}#projects`);
+                }}
+              >
                 {totalProjects}{" "}
                 {totalProjects === 1
                   ? t("labels.project")
                   : t("labels.projects")}
+              </span>
+            )}
+
+            {isLoading ? (
+              <Skeleton className="h-6 w-20 rounded-full" />
+            ) : (
+              <span
+                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer"
+                onClick={() => {
+                  router.push(`/organizations/${organization._id}#members`);
+                }}
+              >
+                {totalMembers}{" "}
+                {totalMembers === 1 ? t("labels.member") : t("labels.members")}
               </span>
             )}
           </div>
@@ -94,7 +118,7 @@ export function OrganizationSection({
         {!isLoading && data?.pages[0]?.items?.length === 0 && (
           <div className="py-6 text-center">
             <p className="text-muted-foreground mb-4">{t("noProjectsFound")}</p>
-            <Button variant="outline" size="sm" asChild>
+            <Button variant="default" size="sm" asChild>
               <Link
                 href={`/projects/create?organizationId=${organization._id}`}
               >

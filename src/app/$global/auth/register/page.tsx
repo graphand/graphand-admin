@@ -17,7 +17,10 @@ import RegisterForm, { RegisterFormValues } from "@/components/register-form";
 export default function RegisterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const next = searchParams.get("next") || "/";
+  const nextUrl = new URL(next, window.location.origin);
+  const nextSearchParams = new URLSearchParams(nextUrl.search);
+  const nextEmail = nextSearchParams.get("email");
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Reset loading state if navigation failed
@@ -42,7 +45,7 @@ export default function RegisterPage() {
       // Call the Graphand auth module to register
       await client.get("auth").register({
         configuration: {
-          email: values.email,
+          email: nextEmail || values.email,
           password: values.password,
         },
         account: {
@@ -53,15 +56,18 @@ export default function RegisterPage() {
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
-      router.push(callbackUrl);
+      router.push(next);
     } catch (err) {
       // Error handling is now managed by the GenericForm component
       throw err;
     }
   };
 
+  const loginUrl = new URL("/auth/login", window.location.origin);
+  loginUrl.search = searchParams.toString();
+
   return (
-    <div className="container mx-auto flex flex-1 items-center justify-center">
+    <div className="container mx-auto flex flex-1 items-center justify-center m-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">
@@ -73,6 +79,7 @@ export default function RegisterPage() {
         </CardHeader>
         <CardContent>
           <RegisterForm
+            email={nextEmail || undefined}
             onSubmit={onSubmit}
             submitButtonText="Sign Up"
             loadingButtonText="Creating account..."
@@ -81,7 +88,10 @@ export default function RegisterPage() {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-center">
             Already have an account?{" "}
-            <Link href="/auth/login" className="font-semibold hover:underline">
+            <Link
+              href={loginUrl.toString()}
+              className="font-semibold hover:underline"
+            >
               Log in
             </Link>
           </p>

@@ -1,4 +1,11 @@
-import { Mail, Trash, RotateCw, CheckCircle, UserCheck } from "lucide-react";
+import {
+  Mail,
+  Trash,
+  RotateCw,
+  CheckCircle,
+  UserCheck,
+  Loader2,
+} from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,6 +24,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ModelInstance } from "@graphand/core";
 import client from "@/lib/graphand";
 import { InvitationStatus } from "@/hooks/use-organization-invitations";
+import { useState, useEffect } from "react";
 
 interface InvitationsListProps {
   invitations?: ModelInstance<
@@ -38,6 +46,28 @@ export function InvitationsList({
   status,
 }: InvitationsListProps) {
   const { t } = useTranslation();
+  const [deletingInvitations, setDeletingInvitations] = useState<string[]>([]);
+  const [resendingInvitations, setResendingInvitations] = useState<string[]>(
+    []
+  );
+
+  // Clear loading states when isPending becomes false
+  useEffect(() => {
+    if (!isPending) {
+      setDeletingInvitations([]);
+      setResendingInvitations([]);
+    }
+  }, [isPending]);
+
+  const handleDelete = (invitationId: string) => {
+    setDeletingInvitations((prev) => [...prev, invitationId]);
+    onDelete(invitationId);
+  };
+
+  const handleResend = (invitationId: string) => {
+    setResendingInvitations((prev) => [...prev, invitationId]);
+    onResend(invitationId);
+  };
 
   // Show loading state
   if (isLoading) {
@@ -71,10 +101,13 @@ export function InvitationsList({
     <div className="space-y-4">
       {invitations.map((invitation) => {
         const account = invitation.get("account", "json");
+        const invitationId = invitation._id ?? "";
+        const isDeleting = deletingInvitations.includes(invitationId);
+        const isResending = resendingInvitations.includes(invitationId);
 
         return (
           <div
-            key={invitation._id}
+            key={invitationId}
             className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/10 transition-colors"
           >
             <div className="flex items-center gap-3">
@@ -147,11 +180,15 @@ export function InvitationsList({
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => onResend(invitation._id ?? "")}
-                    disabled={isPending}
+                    onClick={() => handleResend(invitationId)}
+                    disabled={isPending || isResending}
                     title={t("resendInvitation")}
                   >
-                    <RotateCw className="h-4 w-4" />
+                    {isResending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <RotateCw className="h-4 w-4" />
+                    )}
                   </Button>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -159,9 +196,13 @@ export function InvitationsList({
                         variant="ghost"
                         size="icon"
                         className="text-destructive hover:text-destructive"
-                        disabled={isPending}
+                        disabled={isPending || isDeleting}
                       >
-                        <Trash className="h-4 w-4" />
+                        {isDeleting ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash className="h-4 w-4" />
+                        )}
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -179,8 +220,12 @@ export function InvitationsList({
                         </Button>
                         <Button
                           variant="destructive"
-                          onClick={() => onDelete(invitation._id ?? "")}
+                          onClick={() => handleDelete(invitationId)}
+                          disabled={isDeleting}
                         >
+                          {isDeleting ? (
+                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                          ) : null}
                           {t("delete")}
                         </Button>
                       </DialogFooter>

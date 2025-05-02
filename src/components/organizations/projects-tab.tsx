@@ -60,7 +60,7 @@ export function ProjectsTab({ organizationId }: ProjectsTabProps) {
       {!isLoadingActive && activeData?.pages[0]?.items?.length === 0 && (
         <div className="py-6 text-center">
           <p className="text-muted-foreground mb-4">{t("noProjectsFound")}</p>
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="default" size="sm" asChild>
             <Link href={`/projects/create?organizationId=${organizationId}`}>
               <PlusIcon className="h-4 w-4 mr-2" />
               {t("createProject")}

@@ -20,6 +20,7 @@ export const registerFormSchema = z.object({
 export type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
 export interface RegisterFormProps {
+  email?: string;
   onSubmit: (values: RegisterFormValues) => Promise<void>;
   submitButtonText?: string;
   loadingButtonText?: string;
@@ -48,6 +49,7 @@ export default function RegisterForm({
     email: ["configuration.email"],
     password: ["configuration.password"],
   },
+  email = "",
   defaultValues = {
     firstname: "",
     lastname: "",
@@ -64,7 +66,10 @@ export default function RegisterForm({
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(schema),
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      email: email || defaultValues.email,
+    },
   });
 
   // Create fields configuration
@@ -86,8 +91,8 @@ export default function RegisterForm({
     {
       name: "email",
       label: "Email",
-      placeholder: "your@email.com",
-      component: <Input />,
+      placeholder: email || "your@email.com",
+      component: <Input disabled={!!email} />,
       mapServerErrors: serverErrorMappings.email,
     },
     {

@@ -144,6 +144,15 @@
   "payment": "Payment",
   "legal": "Legal",
 
+  "labels": {
+    "project": "project",
+    "projects": "projects",
+    "organization": "organization",
+    "organizations": "organizations",
+    "member": "member",
+    "members": "members"
+  },
+
   "viewOrganization": "View Organization",
   "archivedProjects": "Archived Projects",
   "members": "Members",

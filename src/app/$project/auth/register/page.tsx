@@ -17,7 +17,7 @@ import RegisterForm, { RegisterFormValues } from "@/components/register-form";
 export default function RegisterPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const next = searchParams.get("next") || "/";
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   // Reset loading state if navigation failed
@@ -53,7 +53,7 @@ export default function RegisterPage() {
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
-      router.push(callbackUrl);
+      router.push(next);
     } catch (err) {
       // Error handling is now managed by the GenericForm component
       throw err;

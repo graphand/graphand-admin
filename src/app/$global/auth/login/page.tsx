@@ -30,7 +30,10 @@ const formSchema = z.object({
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const next = searchParams.get("next") || "/";
+  const nextUrl = new URL(next, window.location.origin);
+  const nextSearchParams = new URLSearchParams(nextUrl.search);
+  const nextEmail = nextSearchParams.get("email");
   const [isRedirecting, setIsRedirecting] = useState(false);
   const setEmail = useEmailStore((state) => state.setEmail);
 
@@ -38,7 +41,7 @@ export default function LoginPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: nextEmail || "",
       password: "",
     },
   });
@@ -75,15 +78,18 @@ export default function LoginPage() {
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
-      router.push(callbackUrl);
+      router.push(next);
     } catch (err) {
       // Error handling is now managed by the GenericForm component
       throw err;
     }
   };
 
+  const registerUrl = new URL("/auth/register", window.location.origin);
+  registerUrl.search = searchParams.toString();
+
   return (
-    <div className="container mx-auto flex flex-1 items-center justify-center">
+    <div className="container mx-auto flex flex-1 items-center justify-center m-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -99,8 +105,8 @@ export default function LoginPage() {
               {
                 name: "email",
                 label: "Email",
-                placeholder: "your@email.com",
-                component: <Input />,
+                placeholder: nextEmail ? nextEmail : "your@email.com",
+                component: <Input disabled={!!nextEmail} />,
                 mapServerErrors: ["credentials.email"],
               },
               {
@@ -120,7 +126,7 @@ export default function LoginPage() {
           <p className="text-sm text-center">
             Don&apos;t have an account?{" "}
             <Link
-              href="/auth/register"
+              href={registerUrl.toString()}
               className="font-semibold hover:underline"
             >
               Sign up

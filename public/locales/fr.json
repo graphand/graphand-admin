@@ -23,7 +23,9 @@
     "project": "projet",
     "projects": "projets",
     "organization": "organisation",
-    "organizations": "organisations"
+    "organizations": "organisations",
+    "member": "membre",
+    "members": "membres"
   },
 
   "projects": {

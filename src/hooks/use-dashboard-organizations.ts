@@ -1,15 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import client from "@/lib/graphand-client";
 
-export type Organization = {
-  _id: string;
-  name: string;
-  slug: string;
-  _createdAt?: string;
-  _updatedAt?: string;
-  // Add other fields as needed
-};
-
 export function useDashboardOrganizations(pageSize: number = 10) {
   return useInfiniteQuery({
     queryKey: ["dashboard-organizations"],
@@ -20,6 +11,7 @@ export function useDashboardOrganizations(pageSize: number = 10) {
             $in: ["$$accountId", "$_accounts"],
           },
         },
+        populate: ["_accounts"],
         pageSize,
         page: pageParam,
         sort: { name: 1 }, // Sort by name ascending

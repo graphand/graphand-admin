@@ -3,10 +3,7 @@
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "@/lib/translation";
-import {
-  Organization,
-  useDashboardOrganizations,
-} from "@/hooks/use-dashboard-organizations";
+import { useDashboardOrganizations } from "@/hooks/use-dashboard-organizations";
 import {
   OrganizationSection,
   OrganizationSectionSkeleton,
@@ -52,7 +49,7 @@ export default function DashboardPage() {
               {t("viewAll")}
             </Link>
           </Button>
-          <Button variant="outline" className="gap-2" asChild>
+          <Button variant="default" className="gap-2" asChild>
             <Link href="/organizations/create">
               <PlusIcon className="h-4 w-4" />
               {t("createOrganization")}
@@ -138,7 +135,7 @@ export default function DashboardPage() {
               {t("viewAll")}
             </Link>
           </Button>
-          <Button variant="outline" className="gap-2" asChild>
+          <Button variant="default" className="gap-2" asChild>
             <Link href="/organizations/create">
               <PlusIcon className="h-4 w-4" />
               {t("createOrganization")}
@@ -153,7 +150,7 @@ export default function DashboardPage() {
           page.items.map((organization) => (
             <OrganizationSection
               key={organization._id}
-              organization={organization as unknown as Organization}
+              organization={organization}
             />
           ))
         )}

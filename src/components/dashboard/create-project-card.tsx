@@ -20,7 +20,7 @@ export function CreateProjectCard({ organizationId }: CreateProjectCardProps) {
         <p className="text-sm text-muted-foreground mb-4">
           {t("addNewProject")}
         </p>
-        <Button variant="outline" size="sm" asChild>
+        <Button variant="default" size="sm" asChild>
           <Link href={`/projects/create?organizationId=${organizationId}`}>
             <PlusIcon className="h-4 w-4 mr-2" />
             {t("createProject")}

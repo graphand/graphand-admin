@@ -68,14 +68,6 @@ export function UserDropdown() {
                 {t("profile")}
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                href="/organizations/join"
-                className="cursor-pointer justify-end"
-              >
-                {t("join_organization")}
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={handleLogout}
               disabled={isLogoutLoading}

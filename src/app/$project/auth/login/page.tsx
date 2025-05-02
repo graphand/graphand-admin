@@ -30,7 +30,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const next = searchParams.get("next") || "/";
   const [isRedirecting, setIsRedirecting] = useState(false);
   const setEmail = useEmailStore((state) => state.setEmail);
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
       // Keep loading state true during redirection
       setIsRedirecting(true);
-      router.push(callbackUrl);
+      router.push(next);
     } catch (err) {
       // Error handling is now managed by the GenericForm component
       throw err;
