@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -34,7 +33,6 @@ export default function LoginPage() {
   const nextUrl = new URL(next, window.location.origin);
   const nextSearchParams = new URLSearchParams(nextUrl.search);
   const nextEmail = nextSearchParams.get("email");
-  const [isRedirecting, setIsRedirecting] = useState(false);
   const setEmail = useEmailStore((state) => state.setEmail);
 
   // Initialize form
@@ -46,43 +44,22 @@ export default function LoginPage() {
     },
   });
 
-  // Reset loading state if navigation failed
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
-    if (isRedirecting) {
-      // Set a safety timeout to reset loading state if navigation takes too long
-      timeoutId = setTimeout(() => {
-        setIsRedirecting(false);
-      }, 5000); // 5 seconds timeout
-    }
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [isRedirecting]);
-
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      // Call the Graphand auth module to login
-      await client.get("auth").login({
-        credentials: {
-          email: values.email,
-          password: values.password,
-        },
-      });
+    // Call the Graphand auth module to login
+    await client.get("auth").login({
+      credentials: {
+        email: values.email,
+        password: values.password,
+      },
+    });
 
-      // Save email to the store
-      setEmail(values.email);
+    // Save email to the store
+    setEmail(values.email);
 
-      // Keep loading state true during redirection
-      setIsRedirecting(true);
-      router.push(next);
-    } catch (err) {
-      // Error handling is now managed by the GenericForm component
-      throw err;
-    }
+    router.replace(next);
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   };
 
   const registerUrl = new URL("/auth/register", window.location.origin);

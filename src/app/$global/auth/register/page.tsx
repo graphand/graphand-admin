@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -21,46 +20,24 @@ export default function RegisterPage() {
   const nextUrl = new URL(next, window.location.origin);
   const nextSearchParams = new URLSearchParams(nextUrl.search);
   const nextEmail = nextSearchParams.get("email");
-  const [isRedirecting, setIsRedirecting] = useState(false);
-
-  // Reset loading state if navigation failed
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
-    if (isRedirecting) {
-      // Set a safety timeout to reset loading state if navigation takes too long
-      timeoutId = setTimeout(() => {
-        setIsRedirecting(false);
-      }, 5000); // 5 seconds timeout
-    }
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [isRedirecting]);
 
   // Handle form submission
   const onSubmit = async (values: RegisterFormValues) => {
-    try {
-      // Call the Graphand auth module to register
-      await client.get("auth").register({
-        configuration: {
-          email: nextEmail || values.email,
-          password: values.password,
-        },
-        account: {
-          firstname: values.firstname,
-          lastname: values.lastname,
-        },
-      });
+    // Call the Graphand auth module to register
+    await client.get("auth").register({
+      configuration: {
+        email: nextEmail || values.email,
+        password: values.password,
+      },
+      account: {
+        firstname: values.firstname,
+        lastname: values.lastname,
+      },
+    });
 
-      // Keep loading state true during redirection
-      setIsRedirecting(true);
-      router.push(next);
-    } catch (err) {
-      // Error handling is now managed by the GenericForm component
-      throw err;
-    }
+    router.replace(next);
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   };
 
   const loginUrl = new URL("/auth/login", window.location.origin);
