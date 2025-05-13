@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/graphand-server";
-import { cookies } from "next/headers";
+import { getCookieProject } from "./lib/server";
 
 const isAppRoute = (pathname: string) => {
   return pathname.startsWith("/app");
@@ -8,12 +8,6 @@ const isAppRoute = (pathname: string) => {
 
 const isAuthRoute = (pathname: string) => {
   return pathname.startsWith("/auth");
-};
-
-const getCookieProject = async () => {
-  const cookieStore = await cookies();
-  const project = cookieStore.get("NEXT_GRAPHAND_PROJECT");
-  return project?.value;
 };
 
 /**
@@ -45,8 +39,6 @@ export async function middleware(request: NextRequest) {
   } else {
     cleanNextUrl = nextUrl;
   }
-
-  console.log(cleanNextUrl.pathname);
 
   if (!isAppRoute(cleanNextUrl.pathname)) {
     // Check auth status
@@ -80,7 +72,7 @@ export async function middleware(request: NextRequest) {
 
   // Only rewrite if not already on the correct scope path
   if (segments[1].startsWith("$")) {
-    return NextResponse.redirect(cleanNextUrl);
+    // return NextResponse.redirect(cleanNextUrl);
   } else if (segments[1] !== scope) {
     const url = new URL(`/${scope}${cleanNextUrl.pathname}`, baseUrl);
     url.search = request.nextUrl.search;
