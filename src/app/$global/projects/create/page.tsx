@@ -35,13 +35,13 @@ interface Region {
   accessible: boolean;
 }
 
-export const controllerRegions: Controller = {
+const controllerRegions: Controller = {
   path: "/regions",
   methods: ["get"],
   secured: true,
 };
 
-export const getRegions = async (): Promise<Region[]> => {
+const getRegions = async (): Promise<Region[]> => {
   const res = await client.execute(controllerRegions);
   const { data } = await res.json();
   return data || [];

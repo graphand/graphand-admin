@@ -22,13 +22,14 @@ import {
 import { useTranslation } from "@/lib/translation";
 import { formatDistanceToNow } from "date-fns";
 import { ModelInstance } from "@graphand/core";
-import client from "@/lib/graphand";
+import client from "@/lib/graphand-client";
 import { InvitationStatus } from "@/hooks/use-organization-invitations";
 import { useState, useEffect } from "react";
+import { InferClientModel } from "@graphand/client";
 
 interface InvitationsListProps {
   invitations?: ModelInstance<
-    ReturnType<typeof client.model<"organizationInvitations">>
+    InferClientModel<typeof client, "organizationInvitations">
   >[];
   isLoading: boolean;
   onDelete: (invitationId: string) => void;

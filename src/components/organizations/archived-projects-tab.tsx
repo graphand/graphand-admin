@@ -4,7 +4,7 @@ import {
   ProjectItem,
   ProjectItemSkeleton,
 } from "@/components/dashboard/project-item";
-import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
+import { useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
 import { Loader2 } from "lucide-react";
 
@@ -73,7 +73,7 @@ export function ArchivedProjectsTab({
               page.items.map((project) => (
                 <ProjectItem
                   key={project._id}
-                  project={project as unknown as Project}
+                  project={project}
                   isArchived={true}
                 />
               ))

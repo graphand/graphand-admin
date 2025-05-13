@@ -8,7 +8,7 @@ import {
   ProjectItemSkeleton,
 } from "@/components/dashboard/project-item";
 import { CreateProjectCard } from "@/components/dashboard/create-project-card";
-import { Project, useDashboardProjects } from "@/hooks/use-dashboard-projects";
+import { useDashboardProjects } from "@/hooks/use-dashboard-projects";
 import { useTranslation } from "@/lib/translation";
 
 interface ProjectsTabProps {
@@ -78,7 +78,7 @@ export function ProjectsTab({ organizationId }: ProjectsTabProps) {
               page.items.map((project) => (
                 <ProjectItem
                   key={project._id}
-                  project={project as unknown as Project}
+                  project={project}
                   isArchived={false}
                 />
               ))

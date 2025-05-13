@@ -27,6 +27,6 @@ const clientStorage: AuthStorage = {
 };
 
 // Export the client instance
-const client = createClient(clientStorage, project);
+const client = await createClient(clientStorage, project);
 
 export default client;
