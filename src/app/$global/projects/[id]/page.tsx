@@ -132,36 +132,38 @@ export default function ProjectsDetailPage() {
         onValueChange={handleTabChange}
         className="w-full"
       >
-        <TabsList className="mb-6 gap-1">
-          <TabsTrigger value="overview">
-            <LayoutDashboardIcon className="h-4 w-4" />
-            {t("projects.navigation.overview")}
-          </TabsTrigger>
-          <TabsTrigger value="usage">
-            <BarChartIcon className="h-4 w-4" />
-            {t("projects.navigation.usage")}
-          </TabsTrigger>
-          <TabsTrigger value="subscription">
-            <CreditCardIcon className="h-4 w-4" />
-            {t("projects.navigation.subscription")}
-          </TabsTrigger>
-          <TabsTrigger value="jobs">
-            <ClockIcon className="h-4 w-4" />
-            {t("projects.navigation.jobs")}
-          </TabsTrigger>
-          <TabsTrigger value="snapshots">
-            <DatabaseIcon className="h-4 w-4" />
-            {t("projects.navigation.snapshots")}
-          </TabsTrigger>
-          <TabsTrigger value="security">
-            <ShieldIcon className="h-4 w-4" />
-            {t("projects.navigation.security")}
-          </TabsTrigger>
-          <TabsTrigger value="settings">
-            <SettingsIcon className="h-4 w-4" />
-            {t("projects.navigation.settings")}
-          </TabsTrigger>
-        </TabsList>
+        <div className="w-full overflow-x-auto">
+          <TabsList className="gap-1">
+            <TabsTrigger value="overview">
+              <LayoutDashboardIcon className="h-4 w-4" />
+              {t("projects.navigation.overview")}
+            </TabsTrigger>
+            <TabsTrigger value="usage">
+              <BarChartIcon className="h-4 w-4" />
+              {t("projects.navigation.usage")}
+            </TabsTrigger>
+            <TabsTrigger value="subscription">
+              <CreditCardIcon className="h-4 w-4" />
+              {t("projects.navigation.subscription")}
+            </TabsTrigger>
+            <TabsTrigger value="jobs">
+              <ClockIcon className="h-4 w-4" />
+              {t("projects.navigation.jobs")}
+            </TabsTrigger>
+            <TabsTrigger value="snapshots">
+              <DatabaseIcon className="h-4 w-4" />
+              {t("projects.navigation.snapshots")}
+            </TabsTrigger>
+            <TabsTrigger value="security">
+              <ShieldIcon className="h-4 w-4" />
+              {t("projects.navigation.security")}
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <SettingsIcon className="h-4 w-4" />
+              {t("projects.navigation.settings")}
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Overview Tab */}
         <TabsContent value="overview">

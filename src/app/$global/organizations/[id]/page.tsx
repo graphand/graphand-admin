@@ -64,24 +64,26 @@ export default function OrganizationsDetailPage() {
         onValueChange={handleTabChange}
         className="w-full"
       >
-        <TabsList className="mb-6 gap-1">
-          <TabsTrigger value="projects">
-            <FolderIcon className="h-4 w-4" />
-            {t("organizations.navigation.projects")}
-          </TabsTrigger>
-          <TabsTrigger value="archived-projects">
-            <ArchiveIcon className="h-4 w-4" />
-            {t("organizations.navigation.archivedProjects")}
-          </TabsTrigger>
-          <TabsTrigger value="members">
-            <UserIcon className="h-4 w-4" />
-            {t("organizations.navigation.members")}
-          </TabsTrigger>
-          <TabsTrigger value="settings">
-            <SettingsIcon className="h-4 w-4" />
-            {t("organizations.navigation.settings")}
-          </TabsTrigger>
-        </TabsList>
+        <div className="w-full overflow-x-auto">
+          <TabsList className="gap-1">
+            <TabsTrigger value="projects">
+              <FolderIcon className="h-4 w-4" />
+              {t("organizations.navigation.projects")}
+            </TabsTrigger>
+            <TabsTrigger value="archived-projects">
+              <ArchiveIcon className="h-4 w-4" />
+              {t("organizations.navigation.archivedProjects")}
+            </TabsTrigger>
+            <TabsTrigger value="members">
+              <UserIcon className="h-4 w-4" />
+              {t("organizations.navigation.members")}
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <SettingsIcon className="h-4 w-4" />
+              {t("organizations.navigation.settings")}
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Projects Tab */}
         <TabsContent value="projects">

@@ -25,8 +25,8 @@ export function OrganizationSectionSkeleton() {
             <h2 className="text-xl font-semibold">
               <Skeleton className="h-6 w-32" />
             </h2>
-            <Skeleton className="h-6 w-20 rounded-full" />
-            <Skeleton className="h-6 w-20 rounded-full" />
+            <Skeleton className="h-6 w-20 rounded-full hidden sm:block" />
+            <Skeleton className="h-6 w-20 rounded-full hidden sm:block" />
           </div>
           <Skeleton className="h-8 w-40 rounded-md" />
         </div>
@@ -72,13 +72,16 @@ export function OrganizationSection({
     <div>
       <div className="sticky top-0 py-4 z-10 border-b bg-background px-1 -mx-1">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold">{organization.name}</h2>
+          <div className="flex items-center gap-2 truncate">
+            <h2 className="text-xl font-semibold truncate">
+              {organization.name}
+            </h2>
+
             {isLoading ? (
-              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full hidden sm:block" />
             ) : (
               <span
-                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer"
+                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer hidden sm:block"
                 onClick={() => {
                   router.push(`/organizations/${organization._id}#projects`);
                 }}
@@ -91,10 +94,10 @@ export function OrganizationSection({
             )}
 
             {isLoading ? (
-              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full hidden sm:block" />
             ) : (
               <span
-                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer"
+                className="text-muted-foreground text-sm bg-muted px-2 py-0.5 rounded-full select-none cursor-pointer hidden sm:block"
                 onClick={() => {
                   router.push(`/organizations/${organization._id}#members`);
                 }}
