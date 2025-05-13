@@ -129,6 +129,9 @@
   "projectSlugPlaceholder": "mon-projet",
   "projectSlugDescription": "Un identifiant unique pour votre projet (utilisé dans les URLs)",
   "organizationIdRequired": "L'ID de l'organisation est requis pour créer un projet",
+  "region": "Région",
+  "selectRegion": "Sélectionnez une région pour votre projet",
+  "regionRequired": "La région est requise pour créer un projet",
 
   "createNewOrganization": "Créer une nouvelle organisation",
   "createOrganizationDescription": "Entrez les détails de votre nouvelle organisation",

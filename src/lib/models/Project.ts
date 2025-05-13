@@ -26,12 +26,15 @@ class Project extends Model {
       version: {
         type: PropertyTypes.STRING,
       },
+      region: {
+        type: PropertyTypes.STRING,
+      },
       _job: {
         type: PropertyTypes.RELATION,
         ref: Job.configuration.slug,
       },
     },
-    required: ["name", "organization"],
+    required: ["name", "organization", "region"],
   });
 }
 

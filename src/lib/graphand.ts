@@ -13,7 +13,7 @@ export const createClient = (
 ) => {
   return new Client(
     {
-      endpoint: "api.graphand.dev",
+      endpoint: "api.graphand.com",
       project,
       // disableCache: true,
       // disableStore: true,

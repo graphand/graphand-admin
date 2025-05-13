@@ -26,6 +26,26 @@ import {
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import Project from "@/lib/models/Project";
+import { Controller } from "@graphand/core";
+import { useQuery } from "@tanstack/react-query";
+
+// Define Region interface
+interface Region {
+  slug: string;
+  accessible: boolean;
+}
+
+export const controllerRegions: Controller = {
+  path: "/regions",
+  methods: ["get"],
+  secured: true,
+};
+
+export const getRegions = async (): Promise<Region[]> => {
+  const res = await client.execute(controllerRegions);
+  const { data } = await res.json();
+  return data || [];
+};
 
 // Project creation schema
 const formSchema = z.object({
@@ -41,6 +61,7 @@ const formSchema = z.object({
       message: "Slug can only contain lowercase letters, numbers, and hyphens",
     }),
   organization: z.string().min(1, { message: "Organization is required" }),
+  region: z.string().min(1, { message: "Region is required" }),
 });
 
 export default function CreateProjectPage() {
@@ -52,8 +73,15 @@ export default function CreateProjectPage() {
     useOrganizations();
   const queryClient = useQueryClient();
 
-  // Use state to manage the selected organization
+  // Fetch regions
+  const { data: regions = [], isLoading: isLoadingRegions } = useQuery({
+    queryKey: ["regions"],
+    queryFn: getRegions,
+  });
+
+  // Use state to manage the selected organization and region
   const [selectedOrg, setSelectedOrg] = useState(organizationIdParam || "");
+  const [selectedRegion, setSelectedRegion] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,6 +89,7 @@ export default function CreateProjectPage() {
       name: "",
       slug: "",
       organization: "",
+      region: "",
     },
   });
 
@@ -69,6 +98,11 @@ export default function CreateProjectPage() {
     form.setValue("organization", selectedOrg);
   }, [selectedOrg, form]);
 
+  // Set the region field value when selectedRegion changes
+  useEffect(() => {
+    form.setValue("region", selectedRegion);
+  }, [selectedRegion, form]);
+
   // Update selectedOrg if organizationIdParam changes (e.g., from URL change)
   useEffect(() => {
     if (organizationIdParam) {
@@ -76,10 +110,21 @@ export default function CreateProjectPage() {
     }
   }, [organizationIdParam]);
 
+  // Set default region if regions are loaded and there's only one option
+  useEffect(() => {
+    if (regions.length === 1 && !selectedRegion) {
+      setSelectedRegion(regions[0].slug);
+    }
+  }, [regions, selectedRegion]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (!values.organization) {
         throw new Error("Organization ID is required");
+      }
+
+      if (!values.region) {
+        throw new Error("Region is required");
       }
 
       // Create project using Graphand client
@@ -87,6 +132,7 @@ export default function CreateProjectPage() {
         name: values.name,
         slug: values.slug,
         organization: values.organization,
+        region: values.region,
       });
 
       await queryClient.invalidateQueries({
@@ -187,6 +233,34 @@ export default function CreateProjectPage() {
                 description: t("projectSlugDescription"),
                 component: <Input />,
                 mapServerErrors: ["slug"],
+              },
+              {
+                name: "region",
+                label: t("region"),
+                description: t("selectRegion"),
+                component: <Select />,
+                customRender: (field) => (
+                  <Select
+                    onValueChange={(value) => {
+                      setSelectedRegion(value);
+                      field.onChange(value);
+                    }}
+                    value={selectedRegion}
+                    disabled={isLoadingRegions}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={t("selectRegion")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {regions.map((region) => (
+                        <SelectItem key={region.slug} value={region.slug}>
+                          {region.slug}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ),
+                mapServerErrors: ["region"],
               },
             ]}
             submitButtonText={t("create")}
