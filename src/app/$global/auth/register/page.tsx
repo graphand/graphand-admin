@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -14,7 +14,6 @@ import client from "@/lib/graphand-client";
 import RegisterForm, { RegisterFormValues } from "@/components/register-form";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/";
   const nextUrl = new URL(next, window.location.origin);
@@ -35,9 +34,9 @@ export default function RegisterPage() {
       },
     });
 
-    router.replace(next);
+    window.location.href = next;
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   };
 
   const loginUrl = new URL("/auth/login", window.location.origin);

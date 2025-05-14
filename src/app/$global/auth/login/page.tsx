@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -27,7 +27,6 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/";
   const nextUrl = new URL(next, window.location.origin);
@@ -57,9 +56,9 @@ export default function LoginPage() {
     // Save email to the store
     setEmail(values.email);
 
-    router.replace(next);
+    window.location.href = next;
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   };
 
   const registerUrl = new URL("/auth/register", window.location.origin);
