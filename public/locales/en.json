@@ -286,7 +286,12 @@
   "projectSecurityPlaceholder": "Manage security settings for your project",
 
   "projectSubscription": "Project Subscription",
-  "projectSubscriptionPlaceholder": "View and manage your project subscription details",
+  "projectSubscriptionPlaceholder": "No subscription information available for this project.",
+  "subscriptionPeriod": "Billing Period",
+  "subscriptionPrice": "Price",
+  "billingPortal": "Billing Portal",
+  "loadingBillingPortal": "Opening Portal...",
+  "errorFetchingSubscription": "Error fetching subscription information",
 
   "projectJobs": "Project Jobs",
   "projectJobsPlaceholder": "Monitor and manage jobs running in your project",

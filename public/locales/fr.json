@@ -286,7 +286,12 @@
   "projectSecurityPlaceholder": "Gérez les paramètres de sécurité de votre projet",
 
   "projectSubscription": "Abonnement du projet",
-  "projectSubscriptionPlaceholder": "Consultez et gérez les détails de l'abonnement de votre projet",
+  "projectSubscriptionPlaceholder": "Aucune information d'abonnement disponible pour ce projet.",
+  "subscriptionPeriod": "Période de facturation",
+  "subscriptionPrice": "Prix",
+  "billingPortal": "Portail de facturation",
+  "loadingBillingPortal": "Ouverture du portail...",
+  "errorFetchingSubscription": "Erreur lors de la récupération des informations d'abonnement",
 
   "projectJobs": "Tâches du projet",
   "projectJobsPlaceholder": "Surveillez et gérez les tâches exécutées dans votre projet",

@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { PageTitle } from "@/components/page-title";
 import {
   LayoutDashboardIcon,
-  BarChartIcon,
   CreditCardIcon,
   ClockIcon,
   DatabaseIcon,
@@ -20,7 +19,6 @@ import {
 
 // Import tab components
 import { OverviewTab } from "@/components/projects/overview-tab";
-import { UsageTab } from "@/components/projects/usage-tab";
 import { SubscriptionTab } from "@/components/projects/subscription-tab";
 import { JobsTab } from "@/components/projects/jobs-tab";
 import { SnapshotsTab } from "@/components/projects/snapshots-tab";
@@ -138,10 +136,6 @@ export default function ProjectsDetailPage() {
               <LayoutDashboardIcon className="h-4 w-4" />
               {t("projects.navigation.overview")}
             </TabsTrigger>
-            <TabsTrigger value="usage">
-              <BarChartIcon className="h-4 w-4" />
-              {t("projects.navigation.usage")}
-            </TabsTrigger>
             <TabsTrigger value="subscription">
               <CreditCardIcon className="h-4 w-4" />
               {t("projects.navigation.subscription")}
@@ -168,11 +162,6 @@ export default function ProjectsDetailPage() {
         {/* Overview Tab */}
         <TabsContent value="overview">
           <OverviewTab projectId={id as string} />
-        </TabsContent>
-
-        {/* Usage Tab */}
-        <TabsContent value="usage">
-          <UsageTab projectId={id as string} />
         </TabsContent>
 
         {/* Subscription Tab */}
